@@ -23,16 +23,14 @@ namespace GekkoAssembler
 			DataSections.Add(dataSection);
 		}
 		
-		public void Add(IGekkoInstruction instructions)
+		public void Add(IGekkoInstruction instruction)
 		{
-			Instructions.Add(instructions);
+			DataSections.Add(new InstructionDataSection(instruction));
 		}
 		
 		public string ToCheat()
 		{
-			return string.Join(Environment.NewLine, 
-				new [] { DataSections.ToCheat(), Instructions.ToCheat() }
-				.Where(x => !string.IsNullOrEmpty(x)));
+			return DataSections.ToCheat();
 		}
 	}
 }

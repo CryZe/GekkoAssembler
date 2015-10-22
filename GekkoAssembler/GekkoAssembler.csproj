@@ -58,6 +58,7 @@
     <Compile Include="GekkoAssembly.cs" />
     <Compile Include="IGekkoDataSection.cs" />
     <Compile Include="IGekkoInstruction.cs" />
+    <Compile Include="InstructionDataSection.cs" />
     <Compile Include="LoadWordAndZeroInstruction.cs" />
     <Compile Include="LoadHalfWordAndZeroInstruction.cs" />
     <Compile Include="LoadByteAndZeroInstruction.cs" />
