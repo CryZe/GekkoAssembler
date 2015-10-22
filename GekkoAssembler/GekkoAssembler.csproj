@@ -52,6 +52,8 @@
     <Compile Include="BranchToLinkRegisterInstruction.cs" />
     <Compile Include="ConditionRegisterClearInstruction.cs" />
     <Compile Include="ConditionRegisterXORInstruction.cs" />
+    <Compile Include="GekkoAssembly.cs" />
+    <Compile Include="IGekkoDataSection.cs" />
     <Compile Include="IGekkoInstruction.cs" />
     <Compile Include="LoadWordAndZeroInstruction.cs" />
     <Compile Include="LoadHalfWordAndZeroInstruction.cs" />

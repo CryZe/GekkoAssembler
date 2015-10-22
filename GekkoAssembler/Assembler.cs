@@ -9,28 +9,40 @@ namespace GekkoAssembler
 {
     public class Assembler
     {
-        public IList<IGekkoInstruction> AssembleAllLines(IEnumerable<string> lines)
+        private static string reduceLineToCode(string line)
         {
-            var instructionList = new List<IGekkoInstruction>();
+            if (line.Contains("//"))
+                line = line.Substring(0, line.IndexOf("//"));
+            
+            return line.Trim();
+        }
+        
+        public GekkoAssembly AssembleAllLines(IEnumerable<string> lines)
+        {
+            var gekkoAssembly = new GekkoAssembly();
             var instructionPointer = 0x00000000;
             foreach (var line in lines
-                .Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("//"))
-                .Select(line => line.ToLower()))
+                .Select(line => reduceLineToCode(line))
+                .Where(line => !string.IsNullOrWhiteSpace(line)))
             {
                 if (line.EndsWith(":"))
                 {
                     instructionPointer = ParseInstructionPointerLabel(line);
+                }
+                else if (line.StartsWith("."))
+                {
+                    
                 }
                 else
                 {
                     //Align the instruction
                     instructionPointer = (instructionPointer + 3) & ~3;
                     var instruction = ParseInstruction(line, instructionPointer);
-                    instructionList.Add(instruction);
+                    gekkoAssembly.Add(instruction);
                     instructionPointer += 4;
                 }
             }
-            return instructionList;
+            return gekkoAssembly;
         }
 
         private IGekkoInstruction ParseInstruction(string line, int instructionPointer)

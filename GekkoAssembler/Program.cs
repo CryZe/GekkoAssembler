@@ -26,10 +26,9 @@ namespace GekkoAssembler
             }
             var lines = ReadAllLines(filePath);
             var assembler = new Assembler();
-            var instructions = assembler.AssembleAllLines(lines);
-            var cheat = instructions.ToCheat();
+            var gekkoAssembly = assembler.AssembleAllLines(lines);
+            var cheat = gekkoAssembly.ToCheat();
             Console.WriteLine(cheat);
-            Console.Read();
         }
     }
 }
