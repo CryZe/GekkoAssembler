@@ -29,7 +29,7 @@ namespace GekkoAssembler
 			if ((i + 2) <= dataSection.Data.Length)
 			{
 				lines.Add(string.Format("02{0:X6} 0000{1:X2}{2:X2}", ((dataSection.Address + i) & 0xFFFFFF), dataSection.Data[i], dataSection.Data[i + 1]));
-				i += 4;
+				i += 2;
 			}
 			
 			if (i < dataSection.Data.Length)
