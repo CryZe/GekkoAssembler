@@ -23,6 +23,8 @@ namespace GekkoAssembler
                 }
                 else
                 {
+                    //Align the instruction
+                    instructionPointer = (instructionPointer + 3) & ~3;
                     var instruction = ParseInstruction(line, instructionPointer);
                     instructionList.Add(instruction);
                     instructionPointer += 4;
