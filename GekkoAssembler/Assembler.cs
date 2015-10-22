@@ -31,7 +31,9 @@ namespace GekkoAssembler
                 }
                 else if (line.StartsWith("."))
                 {
-                    
+                    var dataSection = ParseDataSection(line.Substring(1), instructionPointer);
+                    gekkoAssembly.Add(dataSection);
+                    instructionPointer += dataSection.Data.Length;
                 }
                 else
                 {
@@ -43,6 +45,53 @@ namespace GekkoAssembler
                 }
             }
             return gekkoAssembly;
+        }
+
+        private IGekkoDataSection ParseDataSection(string line, int instructionPointer)
+        {
+            if (line.StartsWith("str "))
+                return ParseStringDataSection(line, instructionPointer);
+            if (line.StartsWith("byte"))
+                return ParseByteDataSection(line, instructionPointer);
+            if (line.StartsWith("u16"))
+                return ParseUnsigned16DataSection(line, instructionPointer);
+            if (line.StartsWith("u32"))
+                return ParseUnsigned32DataSection(line, instructionPointer);
+                
+            return new Unsigned32DataSection(instructionPointer, 0xFFFFFFFF);
+        }
+        
+        private IGekkoDataSection ParseStringDataSection(string line, int instructionPointer)
+        {
+            var literal = line.Substring(line.IndexOf("\""));
+            var text = ParseStringLiteral(literal);
+            return new StringDataSection(instructionPointer, text);
+        }
+
+        private string ParseStringLiteral(string literal)
+        {
+            return literal.Substring(1, literal.Length - 2);
+        }
+        
+        private IGekkoDataSection ParseByteDataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "byte");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            return new ByteDataSection(instructionPointer, value);
+        }
+        
+        private IGekkoDataSection ParseUnsigned16DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u16");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            return new Unsigned16DataSection(instructionPointer, value);
+        }
+        
+        private IGekkoDataSection ParseUnsigned32DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u32");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            return new Unsigned32DataSection(instructionPointer, value);
         }
 
         private IGekkoInstruction ParseInstruction(string line, int instructionPointer)

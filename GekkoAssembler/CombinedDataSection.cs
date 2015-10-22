@@ -9,7 +9,7 @@ namespace GekkoAssembler
 {
     public class CombinedDataSection : IGekkoDataSection
     {
-        public uint Address { get; }
+        public int Address { get; }
 
         public byte[] Data { get; }
         

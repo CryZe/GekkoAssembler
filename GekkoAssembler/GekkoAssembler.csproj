@@ -50,9 +50,11 @@
     <Compile Include="Assembler.cs" />
     <Compile Include="BranchInstruction.cs" />
     <Compile Include="BranchToLinkRegisterInstruction.cs" />
+    <Compile Include="ByteDataSection.cs" />
     <Compile Include="CombinedDataSection.cs" />
     <Compile Include="ConditionRegisterClearInstruction.cs" />
     <Compile Include="ConditionRegisterXORInstruction.cs" />
+    <Compile Include="EndianExtensions.cs" />
     <Compile Include="GekkoAssembly.cs" />
     <Compile Include="IGekkoDataSection.cs" />
     <Compile Include="IGekkoInstruction.cs" />
@@ -71,6 +73,9 @@
     <Compile Include="SpecialPurposeRegister.cs" />
     <Compile Include="StoreWordWithUpdateInstruction.cs" />
     <Compile Include="StoreWordInstruction.cs" />
+    <Compile Include="StringDataSection.cs" />
+    <Compile Include="Unsigned16DataSection.cs" />
+    <Compile Include="Unsigned32DataSection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
