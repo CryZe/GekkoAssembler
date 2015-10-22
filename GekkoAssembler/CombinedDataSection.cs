@@ -12,7 +12,7 @@ namespace GekkoAssembler
         public int Address { get; }
 
         public byte[] Data { get; }
-        
+
         public CombinedDataSection(IGekkoDataSection a, IGekkoDataSection b)
         {
             Address = Math.Min(a.Address, b.Address);
