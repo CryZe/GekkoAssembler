@@ -50,6 +50,7 @@
     <Compile Include="Assembler.cs" />
     <Compile Include="BranchInstruction.cs" />
     <Compile Include="BranchToLinkRegisterInstruction.cs" />
+    <Compile Include="CombinedDataSection.cs" />
     <Compile Include="ConditionRegisterClearInstruction.cs" />
     <Compile Include="ConditionRegisterXORInstruction.cs" />
     <Compile Include="GekkoAssembly.cs" />

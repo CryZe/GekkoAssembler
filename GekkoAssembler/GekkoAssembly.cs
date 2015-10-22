@@ -30,7 +30,9 @@ namespace GekkoAssembler
 		
 		public string ToCheat()
 		{
-			return Instructions.ToCheat();
+			return string.Join(Environment.NewLine, 
+				new [] { DataSections.ToCheat(), Instructions.ToCheat() }
+				.Where(x => !string.IsNullOrEmpty(x)));
 		}
 	}
 }

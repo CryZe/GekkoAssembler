@@ -18,7 +18,7 @@ namespace GekkoAssembler
 		public static string ToCheat(this IGekkoDataSection dataSection)
         {
 			var lines = new List<string>();
-			uint i = 0;
+			var i = 0;
 			
 			while ((i + 4) <= dataSection.Data.Length)
 			{
@@ -39,5 +39,37 @@ namespace GekkoAssembler
 			
             return string.Join(Environment.NewLine, lines);
         }
-	}
+		
+		public static string ToCheat(this IEnumerable<IGekkoDataSection> dataSections)
+        {
+            dataSections = mergeDataSections(dataSections);
+			
+			return string.Join(Environment.NewLine, dataSections.Select(x => x.ToCheat()));
+        }
+
+        private static IEnumerable<IGekkoDataSection> mergeDataSections(IEnumerable<IGekkoDataSection> dataSections)
+        {
+			var replaced = true;
+            while (replaced)
+            {
+				replaced = false;
+                dataSections = dataSections.OrderBy(x => x.Address);
+
+                var last = dataSections.FirstOrDefault();
+                foreach (var current in dataSections)
+                {
+                    if (current.Address == last.Address + last.Data.Length)
+                    {
+                        var combined = new CombinedDataSection(last, current);
+                        dataSections = dataSections.Except(new[] { current, last }).Concat(new [] { combined });
+                        replaced = true;
+						break;
+                    }
+                    last = current;
+                }
+            }
+
+            return dataSections;
+        }
+    }
 }
