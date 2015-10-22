@@ -53,15 +53,17 @@ namespace GekkoAssembler
             while (replaced)
             {
 				replaced = false;
-                dataSections = dataSections.OrderBy(x => x.Address);
-
+                
                 var last = dataSections.FirstOrDefault();
-                foreach (var current in dataSections)
+                foreach (var current in dataSections.Skip(1))
                 {
                     if (current.Address == last.Address + last.Data.Length)
                     {
                         var combined = new CombinedDataSection(last, current);
-                        dataSections = dataSections.Except(new[] { current, last }).Concat(new [] { combined });
+                        dataSections = dataSections.TakeWhile(x => x != last)
+                                    .Concat(new [] { combined })
+                                    .Concat(dataSections.SkipWhile(x => x != current).Skip(1))
+                                    .ToList();
                         replaced = true;
 						break;
                     }
