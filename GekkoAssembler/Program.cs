@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO.File;
+using static System.IO.File;
 
 namespace GekkoAssembler
 {
@@ -21,7 +21,7 @@ namespace GekkoAssembler
             var filePath = args[0];
             if (!Exists(filePath))
             {
-                Console.WriteLine("File \{filePath} not found.");
+                Console.WriteLine($"File { filePath } not found.");
                 return;
             }
             var lines = ReadAllLines(filePath);

@@ -21,7 +21,7 @@ namespace GekkoAssembler
 
         public static string ToCheat(this IEnumerable<IGekkoInstruction> instructionList)
         {
-            return instructionList.Select(x => x.ToCheat()).Aggregate((a,b) => "\{a}\n\{b}");
+            return string.Join("\n", instructionList.Select(x => x.ToCheat()));
         }
     }
 }
