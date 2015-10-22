@@ -1,2 +1,10 @@
 language: csharp
 solution: GekkoAssembler.sln
+deploy:
+  provider: releases
+  api_key:
+    secure: WOa7sIWD4LR3VmNcQzK13k1/XwwiVYz1MwhfWjBqdux9U8ZCPbVXlNzKDV3IMhx41wu8uPXxnojpg/apZtOZZqHw0V9GJwRXEXDretdBzUmvQf5GRNVEKRbh1MeInxCn/34XouZj7ZLZ0jMf6QNKLsWF4+3jk4AAFXhLGvUUikWQXhkhiTIW/MmK8+EmRjmrl+EUSDx5LWAf2XTcSUcwlKfSEOOwqWEdGP+uJ7qNlDugPlE0BLePRkrbnbl55NynRUqF41oNMuhyAlFZPErsukUjgC8BHVABqhyWo2V8qLAZjdJG/kEPYSYAlLDkG2NS4txAbZXDYyV0/vKQk7TjztCy0Z3+cUB9c7FB81PQilUMaKzduoWrKVmNOZJYTKQSgFovonfgkqvJi12ApIDSd9+2QJgxQv6PtVZcIpzarp0/c5r2p7PyuSJYLmS+beV7gx4wx1vWD8EKUkO20/G1lFAndteO3e8b9ollMRi4alTkbg/61nP5DHn78ZQFzzSBXk++t2tD251/Likk1w8RHHvYslyZ3gA+Nnuslx64VCDjo2f7SSD0xxlmafAN0ZpAcQXUi3pbtd/K7BxOfkOD1LlhswEDPtbFwA38N/wiqm35KzwIMfcSQCOKAGqyDS2iIwTvxpUYCAOxEAWnP+i1A0oGFD8t02UJs/4yL8wf8EI=
+  file: GekkoAssembler/bin/Release/GekkoAssembler.exe
+  skip_cleanup: true
+  on:
+    tags: true
