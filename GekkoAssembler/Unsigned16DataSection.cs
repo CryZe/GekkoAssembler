@@ -11,12 +11,12 @@ namespace GekkoAssembler
     {
         public int Address { get; }
         public byte[] Data => BitConverter.GetBytes(Value).SwapEndian();
-		public ushort Value { get; }
-		
-		public Unsigned16DataSection(int address, ushort value)
-		{
-			Address = address;
-			Value = value;
-		}
-	}
+        public ushort Value { get; }
+
+        public Unsigned16DataSection(int address, ushort value)
+        {
+            Address = address;
+            Value = value;
+        }
+    }
 }

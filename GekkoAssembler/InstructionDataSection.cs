@@ -11,11 +11,11 @@ namespace GekkoAssembler
     {
         public int Address => Instruction.Address;
         public byte[] Data => BitConverter.GetBytes(Instruction.ByteCode).SwapEndian();
-		public IGekkoInstruction Instruction { get; }
-		
-		public InstructionDataSection(IGekkoInstruction instruction)
-		{
-			Instruction = instruction;
-		}
-	}
+        public IGekkoInstruction Instruction { get; }
+
+        public InstructionDataSection(IGekkoInstruction instruction)
+        {
+            Instruction = instruction;
+        }
+    }
 }
