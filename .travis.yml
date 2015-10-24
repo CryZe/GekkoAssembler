@@ -1,5 +1,6 @@
 language: csharp
 solution: GekkoAssembler.sln
+mono: weekly
 deploy:
   provider: releases
   api_key:
