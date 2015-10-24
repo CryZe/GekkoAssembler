@@ -7,6 +7,18 @@ namespace GekkoAssembler
 {
     public class Assembler
     {
+        public List<IOptimizer> Optimizers { get; }
+
+        public Assembler(IEnumerable<IOptimizer> optimizers)
+        {
+            Optimizers = new List<IOptimizer>(optimizers);
+        }
+
+        public Assembler()
+        {
+            Optimizers = new List<IOptimizer>() { new WriteDataOptimizer() };
+        }
+
         private static string reduceLineToCode(string line)
         {
             if (line.Contains("//"))
@@ -42,10 +54,16 @@ namespace GekkoAssembler
                     instructionPointer += 4;
                 }
             }
+
+            foreach (var optimizer in Optimizers)
+            {
+                gekkoAssembly = optimizer.Optimize(gekkoAssembly);
+            }
+
             return gekkoAssembly;
         }
 
-        private IGekkoDataSection ParseDataSection(string line, int instructionPointer)
+        private GekkoDataSection ParseDataSection(string line, int instructionPointer)
         {
             if (line.StartsWith("str "))
                 return ParseStringDataSection(line, instructionPointer);
@@ -59,7 +77,7 @@ namespace GekkoAssembler
             return new Unsigned32DataSection(instructionPointer, 0xFFFFFFFF);
         }
         
-        private IGekkoDataSection ParseStringDataSection(string line, int instructionPointer)
+        private GekkoDataSection ParseStringDataSection(string line, int instructionPointer)
         {
             var literal = line.Substring(line.IndexOf("\""));
             var text = ParseStringLiteral(literal);
@@ -71,28 +89,28 @@ namespace GekkoAssembler
             return literal.Substring(1, literal.Length - 2);
         }
         
-        private IGekkoDataSection ParseByteDataSection(string line, int instructionPointer)
+        private GekkoDataSection ParseByteDataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "byte");
             var value = (byte)ParseIntegerLiteral(parameters[0]);
             return new ByteDataSection(instructionPointer, value);
         }
         
-        private IGekkoDataSection ParseUnsigned16DataSection(string line, int instructionPointer)
+        private GekkoDataSection ParseUnsigned16DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u16");
             var value = (ushort)ParseIntegerLiteral(parameters[0]);
             return new Unsigned16DataSection(instructionPointer, value);
         }
         
-        private IGekkoDataSection ParseUnsigned32DataSection(string line, int instructionPointer)
+        private GekkoDataSection ParseUnsigned32DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u32");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
             return new Unsigned32DataSection(instructionPointer, value);
         }
 
-        private IGekkoInstruction ParseInstruction(string line, int instructionPointer)
+        private GekkoInstruction ParseInstruction(string line, int instructionPointer)
         {
             if (line.StartsWith("blr"))
                 return ParseInstructionBLR(line, instructionPointer);
@@ -149,7 +167,7 @@ namespace GekkoAssembler
             return new NoOperationInstruction(instructionPointer);
         }
 
-        private IGekkoInstruction ParseInstructionSUB(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionSUB(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "sub");
             var rd = ParseRegister(parameters[0]);
@@ -158,7 +176,7 @@ namespace GekkoAssembler
             return new SubtractFromInstruction(instructionPointer, rd, rb, ra, false, false);
         }
 
-        private IGekkoInstruction ParseInstructionSUBF(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionSUBF(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "subf");
             var rd = ParseRegister(parameters[0]);
@@ -167,7 +185,7 @@ namespace GekkoAssembler
             return new SubtractFromInstruction(instructionPointer, rd, ra, rb, false, false);
         }
 
-        private IGekkoInstruction ParseInstructionMULLW(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionMULLW(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "mullw");
             var rd = ParseRegister(parameters[0]);
@@ -176,7 +194,7 @@ namespace GekkoAssembler
             return new MultiplyLowWordInstruction(instructionPointer, rd, ra, rb, false, false);
         }
 
-        private IGekkoInstruction ParseInstructionDIVW(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionDIVW(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "divw");
             var rd = ParseRegister(parameters[0]);
@@ -185,7 +203,7 @@ namespace GekkoAssembler
             return new DivideWordInstruction(instructionPointer, rd, ra, rb, false, false);
         }
 
-        private IGekkoInstruction ParseInstructionSTWU(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionSTWU(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "stwu");
             var rs = ParseRegister(parameters[0]);
@@ -194,7 +212,7 @@ namespace GekkoAssembler
             return new StoreWordWithUpdateInstruction(instructionPointer, rs, offset, ra);
         }
 
-        private IGekkoInstruction ParseInstructionSTW(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionSTW(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "stw");
             var rs = ParseRegister(parameters[0]);
@@ -203,14 +221,14 @@ namespace GekkoAssembler
             return new StoreWordInstruction(instructionPointer, rs, offset, ra);
         }
 
-        private IGekkoInstruction ParseInstructionMFLR(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionMFLR(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "mflr");
             var rd = ParseRegister(parameters[0]);
             return new MoveFromLinkRegisterInstruction(instructionPointer, rd);
         }
 
-        private IGekkoInstruction ParseInstructionMFSPR(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionMFSPR(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "mfspr");
             var rd = ParseRegister(parameters[0]);
@@ -218,14 +236,14 @@ namespace GekkoAssembler
             return new MoveFromSpecialPurposeRegisterInstruction(instructionPointer, rd, spr);
         }
 
-        private IGekkoInstruction ParseInstructionMTLR(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionMTLR(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "mtlr");
             var rs = ParseRegister(parameters[0]);
             return new MoveToLinkRegisterInstruction(instructionPointer, rs);
         }
 
-        private IGekkoInstruction ParseInstructionMTSPR(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionMTSPR(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "mtspr");
             var spr = ParseIntegerLiteral(parameters[0]);
@@ -233,7 +251,7 @@ namespace GekkoAssembler
             return new MoveToSpecialPurposeRegisterInstruction(instructionPointer, spr, rs);
         }
 
-        private IGekkoInstruction ParseInstructionLWZ(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionLWZ(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "lwz");
             var rd = ParseRegister(parameters[0]);
@@ -242,7 +260,7 @@ namespace GekkoAssembler
             return new LoadWordAndZeroInstruction(instructionPointer, rd, ra, offset);
         }
 
-        private IGekkoInstruction ParseInstructionLHZ(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionLHZ(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "lhz");
             var rd = ParseRegister(parameters[0]);
@@ -251,7 +269,7 @@ namespace GekkoAssembler
             return new LoadHalfWordAndZeroInstruction(instructionPointer, rd, ra, offset);
         }
 
-        private IGekkoInstruction ParseInstructionLBZ(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionLBZ(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "lbz");
             var rd = ParseRegister(parameters[0]);
@@ -260,42 +278,42 @@ namespace GekkoAssembler
             return new LoadByteAndZeroInstruction(instructionPointer, rd, ra, offset);
         }
 
-        private IGekkoInstruction ParseInstructionBLA(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionBLA(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "bla");
             var targetAddress = ParseIntegerLiteral(parameters[0]);
             return new BranchInstruction(instructionPointer, targetAddress, true, true);
         }
 
-        private IGekkoInstruction ParseInstructionBA(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionBA(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "ba");
             var targetAddress = ParseIntegerLiteral(parameters[0]);
             return new BranchInstruction(instructionPointer, targetAddress, true, false);
         }
 
-        private IGekkoInstruction ParseInstructionBL(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionBL(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "bl");
             var targetAddress = ParseIntegerLiteral(parameters[0]);
             return new BranchInstruction(instructionPointer, targetAddress, false, true);
         }
 
-        private IGekkoInstruction ParseInstructionB(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionB(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "b");
             var targetAddress = ParseIntegerLiteral(parameters[0]);
             return new BranchInstruction(instructionPointer, targetAddress, false, false);
         }
 
-        private IGekkoInstruction ParseInstructionCRCLR(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionCRCLR(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "crclr");
             var crbd = ParseConditionRegister(parameters[0]);
             return new ConditionRegisterClearInstruction(instructionPointer, crbd);
         }
 
-        private IGekkoInstruction ParseInstructionCRXOR(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionCRXOR(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "crxor");
             var crbd = ParseConditionRegister(parameters[0]);
@@ -304,7 +322,7 @@ namespace GekkoAssembler
             return new ConditionRegisterXORInstruction(instructionPointer, crbd, crba, crbb);
         }
 
-        private IGekkoInstruction ParseInstructionMULLI(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionMULLI(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "mulli");
             var rd = ParseRegister(parameters[0]);
@@ -313,7 +331,7 @@ namespace GekkoAssembler
             return new MultiplyLowImmediateInstruction(instructionPointer, rd, ra, simm);
         }
 
-        private IGekkoInstruction ParseInstructionADDI(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionADDI(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "addi");
             var rd = ParseRegister(parameters[0]);
@@ -322,7 +340,7 @@ namespace GekkoAssembler
             return new AddImmediateInstruction(instructionPointer, rd, ra, simm);
         }
 
-        private IGekkoInstruction ParseInstructionLIS(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionLIS(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "lis");
             var rd = ParseRegister(parameters[0]);
@@ -330,7 +348,7 @@ namespace GekkoAssembler
             return new LoadImmediateShiftedInstruction(instructionPointer, rd, simm);
         }
 
-        private IGekkoInstruction ParseInstructionADDIS(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionADDIS(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "addis");
             var rd = ParseRegister(parameters[0]);
@@ -339,7 +357,7 @@ namespace GekkoAssembler
             return new AddImmediateShiftedInstruction(instructionPointer, rd, ra, simm);
         }
 
-        private IGekkoInstruction ParseInstructionORI(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionORI(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "ori");
             var ra = ParseRegister(parameters[0]);
@@ -375,12 +393,12 @@ namespace GekkoAssembler
             return line.Substring(op.Length).Replace(" ", "").Replace("\t", "").Replace(")","").Split(',', '(');
         }
 
-        private IGekkoInstruction ParseInstructionNOP(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionNOP(string line, int instructionPointer)
         {
             return new NoOperationInstruction(instructionPointer);
         }
 
-        private IGekkoInstruction ParseInstructionBLR(string line, int instructionPointer)
+        private GekkoInstruction ParseInstructionBLR(string line, int instructionPointer)
         {
             return new BranchToLinkRegisterInstruction(instructionPointer);
         }

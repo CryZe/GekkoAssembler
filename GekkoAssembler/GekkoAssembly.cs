@@ -4,28 +4,29 @@ namespace GekkoAssembler
 {
     public class GekkoAssembly
     {
-        public IList<IGekkoDataSection> DataSections { get; private set; }
-        public IList<IGekkoInstruction> Instructions { get; private set; }
+        public IList<IIRUnit> Units { get; private set; }
 
         public GekkoAssembly()
         {
-            DataSections = new List<IGekkoDataSection>();
-            Instructions = new List<IGekkoInstruction>();
+            Units = new List<IIRUnit>();
         }
 
-        public void Add(IGekkoDataSection dataSection)
+        public GekkoAssembly(IEnumerable<IIRUnit> units)
         {
-            DataSections.Add(dataSection);
+            Units = new List<IIRUnit>(units);
         }
 
-        public void Add(IGekkoInstruction instruction)
+        public void Add(IIRUnit unit)
         {
-            DataSections.Add(new InstructionDataSection(instruction));
+            Units.Add(unit);
         }
 
-        public string ToCheat()
+        public void Accept(IIRUnitVisitor visitor)
         {
-            return DataSections.ToCheat();
+            foreach (var unit in Units)
+            {
+                unit.Accept(visitor);
+            }
         }
     }
 }
