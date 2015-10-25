@@ -21,19 +21,19 @@ namespace GekkoAssembler.ActionReplay
 
             while ((i + 4) <= instruction.Data.Length)
             {
-                writer.WriteLine(string.Format("04{0:X6} {1:X2}{2:X2}{3:X2}{4:X2}", ((instruction.Address + i) & 0xFFFFFF), instruction.Data[i], instruction.Data[i + 1], instruction.Data[i + 2], instruction.Data[i + 3]));
+                writer.WriteLine($"{0x04 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 24 | instruction.Data[i + 1] << 16 | instruction.Data[i + 2] << 8 | instruction.Data[i + 3]:X8}");
                 i += 4;
             }
 
             if ((i + 2) <= instruction.Data.Length)
             {
-                writer.WriteLine(string.Format("02{0:X6} 0000{1:X2}{2:X2}", ((instruction.Address + i) & 0xFFFFFF), instruction.Data[i], instruction.Data[i + 1]));
+                writer.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 8 | instruction.Data[i + 1]:X8}");
                 i += 2;
             }
 
             if (i < instruction.Data.Length)
             {
-                writer.WriteLine(string.Format("00{0:X6} 000000{1:X2}", ((instruction.Address + i) & 0xFFFFFF), instruction.Data[i]));
+                writer.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i]:X8}");
             }
         }
 
@@ -45,7 +45,7 @@ namespace GekkoAssembler.ActionReplay
         public void Visit(IRUnsigned8Equal instruction)
         {
             //TODO: Differentiate between Multi Line and Single Line Activators
-            writer.WriteLine(string.Format("08{0:X6} 000000{1:X2}", (instruction.Address & 0xFFFFFF), instruction.Value));
+            writer.WriteLine($"{0x08 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
         }
     }
 }
