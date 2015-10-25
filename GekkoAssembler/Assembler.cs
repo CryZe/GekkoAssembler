@@ -33,11 +33,26 @@ namespace GekkoAssembler
         
         public IRCodeBlock AssembleAllLines(IEnumerable<string> lines)
         {
-            var units = new List<IIRUnit>();
             var instructionPointer = 0x00000000;
-            foreach (var line in lines
-                .Select(line => reduceLineToCode(line))
-                .Where(line => !string.IsNullOrWhiteSpace(line)))
+            return assembleAllLines(new Queue<string>(lines), ref instructionPointer);
+        }
+
+        private string dequeueNextLine(Queue<string> lines)
+        {
+            string line = null;
+            while (lines.Any() 
+                && string.IsNullOrWhiteSpace(line = reduceLineToCode(lines.Dequeue())))
+            { }
+
+            return line;
+        }
+
+        private IRCodeBlock assembleAllLines(Queue<string> lines, ref int instructionPointer)
+        {
+            var units = new List<IIRUnit>();
+            string line;
+
+            while ((line = dequeueNextLine(lines)) != null)
             {
                 if (line.EndsWith(":"))
                 {
