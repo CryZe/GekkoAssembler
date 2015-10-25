@@ -8,51 +8,41 @@ Assembles Gekko Assembly to an Action Replay Cheat Code.
 
 ```asm
 0x80491A60:
-; Header Stuff
-.u32 0x00000020
-.u32 0x00000070
+.u32 32 ; Console X Coordinate
+.u32 112 ; Console Y Coordinate
 
 0x80491A80:
-; More Header Stuff
-.u32 0x00000000
-.u8 1
+.u32 0x00000000 ; Console Background Color
+.u8 1 ; Console Visible
 
 0x80491A89:
-; Line 1: Stage
-.str "Stage: "
+.str "Stage: " ; Line 1 Text
 
 0x80491AC6:
-; Line 2: Room
-.u8 0xFF
-.str "Room: "
+.u8 0xFF ; Line 2 Active
+.str "Room: " ; Line 2 Text
 
 0x80491B04:
-; Line 3: Entrance
-.u8 0xFF
-.str "Entrance: "
+.u8 0xFF ; Line 3 Active
+.str "Entrance: " ; Line 3 Text
 
 0x80491B42:
-; Line 4: Layer
-.u8 0xFF
-.str "Layer: "
+.u8 0xFF ; Line 4 Active
+.str "Layer: " ; Line 4 Text
 
 0x80491BBE:
-; No Line 5
-.u8 0
+.u8 0 ; No Line 5
 
 0x803B7FF4:
-; Coordinate Format
-.str "%X, %X, %X"
-.u16 0x0000
+.str "%X, %X, %X" ; Coordinate Format
+.u16 0x0000 ; Null Terminator
 
 0x803B8002:
-; Integer Format
-.str "%d"
-.u16 0x0000
+.str "%d" ; Integer Format
+.u16 0x0000 ; Null Terminator
 
 0x8000645C:
-; Inject the function call
-bl 0x80A00000
+bl 0x80A00000 ; Inject the function call
 
 0x80A00000:
 stwu sp, -0x10 (sp)
