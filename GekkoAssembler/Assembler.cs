@@ -25,8 +25,8 @@ namespace GekkoAssembler
 
         private static string reduceLineToCode(string line)
         {
-            if (line.Contains("//"))
-                line = line.Substring(0, line.IndexOf("//"));
+            if (line.Contains(";"))
+                line = line.Substring(0, line.IndexOf(";"));
             
             return line.Trim();
         }
@@ -73,13 +73,27 @@ namespace GekkoAssembler
         {
             if (line.StartsWith("str "))
                 return ParseStringDataSection(line, instructionPointer);
-            if (line.StartsWith("byte"))
-                return ParseByteDataSection(line, instructionPointer);
+            if (line.StartsWith("u8"))
+                return ParseUnsigned8DataSection(line, instructionPointer);
             if (line.StartsWith("u16"))
                 return ParseUnsigned16DataSection(line, instructionPointer);
             if (line.StartsWith("u32"))
                 return ParseUnsigned32DataSection(line, instructionPointer);
-                
+            if (line.StartsWith("u64"))
+                return ParseUnsigned64DataSection(line, instructionPointer);
+            if (line.StartsWith("s8"))
+                return ParseSigned8DataSection(line, instructionPointer);
+            if (line.StartsWith("s16"))
+                return ParseSigned16DataSection(line, instructionPointer);
+            if (line.StartsWith("s32"))
+                return ParseSigned32DataSection(line, instructionPointer);
+            if (line.StartsWith("s64"))
+                return ParseSigned64DataSection(line, instructionPointer);
+            if (line.StartsWith("f32"))
+                return ParseFloat32DataSection(line, instructionPointer);
+            if (line.StartsWith("f64"))
+                return ParseFloat64DataSection(line, instructionPointer);
+
             return new Unsigned32DataSection(instructionPointer, 0xFFFFFFFF);
         }
         
@@ -95,11 +109,11 @@ namespace GekkoAssembler
             return literal.Substring(1, literal.Length - 2);
         }
         
-        private GekkoDataSection ParseByteDataSection(string line, int instructionPointer)
+        private GekkoDataSection ParseUnsigned8DataSection(string line, int instructionPointer)
         {
-            var parameters = ParseParameters(line, "byte");
+            var parameters = ParseParameters(line, "u8");
             var value = (byte)ParseIntegerLiteral(parameters[0]);
-            return new ByteDataSection(instructionPointer, value);
+            return new Unsigned8DataSection(instructionPointer, value);
         }
         
         private GekkoDataSection ParseUnsigned16DataSection(string line, int instructionPointer)
@@ -114,6 +128,55 @@ namespace GekkoAssembler
             var parameters = ParseParameters(line, "u32");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
             return new Unsigned32DataSection(instructionPointer, value);
+        }
+
+        private GekkoDataSection ParseUnsigned64DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u64");
+            var value = (ulong)ParseInteger64Literal(parameters[0]);
+            return new Unsigned64DataSection(instructionPointer, value);
+        }
+
+        private GekkoDataSection ParseSigned8DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "s8");
+            var value = (sbyte)ParseIntegerLiteral(parameters[0]);
+            return new Signed8DataSection(instructionPointer, value);
+        }
+
+        private GekkoDataSection ParseSigned16DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "s16");
+            var value = (short)ParseIntegerLiteral(parameters[0]);
+            return new Signed16DataSection(instructionPointer, value);
+        }
+
+        private GekkoDataSection ParseSigned32DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "s32");
+            var value = ParseIntegerLiteral(parameters[0]);
+            return new Signed32DataSection(instructionPointer, value);
+        }
+
+        private GekkoDataSection ParseSigned64DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "s64");
+            var value = ParseInteger64Literal(parameters[0]);
+            return new Signed64DataSection(instructionPointer, value);
+        }
+
+        private GekkoDataSection ParseFloat32DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "f32");
+            var value = (float)ParseFloatLiteral(parameters[0]);
+            return new Float32DataSection(instructionPointer, value);
+        }
+
+        private GekkoDataSection ParseFloat64DataSection(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "f64");
+            var value = ParseFloatLiteral(parameters[0]);
+            return new Float64DataSection(instructionPointer, value);
         }
 
         private GekkoInstruction ParseInstruction(string line, int instructionPointer)
@@ -415,7 +478,7 @@ namespace GekkoAssembler
             return ParseIntegerLiteral(address);
         }
 
-        private int ParseIntegerLiteral(string literal)
+        private long ParseInteger64Literal(string literal)
         {
             if (literal.Contains("0x"))
             {
@@ -424,12 +487,22 @@ namespace GekkoAssembler
                 var negative = literal.StartsWith("-");
                 if (negative)
                     literal = literal.Substring(1);
-                return (negative ? -1 : 1) * int.Parse(literal, NumberStyles.HexNumber);
+                return (negative ? -1 : 1) * long.Parse(literal, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
             }
             else
             {
-                return int.Parse(literal, NumberStyles.Integer);
+                return long.Parse(literal, NumberStyles.Integer, CultureInfo.InvariantCulture);
             }
+        }
+
+        private int ParseIntegerLiteral(string literal)
+        {
+            return (int)ParseInteger64Literal(literal);
+        }
+
+        private double ParseFloatLiteral(string literal)
+        {
+            return double.Parse(literal, CultureInfo.InvariantCulture);
         }
     }
 }

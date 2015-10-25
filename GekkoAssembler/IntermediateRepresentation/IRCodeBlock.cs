@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GekkoAssembler.IntermediateRepresentation
 {
     public class IRCodeBlock : IIRUnit
     {
-        public IList<IIRUnit> Units { get; }
+        public IEnumerable<IIRUnit> Units { get; }
 
         public IRCodeBlock(IEnumerable<IIRUnit> units)
         {

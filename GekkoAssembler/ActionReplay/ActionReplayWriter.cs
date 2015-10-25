@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using GekkoAssembler.IntermediateRepresentation;
 
 namespace GekkoAssembler.ActionReplay
@@ -46,6 +45,8 @@ namespace GekkoAssembler.ActionReplay
         {
             //TODO: Differentiate between Multi Line and Single Line Activators
             writer.WriteLine($"{0x08 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
+
+            instruction.ConditionalCode.Accept(this);
         }
     }
 }

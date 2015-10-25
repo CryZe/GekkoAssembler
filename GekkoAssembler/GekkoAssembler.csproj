@@ -42,6 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionReplay\ActionReplayWriter.cs" />
+    <Compile Include="DataSections\Float64DataSection.cs" />
+    <Compile Include="DataSections\Float32DataSection.cs" />
+    <Compile Include="DataSections\Unsigned64DataSection.cs" />
+    <Compile Include="DataSections\Signed64DataSection.cs" />
+    <Compile Include="DataSections\Signed32DataSection.cs" />
+    <Compile Include="DataSections\Signed8DataSection.cs" />
+    <Compile Include="DataSections\Signed16DataSection.cs" />
     <Compile Include="IntermediateRepresentation\IIRUnit.cs" />
     <Compile Include="IntermediateRepresentation\IIRUnitVisitor.cs" />
     <Compile Include="IntermediateRepresentation\IRCodeBlock.cs" />
@@ -58,7 +65,7 @@
     <Compile Include="Assembler.cs" />
     <Compile Include="GekkoInstructions\BranchInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchToLinkRegisterInstruction.cs" />
-    <Compile Include="DataSections\ByteDataSection.cs" />
+    <Compile Include="DataSections\Unsigned8DataSection.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterClearInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterXORInstruction.cs" />
     <Compile Include="EndianExtensions.cs" />

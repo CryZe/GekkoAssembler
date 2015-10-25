@@ -1,12 +1,14 @@
+using System;
+
 namespace GekkoAssembler.DataSections
 {
-    public class ByteDataSection : GekkoDataSection
+    public class Unsigned8DataSection : GekkoDataSection
     {
         public override int Address { get; }
-        public override byte[] Data => new [] { Value };
+        public override byte[] Data => BitConverter.GetBytes(Value);
         public byte Value { get; }
 
-        public ByteDataSection(int address, byte value)
+        public Unsigned8DataSection(int address, byte value)
         {
             Address = address;
             Value = value;

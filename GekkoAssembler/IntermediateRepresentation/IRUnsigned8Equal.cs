@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GekkoAssembler.IntermediateRepresentation
+﻿namespace GekkoAssembler.IntermediateRepresentation
 {
     public class IRUnsigned8Equal : IIRUnit
     {
