@@ -96,6 +96,8 @@ namespace GekkoAssembler
         {
             if (line.StartsWith("u8equal "))
                 return ParseUnsigned8Equal(line, instructionPointer, lines);
+            if (line.StartsWith("u16equal "))
+                return ParseUnsigned16Equal(line, instructionPointer, lines);
 
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
         }
@@ -106,6 +108,14 @@ namespace GekkoAssembler
             var value = (byte)ParseIntegerLiteral(parameters[0]);
             var block = assembleAllLines(lines, instructionPointer);
             return new IRUnsigned8Equal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned16Equal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u16equal");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned16Equal(instructionPointer, value, block);
         }
 
         private GekkoDataSection ParseDataSection(string line, int instructionPointer)

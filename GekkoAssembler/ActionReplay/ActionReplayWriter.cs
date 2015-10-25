@@ -44,10 +44,47 @@ namespace GekkoAssembler.ActionReplay
 
         public void Visit(IRUnsigned8Equal instruction)
         {
+            WriteActivator(instruction.ConditionalCode, 0x08, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned16Equal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x0A, instruction.Address, instruction.Value);
+        }
+
+        private void WriteActivator(IRCodeBlock block, int type, int address, int value)
+        {
+            var lines = GetCodeBlockLines(block);
+
+            if (lines.Count == 0)
+            { }
+            else if (lines.Count == 1)
+            {
+                writer.WriteLine($"{type << 24 | address & 0x1FFFFFF:X8} {value:X8}");
+                foreach (var line in lines)
+                    writer.WriteLine(line);
+            }
+            else if (lines.Count == 2)
+            {
+                writer.WriteLine($"{(type | 0x40) << 24 | address & 0x1FFFFFF:X8} {value:X8}");
+                foreach (var line in lines)
+                    writer.WriteLine(line);
+            }
+            else
+            {
+                writer.WriteLine($"{(type | 0x80) << 24 | address & 0x1FFFFFF:X8} {value:X8}");
+                foreach (var line in lines)
+                    writer.WriteLine(line);
+                writer.WriteLine("00000000 40000000");
+            }
+        }
+
+        private static List<string> GetCodeBlockLines(IRCodeBlock block)
+        {
             using (var stream = new MemoryStream())
             {
                 var innerWriter = new ActionReplayWriter(stream);
-                instruction.ConditionalCode.Accept(innerWriter);
+                block.Accept(innerWriter);
                 stream.Seek(0, SeekOrigin.Begin);
                 var reader = new StreamReader(stream);
 
@@ -56,27 +93,7 @@ namespace GekkoAssembler.ActionReplay
                 while ((_line = reader.ReadLine()) != null)
                     lines.Add(_line);
 
-                if (lines.Count == 0)
-                { }
-                else if (lines.Count == 1)
-                {
-                    writer.WriteLine($"{0x08 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
-                    foreach (var line in lines)
-                        writer.WriteLine(line);
-                }
-                else if (lines.Count == 2)
-                {
-                    writer.WriteLine($"{0x48 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
-                    foreach (var line in lines)
-                        writer.WriteLine(line);
-                }
-                else
-                {
-                    writer.WriteLine($"{0x88 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
-                    foreach (var line in lines)
-                        writer.WriteLine(line);
-                    writer.WriteLine("00000000 40000000");
-                }
+                return lines;
             }
         }
     }
