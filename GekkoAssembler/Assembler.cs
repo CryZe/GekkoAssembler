@@ -34,7 +34,7 @@ namespace GekkoAssembler
         public IRCodeBlock AssembleAllLines(IEnumerable<string> lines)
         {
             var instructionPointer = 0x00000000;
-            return assembleAllLines(new Queue<string>(lines), ref instructionPointer);
+            return assembleAllLines(new Queue<string>(lines), instructionPointer);
         }
 
         private string dequeueNextLine(Queue<string> lines)
@@ -47,7 +47,7 @@ namespace GekkoAssembler
             return line;
         }
 
-        private IRCodeBlock assembleAllLines(Queue<string> lines, ref int instructionPointer)
+        private IRCodeBlock assembleAllLines(Queue<string> lines, int instructionPointer)
         {
             var units = new List<IIRUnit>();
             string line;
@@ -57,6 +57,14 @@ namespace GekkoAssembler
                 if (line.EndsWith(":"))
                 {
                     instructionPointer = ParseInstructionPointerLabel(line);
+                }
+                else if (line.StartsWith("!"))
+                {
+                    if (line == "!end")
+                        break;
+
+                    var specialInstruction = ParseSpecialInstruction(line.Substring(1), instructionPointer, lines);
+                    units.Add(specialInstruction);
                 }
                 else if (line.StartsWith("."))
                 {
@@ -84,32 +92,48 @@ namespace GekkoAssembler
             return block;
         }
 
+        private IIRUnit ParseSpecialInstruction(string line, int instructionPointer, Queue<string> lines)
+        {
+            if (line.StartsWith("u8equal "))
+                return ParseUnsigned8Equal(line, instructionPointer, lines);
+
+            throw new ArgumentException($"The specified special instruction { line } is not supported.");
+        }
+
+        private IIRUnit ParseUnsigned8Equal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u8equal");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned8Equal(instructionPointer, value, block);
+        }
+
         private GekkoDataSection ParseDataSection(string line, int instructionPointer)
         {
             if (line.StartsWith("str "))
                 return ParseStringDataSection(line, instructionPointer);
-            if (line.StartsWith("u8"))
+            if (line.StartsWith("u8 "))
                 return ParseUnsigned8DataSection(line, instructionPointer);
-            if (line.StartsWith("u16"))
+            if (line.StartsWith("u16 "))
                 return ParseUnsigned16DataSection(line, instructionPointer);
-            if (line.StartsWith("u32"))
+            if (line.StartsWith("u32 "))
                 return ParseUnsigned32DataSection(line, instructionPointer);
-            if (line.StartsWith("u64"))
+            if (line.StartsWith("u64 "))
                 return ParseUnsigned64DataSection(line, instructionPointer);
-            if (line.StartsWith("s8"))
+            if (line.StartsWith("s8 "))
                 return ParseSigned8DataSection(line, instructionPointer);
-            if (line.StartsWith("s16"))
+            if (line.StartsWith("s16 "))
                 return ParseSigned16DataSection(line, instructionPointer);
-            if (line.StartsWith("s32"))
+            if (line.StartsWith("s32 "))
                 return ParseSigned32DataSection(line, instructionPointer);
-            if (line.StartsWith("s64"))
+            if (line.StartsWith("s64 "))
                 return ParseSigned64DataSection(line, instructionPointer);
-            if (line.StartsWith("f32"))
+            if (line.StartsWith("f32 "))
                 return ParseFloat32DataSection(line, instructionPointer);
-            if (line.StartsWith("f64"))
+            if (line.StartsWith("f64 "))
                 return ParseFloat64DataSection(line, instructionPointer);
 
-            return new Unsigned32DataSection(instructionPointer, 0xFFFFFFFF);
+            throw new ArgumentException($"The specified data section { line } is not supported.");
         }
         
         private GekkoDataSection ParseStringDataSection(string line, int instructionPointer)
@@ -248,7 +272,8 @@ namespace GekkoAssembler
                 return ParseInstructionMTSPR(line, instructionPointer);
             if (line.StartsWith("nop"))
                 return ParseInstructionNOP(line, instructionPointer);
-            return new NoOperationInstruction(instructionPointer);
+
+            throw new ArgumentException($"The specified instruction { line } is not supported.");
         }
 
         private GekkoInstruction ParseInstructionSUB(string line, int instructionPointer)
