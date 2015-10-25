@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using GekkoAssembler.DataSections;
+using GekkoAssembler.GekkoInstructions;
+using GekkoAssembler.Optimizers;
 
 namespace GekkoAssembler
 {

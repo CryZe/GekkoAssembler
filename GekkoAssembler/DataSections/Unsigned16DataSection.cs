@@ -1,6 +1,6 @@
 using System;
 
-namespace GekkoAssembler
+namespace GekkoAssembler.DataSections
 {
     public class Unsigned16DataSection : GekkoDataSection
     {

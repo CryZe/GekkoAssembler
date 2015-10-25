@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GekkoAssembler.IntermediateRepresentation;
 
 namespace GekkoAssembler
 {

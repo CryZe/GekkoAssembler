@@ -1,6 +1,7 @@
 ﻿using System;
+using GekkoAssembler.IntermediateRepresentation;
 
-namespace GekkoAssembler
+namespace GekkoAssembler.GekkoInstructions
 {
     public abstract class GekkoInstruction : IRWriteData
     {

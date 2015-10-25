@@ -62,8 +62,7 @@
     <Compile Include="EndianExtensions.cs" />
     <Compile Include="GekkoAssembly.cs" />
     <Compile Include="DataSections\GekkoDataSection.cs" />
-    <Compile Include="GekkoInstruction.cs" />
-    <Compile Include="DataSections\InstructionDataSection.cs" />
+    <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadWordAndZeroInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadHalfWordAndZeroInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadByteAndZeroInstruction.cs" />

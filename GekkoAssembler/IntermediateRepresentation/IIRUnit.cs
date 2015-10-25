@@ -1,4 +1,4 @@
-﻿namespace GekkoAssembler
+﻿namespace GekkoAssembler.IntermediateRepresentation
 {
     public interface IIRUnit
     {

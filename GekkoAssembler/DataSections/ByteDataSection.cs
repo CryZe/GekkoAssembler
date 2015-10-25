@@ -1,4 +1,4 @@
-namespace GekkoAssembler
+namespace GekkoAssembler.DataSections
 {
     public class ByteDataSection : GekkoDataSection
     {

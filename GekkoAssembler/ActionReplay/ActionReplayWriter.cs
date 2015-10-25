@@ -1,6 +1,7 @@
 ﻿using System.IO;
+using GekkoAssembler.IntermediateRepresentation;
 
-namespace GekkoAssembler
+namespace GekkoAssembler.ActionReplay
 {
     public class ActionReplayWriter : IIRUnitVisitor
     {

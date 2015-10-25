@@ -1,4 +1,4 @@
-﻿namespace GekkoAssembler
+﻿namespace GekkoAssembler.IntermediateRepresentation
 {
     public abstract class IRWriteData : IIRUnit
     {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using GekkoAssembler.IntermediateRepresentation;
 
-namespace GekkoAssembler
+namespace GekkoAssembler.Optimizers
 {
     public class IRCombinedWriteData : IRWriteData
     {

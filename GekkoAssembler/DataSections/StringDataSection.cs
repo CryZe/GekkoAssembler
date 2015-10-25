@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace GekkoAssembler
+namespace GekkoAssembler.DataSections
 {
     public class StringDataSection : GekkoDataSection
     {

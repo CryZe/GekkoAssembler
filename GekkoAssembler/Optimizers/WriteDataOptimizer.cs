@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using GekkoAssembler.IntermediateRepresentation;
 
-namespace GekkoAssembler
+namespace GekkoAssembler.Optimizers
 {
     public class WriteDataOptimizer : IOptimizer
     {

@@ -1,4 +1,4 @@
-﻿namespace GekkoAssembler
+﻿namespace GekkoAssembler.Optimizers
 {
     public interface IOptimizer
     {

@@ -1,4 +1,4 @@
-﻿namespace GekkoAssembler
+﻿namespace GekkoAssembler.GekkoInstructions
 {
     public class MoveToLinkRegisterInstruction : MoveToSpecialPurposeRegisterInstruction
     {

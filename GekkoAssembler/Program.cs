@@ -1,4 +1,5 @@
 ﻿using System;
+using GekkoAssembler.ActionReplay;
 using static System.IO.File;
 
 namespace GekkoAssembler
