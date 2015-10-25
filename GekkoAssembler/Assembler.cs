@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using GekkoAssembler.DataSections;
 using GekkoAssembler.GekkoInstructions;
+using GekkoAssembler.IntermediateRepresentation;
 using GekkoAssembler.Optimizers;
 
 namespace GekkoAssembler
@@ -30,9 +31,9 @@ namespace GekkoAssembler
             return line.Trim();
         }
         
-        public GekkoAssembly AssembleAllLines(IEnumerable<string> lines)
+        public IRCodeBlock AssembleAllLines(IEnumerable<string> lines)
         {
-            var gekkoAssembly = new GekkoAssembly();
+            var units = new List<IIRUnit>();
             var instructionPointer = 0x00000000;
             foreach (var line in lines
                 .Select(line => reduceLineToCode(line))
@@ -45,7 +46,7 @@ namespace GekkoAssembler
                 else if (line.StartsWith("."))
                 {
                     var dataSection = ParseDataSection(line.Substring(1), instructionPointer);
-                    gekkoAssembly.Add(dataSection);
+                    units.Add(dataSection);
                     instructionPointer += dataSection.Data.Length;
                 }
                 else
@@ -53,17 +54,19 @@ namespace GekkoAssembler
                     //Align the instruction
                     instructionPointer = (instructionPointer + 3) & ~3;
                     var instruction = ParseInstruction(line, instructionPointer);
-                    gekkoAssembly.Add(instruction);
+                    units.Add(instruction);
                     instructionPointer += 4;
                 }
             }
 
+            var block = new IRCodeBlock(units);
+
             foreach (var optimizer in Optimizers)
             {
-                gekkoAssembly = optimizer.Optimize(gekkoAssembly);
+                block = optimizer.Optimize(block);
             }
 
-            return gekkoAssembly;
+            return block;
         }
 
         private GekkoDataSection ParseDataSection(string line, int instructionPointer)

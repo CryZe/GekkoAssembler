@@ -1,7 +1,9 @@
-﻿namespace GekkoAssembler.Optimizers
+﻿using GekkoAssembler.IntermediateRepresentation;
+
+namespace GekkoAssembler.Optimizers
 {
     public interface IOptimizer
     {
-        GekkoAssembly Optimize(GekkoAssembly assembly);
+        IRCodeBlock Optimize(IRCodeBlock block);
     }
 }

@@ -1,13 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using GekkoAssembler.IntermediateRepresentation;
 
 namespace GekkoAssembler.Optimizers
 {
     public class WriteDataOptimizer : IOptimizer
     {
-        public GekkoAssembly Optimize(GekkoAssembly assembly)
+        public IRCodeBlock Optimize(IRCodeBlock block)
         {
-            var units = assembly.Units;
+            var units = block.Units;
 
             var replaced = true;
             while (replaced)
@@ -37,7 +38,7 @@ namespace GekkoAssembler.Optimizers
                 }
             }
 
-            return new GekkoAssembly(units);
+            return new IRCodeBlock(units.Select(x => x is IRCodeBlock ? Optimize(x as IRCodeBlock) : x));
         }
     }
 }

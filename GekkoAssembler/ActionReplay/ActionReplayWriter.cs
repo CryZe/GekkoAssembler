@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using GekkoAssembler.IntermediateRepresentation;
 
 namespace GekkoAssembler.ActionReplay
@@ -34,6 +35,17 @@ namespace GekkoAssembler.ActionReplay
             {
                 writer.WriteLine(string.Format("00{0:X6} 000000{1:X2}", ((instruction.Address + i) & 0xFFFFFF), instruction.Data[i]));
             }
+        }
+
+        public void Visit(IRCodeBlock block)
+        {
+            block.Accept(this);
+        }
+
+        public void Visit(IRUnsigned8Equal instruction)
+        {
+            //TODO: Differentiate between Multi Line and Single Line Activators
+            writer.WriteLine(string.Format("08{0:X6} 000000{1:X2}", (instruction.Address & 0xFFFFFF), instruction.Value));
         }
     }
 }
