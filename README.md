@@ -1,6 +1,6 @@
 # GekkoAssembler
 
-[![Build Status](https://travis-ci.org/CryZe/GekkoAssembler.svg)](https://travis-ci.org/CryZe/GekkoAssembler)
+[![Build Status](https://travis-ci.org/CryZe/GekkoAssembler.svg)](https://travis-ci.org/CryZe/GekkoAssembler) [![Build status](https://ci.appveyor.com/api/projects/status/gbs2ur6lfolmipxn?svg=true)](https://ci.appveyor.com/project/CryZe/gekkoassembler)
 
 Assembles Gekko Assembly to an Action Replay Cheat Code.
 
