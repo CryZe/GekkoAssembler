@@ -10,5 +10,6 @@
         void Visit(IRSigned8Equal instruction);
         void Visit(IRSigned16Equal instruction);
         void Visit(IRSigned32Equal instruction);
+        void Visit(IRFloat32Equal instruction);
     }
 }

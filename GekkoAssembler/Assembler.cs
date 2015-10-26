@@ -106,6 +106,8 @@ namespace GekkoAssembler
                 return ParseSigned16Equal(line, instructionPointer, lines);
             if (line.StartsWith("s32equal "))
                 return ParseSigned32Equal(line, instructionPointer, lines);
+            if (line.StartsWith("f32equal "))
+                return ParseFloat32Equal(line, instructionPointer, lines);
 
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
         }
@@ -153,9 +155,17 @@ namespace GekkoAssembler
         private IIRUnit ParseSigned32Equal(string line, int instructionPointer, Queue<string> lines)
         {
             var parameters = ParseParameters(line, "s32equal");
-            var value = (int)ParseIntegerLiteral(parameters[0]);
+            var value = ParseIntegerLiteral(parameters[0]);
             var block = assembleAllLines(lines, instructionPointer);
             return new IRSigned32Equal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseFloat32Equal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "f32equal");
+            var value = (float)ParseFloatLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRFloat32Equal(instructionPointer, value, block);
         }
 
         private GekkoDataSection ParseDataSection(string line, int instructionPointer)

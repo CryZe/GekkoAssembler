@@ -73,6 +73,11 @@ namespace GekkoAssembler.ActionReplay
             WriteActivator(instruction.ConditionalCode, 0x0C, instruction.Address, instruction.Value);
         }
 
+        public void Visit(IRFloat32Equal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x0C, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+        }
+
         private void WriteActivator(IRCodeBlock block, int type, int address, int value)
         {
             var lines = GetCodeBlockLines(block);
