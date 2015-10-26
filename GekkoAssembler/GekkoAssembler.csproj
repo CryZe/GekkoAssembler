@@ -52,7 +52,11 @@
     <Compile Include="IntermediateRepresentation\IIRUnit.cs" />
     <Compile Include="IntermediateRepresentation\IIRUnitVisitor.cs" />
     <Compile Include="IntermediateRepresentation\IRCodeBlock.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned16Equal.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned32Equal.cs" />
+    <Compile Include="IntermediateRepresentation\IRUnsigned32Equal.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned16Equal.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned8Equal.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned8Equal.cs" />
     <Compile Include="Optimizers\IOptimizer.cs" />
     <Compile Include="Optimizers\IRCombinedWriteData.cs" />

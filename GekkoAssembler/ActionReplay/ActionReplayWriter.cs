@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using GekkoAssembler.IntermediateRepresentation;
 
@@ -50,6 +51,26 @@ namespace GekkoAssembler.ActionReplay
         public void Visit(IRUnsigned16Equal instruction)
         {
             WriteActivator(instruction.ConditionalCode, 0x0A, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned32Equal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x0C, instruction.Address, (int)instruction.Value);
+        }
+
+        public void Visit(IRSigned8Equal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x08, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned16Equal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x0A, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned32Equal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x0C, instruction.Address, instruction.Value);
         }
 
         private void WriteActivator(IRCodeBlock block, int type, int address, int value)

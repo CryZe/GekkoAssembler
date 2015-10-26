@@ -98,6 +98,14 @@ namespace GekkoAssembler
                 return ParseUnsigned8Equal(line, instructionPointer, lines);
             if (line.StartsWith("u16equal "))
                 return ParseUnsigned16Equal(line, instructionPointer, lines);
+            if (line.StartsWith("u32equal "))
+                return ParseUnsigned32Equal(line, instructionPointer, lines);
+            if (line.StartsWith("s8equal "))
+                return ParseSigned8Equal(line, instructionPointer, lines);
+            if (line.StartsWith("s16equal "))
+                return ParseSigned16Equal(line, instructionPointer, lines);
+            if (line.StartsWith("s32equal "))
+                return ParseSigned32Equal(line, instructionPointer, lines);
 
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
         }
@@ -116,6 +124,38 @@ namespace GekkoAssembler
             var value = (ushort)ParseIntegerLiteral(parameters[0]);
             var block = assembleAllLines(lines, instructionPointer);
             return new IRUnsigned16Equal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned32Equal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u32equal");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned32Equal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned8Equal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s8equal");
+            var value = (sbyte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned8Equal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned16Equal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s16equal");
+            var value = (short)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned16Equal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned32Equal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s32equal");
+            var value = (int)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned32Equal(instructionPointer, value, block);
         }
 
         private GekkoDataSection ParseDataSection(string line, int instructionPointer)
