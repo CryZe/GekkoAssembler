@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GekkoAssembler.ActionReplay;
 using NUnit.Framework;
 
@@ -68,6 +65,16 @@ namespace GekkoAssembler.Tests
             var input = ActionReplayResources.ShowStageInformationInput;
             var output = ActionReplayResources.ShowStageInformationOutput;
             var message = "Show Stage Information wasn't converted properly.";
+
+            Test(input, output, message);
+        }
+
+        [Test]
+        public void TestShowIGT()
+        {
+            var input = ActionReplayResources.ShowIGTInput;
+            var output = ActionReplayResources.ShowIGTOutput;
+            var message = "Show In-Game Timer wasn't converted properly.";
 
             Test(input, output, message);
         }

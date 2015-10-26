@@ -111,6 +111,82 @@ namespace GekkoAssembler.Tests {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 0x8000645C:
+        ///; Inject the function call
+        ///bl 0x80A00000
+        ///
+        ///0x80A00000:
+        ///stwu sp, -0x10 (sp)
+        ///mflr r0
+        ///stw r0, 0x14 (sp)	
+        ///
+        ///lis r4, 0x803B
+        ///addi r4, r4, 0x7260
+        ///addi r4, r4, 0x1000
+        ///lwz r3, 0x0 (r4)
+        ///addi r3, r3, 1
+        ///stw r3, 0x0 (r4)
+        ///addi r4, r0, 30
+        ///divw r3, r3, r4
+        ///addi r6, r0, 60
+        ///divw r8, r3, r6
+        ///mullw r4, r8, r6
+        ///sub r7, r3, r4
+        ///divw r5, r8, r6
+        ///mullw r3, r5, r6
+        ///sub r6, r8, r3
+        ///lis r3, 0x8049
+        ///addi r3, r3, 0x1A89
+        ///lis r4, 0x80A1
+        ///addi r4, r4, 0x0020
+        ///crclr crb6		
+        ///bl 0x80329308
+        ///
+        ///lwz r0, 0x14 (sp)	
+        ///m [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string ShowIGTInput {
+            get {
+                return ResourceManager.GetString("ShowIGTInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 0400645C 489F9BA5
+        ///04A00000 9421FFF0
+        ///04A00004 7C0802A6
+        ///04A00008 90010014
+        ///04A0000C 3C80803B
+        ///04A00010 38847260
+        ///04A00014 38841000
+        ///04A00018 80640000
+        ///04A0001C 38630001
+        ///04A00020 90640000
+        ///04A00024 3880001E
+        ///04A00028 7C6323D6
+        ///04A0002C 38C0003C
+        ///04A00030 7D0333D6
+        ///04A00034 7C8831D6
+        ///04A00038 7CE41850
+        ///04A0003C 7CA833D6
+        ///04A00040 7C6531D6
+        ///04A00044 7CC34050
+        ///04A00048 3C608049
+        ///04A0004C 38631A89
+        ///04A00050 3C8080A1
+        ///04A00054 38840020
+        ///04A00058 4CC63182
+        ///04A0005C 4B9292AD
+        ///04A00060 80010014
+        ///04A00064 7C0803A6        /// [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string ShowIGTOutput {
+            get {
+                return ResourceManager.GetString("ShowIGTOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die 0x80491A60:
         ///.u32 32 ; Console X Coordinate
         ///.u32 112 ; Console Y Coordinate
