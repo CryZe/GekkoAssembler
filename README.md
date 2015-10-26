@@ -4,8 +4,9 @@
 
 Assembles Gekko Assembly to an Action Replay Cheat Code.
 
-## Example
+## Examples
 
+### Usage of CPU Instructions
 ```asm
 0x80491A60:
 .u32 32 ; Console X Coordinate
@@ -115,4 +116,32 @@ lwz r0, 0x14 (sp)
 mtlr r0
 addi sp, sp, 16
 blr
+```
+
+### Usage of Action Replay Instructions
+```asm
+; R + D-Pad Right to Load Earth Temple
+0x803E0D2A:
+!u16equal 0x0022 ; R + D-Pad Right
+	0x803B8742:
+	.u8 0x28 ; Has Medli on Boat
+	0x803B8755:
+	.u8 0x20 ; Medli in Earth Temple
+	0x803B8759:
+	.u8 1 ; Animation Set 2
+	.u8 0x4 ; Medli in Earth Temple Entrance
+	0x803B811B:
+	.u8 16 ; Max Magic
+	.u8 16 ; Magic
+	0x803B814A:
+	.u8 0x34 ; Has Deku Leaf
+	0x803BD248:
+	.str "M_Dai" ; Stage
+	.u8 0 ; Null Terminator
+	0x803BD250:
+	.u16 0 ; Entrance
+	.u8 0 ; Room
+	.s8 -1 ; Layer Override
+	.u8 1 ; Enable Warp
+!end
 ```
