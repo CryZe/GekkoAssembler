@@ -78,5 +78,15 @@ namespace GekkoAssembler.Tests
 
             Test(input, output, message);
         }
+
+        [Test(Description = "Write Pattern Optimizer")]
+        public void TestWritePatternOptimizer()
+        {
+            var input = ActionReplayResources.WritePatternOptimizerInput;
+            var output = ActionReplayResources.WritePatternOptimizerOutput;
+            var message = "The Write Pattern Optimizer failed to optimize the Write Patterns properly.";
+
+            Test(input, output, message);
+        }
     }
 }

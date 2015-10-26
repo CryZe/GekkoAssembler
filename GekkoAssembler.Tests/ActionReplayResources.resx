@@ -428,4 +428,20 @@ blr</value>
     <value>0A3E0D2E 00000004
 003BD3A3 00000001</value>
   </data>
+  <data name="WritePatternOptimizerInput" xml:space="preserve">
+    <value>0x80123456:
+.str "LLLLL"
+.u32 0xABCDABCD
+.u16 0xABCD
+.u8 0xAB
+.u8 0xCE
+.u32 0x12349999
+.u8 0x99</value>
+  </data>
+  <data name="WritePatternOptimizerOutput" xml:space="preserve">
+    <value>00123456 0000054C
+0212345B 0003ABCD
+04123461 ABCE1234
+00123465 00000399</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GekkoAssembler.IntermediateRepresentation;
 
 namespace GekkoAssembler.ActionReplay
@@ -20,13 +21,49 @@ namespace GekkoAssembler.ActionReplay
         {
             var i = 0;
 
-            while ((i + 4) <= instruction.Data.Length)
+            while (i + 4 <= instruction.Data.Length)
             {
+                if (i + 5 <= instruction.Data.Length)
+                {
+                    //Check for reoccuring single byte patterns
+                    var valueI = instruction.Data[i];
+
+                    var patternCount = instruction.Data.Skip(i + 1).TakeWhile(x => x == valueI).Count() + 1;
+
+                    if (patternCount > 4)
+                    {
+                        //Single Byte Pattern of more than 4 bytes found
+                        writer.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount:X6}{valueI:X2}");
+                        i += patternCount;
+                        continue;
+                    }
+
+                    //Check for reoccuring two byte patterns
+                    var valueI2 = instruction.Data[i + 1];
+                    var patternCountI1 = instruction.Data.Skip(i + 2).Where((x, id) => id % 2 == 0).TakeWhile(x => x == valueI).Count() + 1;
+                    var patternCountI2 = instruction.Data.Skip(i + 2).Where((x, id) => id % 2 == 1).TakeWhile(x => x == valueI2).Count() + 1;
+                    patternCount = Math.Min(patternCountI1, patternCountI2);
+
+                    if (patternCount > 2)
+                    {
+                        writer.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount:X4}{valueI << 8 | valueI2:X4}");
+                        i += 2 * patternCount;
+                        continue;
+                    }
+                }
+
                 writer.WriteLine($"{0x04 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 24 | instruction.Data[i + 1] << 16 | instruction.Data[i + 2] << 8 | instruction.Data[i + 3]:X8}");
                 i += 4;
             }
 
-            if ((i + 2) <= instruction.Data.Length)
+            if (i + 3 <= instruction.Data.Length && instruction.Data[i] == instruction.Data[i + 1] && instruction.Data[i] == instruction.Data[i + 2])
+            {
+                //3 times the same byte can be optimized into a single write
+                writer.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} 000003{instruction.Data[i]:X2}");
+                i += 3;
+            }
+
+            if (i + 2 <= instruction.Data.Length)
             {
                 writer.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 8 | instruction.Data[i + 1]:X8}");
                 i += 2;

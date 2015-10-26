@@ -280,5 +280,33 @@ namespace GekkoAssembler.Tests {
                 return ResourceManager.GetString("StorageOutput", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 0x80123456:
+        ///.str &quot;LLLLL&quot;
+        ///.u32 0xABCDABCD
+        ///.u16 0xABCD
+        ///.u8 0xAB
+        ///.u8 0xCE
+        ///.u32 0x12349999
+        ///.u8 0x99 ähnelt.
+        /// </summary>
+        internal static string WritePatternOptimizerInput {
+            get {
+                return ResourceManager.GetString("WritePatternOptimizerInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die 00123456 0000054C
+        ///0212345B 0003ABCD
+        ///04123461 ABCE1234
+        ///00123465 00000399 ähnelt.
+        /// </summary>
+        internal static string WritePatternOptimizerOutput {
+            get {
+                return ResourceManager.GetString("WritePatternOptimizerOutput", resourceCulture);
+            }
+        }
     }
 }
