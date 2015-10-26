@@ -1,0 +1,14 @@
+version: 1.0.0-{build}-{branch}
+os: Visual Studio 2015
+
+configuration: Release
+
+build:
+  project: GekkoAssembler.sln
+  verbosity: minimal
+  
+test:
+  assemblies: GekkoAssembler.Tests\bin\Release\GekkoAssembler.Tests.dll
+  
+before_build:
+  - nuget restore
