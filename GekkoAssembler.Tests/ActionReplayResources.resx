@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LoadEarthTempleInput" xml:space="preserve">
+    <value>; R + D-Pad Right to Load Earth Temple
+0x803E0D2A:
+!u16equal 0x0022 ; R + D-Pad Right
+	0x803B8742:
+	.u8 0x28 ; Has Medli on Boat
+	0x803B8755:
+	.u8 0x20 ; Medli in Earth Temple
+	0x803B8759:
+	.u8 1 ; Animation Set 2
+	.u8 0x4 ; Medli in Earth Temple Entrance
+	0x803B811B:
+	.u8 16 ; Max Magic
+	.u8 16 ; Magic
+	0x803B814A:
+	.u8 0x34 ; Has Deku Leaf
+	0x803BD248:
+	.str "M_Dai" ; Stage
+	.u8 0 ; Null Terminator
+	0x803BD250:
+	.u16 0 ; Entrance
+	.u8 0 ; Room
+	.s8 -1 ; Layer Override
+	.u8 1 ; Enable Warp
+!end</value>
+  </data>
+  <data name="LoadEarthTempleOutput" xml:space="preserve">
+    <value>8A3E0D2A 00000022
+003B8742 00000028
+003B8755 00000020
+023B8759 00000104
+023B811B 00001010
+003B814A 00000034
+043BD248 4D5F4461
+023BD24C 00006900
+043BD250 000000FF
+003BD254 00000001
+00000000 40000000</value>
+  </data>
+  <data name="ShowStageInformationInput" xml:space="preserve">
+    <value>0x80491A60:
+.u32 32 ; Console X Coordinate
+.u32 112 ; Console Y Coordinate
+
+0x80491A80:
+.u32 0x00000000 ; Console Background Color
+.u8 1 ; Console Visible
+
+0x80491A89:
+.str "Stage: " ; Line 1 Text
+
+0x80491AC6:
+.u8 0xFF ; Line 2 Active
+.str "Room: " ; Line 2 Text
+
+0x80491B04:
+.u8 0xFF ; Line 3 Active
+.str "Entrance: " ; Line 3 Text
+
+0x80491B42:
+.u8 0xFF ; Line 4 Active
+.str "Layer: " ; Line 4 Text
+
+0x80491BBE:
+.u8 0 ; No Line 5
+
+0x803B7FF4:
+.str "%X, %X, %X" ; Coordinate Format
+.u16 0x0000 ; Null Terminator
+
+0x803B8002:
+.str "%d" ; Integer Format
+.u16 0x0000 ; Null Terminator
+
+0x8000645C:
+bl 0x80A00000 ; Inject the function call
+
+0x80A00000:
+stwu sp, -0x10 (sp)
+mflr r0
+stw r0, 0x14 (sp)
+
+; String copy from 803BD23C to 80491A90
+lis r3, 0x8049
+addi r3, r3, 0x1A90
+lis r4, 0x803B
+addi r4, r4, 0x691E
+addi r4, r4, 0x691E
+bl 0x8032B6E0
+
+; sprintf(80491ACD, "%d" /*803B8002*/, 803E9F48)
+lis r5, 0x803E
+addi r5, r5, 0x4FA4
+addi r5, r5, 0x4FA4
+lbz r5, 0x0 (r5)
+lis r4, 0x803B
+addi r4, r4, 0x4001
+addi r4, r4, 0x4001
+lis r3, 0x8049
+addi r3, r3, 0x1ACD
+crclr crb6
+bl 0x80329308
+
+; sprintf(80491B0F, "%d", 803B9244)
+lis r5, 0x803B
+addi r5, r5, 0x4922
+addi r5, r5, 0x4922
+lhz r5, 0x0 (r5)
+lis r4, 0x803B
+addi r4, r4, 0x4001
+addi r4, r4, 0x4001
+lis r3, 0x8049
+addi r3, r3, 0x1B0F
+crclr crb6
+bl 0x80329308
+
+; sprintf(80491B4A, "%d", 803B8000)
+lis r5, 0x803B
+addi r5, r5, 0x4000
+addi r5, r5, 0x4000
+lbz r5, 0x0 (r5)
+lis r4, 0x803B
+addi r4, r4, 0x4001
+addi r4, r4, 0x4001
+lis r3, 0x8049
+addi r3, r3, 0x1B4A
+crclr crb6
+bl 0x80329308
+
+; sprintf(80491B81, "%X, %X, %X", 803D78FC, 803D7900, 803D7904)
+lis r7, 0x803D
+addi r7, r7, 0x78FC
+lwz r5, 0x0 (r7)
+addi r7, r7, 0x0004
+lwz r6, 0x0 (r7)
+addi r7, r7, 0x0004
+lwz r7, 0x0 (r7)
+lis r4, 0x803B
+addi r4, r4, 0x7FF4
+lis r3, 0x8049
+addi r3, r3, 0x1B81
+crclr crb6
+bl 0x80329308
+
+lwz r0, 0x14 (sp)
+mtlr r0
+addi sp, sp, 16
+blr</value>
+  </data>
+  <data name="ShowStageInformationOutput" xml:space="preserve">
+    <value>04491A60 00000020
+04491A64 00000070
+04491A80 00000000
+00491A84 00000001
+04491A89 53746167
+02491A8D 0000653A
+00491A8F 00000020
+04491AC6 FF526F6F
+02491ACA 00006D3A
+00491ACC 00000020
+04491B04 FF456E74
+04491B08 72616E63
+02491B0C 0000653A
+00491B0E 00000020
+04491B42 FF4C6179
+04491B46 65723A20
+00491BBE 00000000
+043B7FF4 25582C20
+043B7FF8 25582C20
+043B7FFC 25580000
+043B8002 25640000
+0400645C 489F9BA5
+04A00000 9421FFF0
+04A00004 7C0802A6
+04A00008 90010014
+04A0000C 3C608049
+04A00010 38631A90
+04A00014 3C80803B
+04A00018 3884691E
+04A0001C 3884691E
+04A00020 4B92B6C1
+04A00024 3CA0803E
+04A00028 38A54FA4
+04A0002C 38A54FA4
+04A00030 88A50000
+04A00034 3C80803B
+04A00038 38844001
+04A0003C 38844001
+04A00040 3C608049
+04A00044 38631ACD
+04A00048 4CC63182
+04A0004C 4B9292BD
+04A00050 3CA0803B
+04A00054 38A54922
+04A00058 38A54922
+04A0005C A0A50000
+04A00060 3C80803B
+04A00064 38844001
+04A00068 38844001
+04A0006C 3C608049
+04A00070 38631B0F
+04A00074 4CC63182
+04A00078 4B929291
+04A0007C 3CA0803B
+04A00080 38A54000
+04A00084 38A54000
+04A00088 88A50000
+04A0008C 3C80803B
+04A00090 38844001
+04A00094 38844001
+04A00098 3C608049
+04A0009C 38631B4A
+04A000A0 4CC63182
+04A000A4 4B929265
+04A000A8 3CE0803D
+04A000AC 38E778FC
+04A000B0 80A70000
+04A000B4 38E70004
+04A000B8 80C70000
+04A000BC 38E70004
+04A000C0 80E70000
+04A000C4 3C80803B
+04A000C8 38847FF4
+04A000CC 3C608049
+04A000D0 38631B81
+04A000D4 4CC63182
+04A000D8 4B929231
+04A000DC 80010014
+04A000E0 7C0803A6
+04A000E4 38210010
+04A000E8 4E800020</value>
+  </data>
+  <data name="StorageInput" xml:space="preserve">
+    <value>0x803E0D2E:
+!u16equal 0x0004 ; D-Pad Down
+	0x803BD3A3:
+	.u8 1 ; Enable Storage
+!end</value>
+  </data>
+  <data name="StorageOutput" xml:space="preserve">
+    <value>0A3E0D2E 00000004
+003BD3A3 00000001</value>
+  </data>
+</root>

@@ -1,5 +1,3 @@
-using System;
-
 namespace GekkoAssembler.DataSections
 {
     public class Unsigned8DataSection : GekkoDataSection

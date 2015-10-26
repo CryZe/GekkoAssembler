@@ -1,6 +1,6 @@
 language: csharp
 solution: GekkoAssembler.sln
-mono: weekly
+mono: alpha
 deploy:
   provider: releases
   api_key:
@@ -9,3 +9,9 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+install:
+  - nuget restore GekkoAssembler.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release GekkoAssembler.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./GekkoAssembler.Tests/bin/Release/GekkoAssembler.Tests.dll
