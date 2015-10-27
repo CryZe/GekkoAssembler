@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionReplay\ActionReplayWriter.cs" />
+    <Compile Include="Writers\ActionReplayWriter.cs" />
     <Compile Include="DataSections\Float64DataSection.cs" />
     <Compile Include="DataSections\Float32DataSection.cs" />
     <Compile Include="DataSections\Unsigned64DataSection.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="DataSections\StringDataSection.cs" />
     <Compile Include="DataSections\Unsigned16DataSection.cs" />
     <Compile Include="DataSections\Unsigned32DataSection.cs" />
+    <Compile Include="Writers\GeckoWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

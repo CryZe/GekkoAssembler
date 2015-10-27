@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GekkoAssembler.ActionReplay;
+using GekkoAssembler.Writers;
 using NUnit.Framework;
 
 namespace GekkoAssembler.Tests

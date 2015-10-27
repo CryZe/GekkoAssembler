@@ -1,5 +1,5 @@
 ﻿using System;
-using GekkoAssembler.ActionReplay;
+using GekkoAssembler.Writers;
 using static System.IO.File;
 
 namespace GekkoAssembler
@@ -25,7 +25,7 @@ namespace GekkoAssembler
             var assembler = new Assembler();
             var gekkoAssembly = assembler.AssembleAllLines(lines);
             var stream = Console.OpenStandardOutput();
-            var arWriter = new ActionReplayWriter(stream);
+            var arWriter = new GeckoWriter(stream);
             gekkoAssembly.Accept(arWriter);
         }
     }
