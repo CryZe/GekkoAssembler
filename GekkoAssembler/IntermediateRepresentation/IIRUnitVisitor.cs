@@ -11,5 +11,8 @@
         void Visit(IRSigned16Equal instruction);
         void Visit(IRSigned32Equal instruction);
         void Visit(IRFloat32Equal instruction);
+        void Visit(IRUnsigned8Add instruction);
+        void Visit(IRUnsigned16Add instruction);
+        void Visit(IRUnsigned32Add instruction);
     }
 }

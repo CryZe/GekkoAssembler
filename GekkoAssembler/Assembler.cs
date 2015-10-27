@@ -27,10 +27,10 @@ namespace GekkoAssembler
         {
             if (line.Contains(";"))
                 line = line.Substring(0, line.IndexOf(";"));
-            
+
             return line.Trim();
         }
-        
+
         public IRCodeBlock AssembleAllLines(IEnumerable<string> lines)
         {
             var instructionPointer = 0x00000000;
@@ -40,7 +40,7 @@ namespace GekkoAssembler
         private string dequeueNextLine(Queue<string> lines)
         {
             string line = null;
-            while (lines.Any() 
+            while (lines.Any()
                 && string.IsNullOrWhiteSpace(line = reduceLineToCode(lines.Dequeue())))
             { }
 
@@ -109,7 +109,38 @@ namespace GekkoAssembler
             if (line.StartsWith("f32equal "))
                 return ParseFloat32Equal(line, instructionPointer, lines);
 
+            if (line.StartsWith("u8add "))
+                return ParseUnsigned8Add(line, instructionPointer, lines);
+            if (line.StartsWith("u16add "))
+                return ParseUnsigned16Add(line, instructionPointer, lines);
+            if (line.StartsWith("u32add "))
+                return ParseUnsigned32Add(line, instructionPointer, lines);
+
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
+        }
+
+        private IIRUnit ParseUnsigned8Add(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u8add");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned8Add(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned16Add(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u16add");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned16Add(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned32Add(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u32add");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned32Add(instructionPointer, value, block);
         }
 
         private IIRUnit ParseUnsigned8Equal(string line, int instructionPointer, Queue<string> lines)
@@ -195,7 +226,7 @@ namespace GekkoAssembler
 
             throw new ArgumentException($"The specified data section { line } is not supported.");
         }
-        
+
         private GekkoDataSection ParseStringDataSection(string line, int instructionPointer)
         {
             var literal = line.Substring(line.IndexOf("\""));
@@ -207,21 +238,21 @@ namespace GekkoAssembler
         {
             return literal.Substring(1, literal.Length - 2);
         }
-        
+
         private GekkoDataSection ParseUnsigned8DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u8");
             var value = (byte)ParseIntegerLiteral(parameters[0]);
             return new Unsigned8DataSection(instructionPointer, value);
         }
-        
+
         private GekkoDataSection ParseUnsigned16DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u16");
             var value = (ushort)ParseIntegerLiteral(parameters[0]);
             return new Unsigned16DataSection(instructionPointer, value);
         }
-        
+
         private GekkoDataSection ParseUnsigned32DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u32");

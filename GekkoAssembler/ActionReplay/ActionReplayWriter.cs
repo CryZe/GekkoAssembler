@@ -159,5 +159,20 @@ namespace GekkoAssembler.ActionReplay
                 return lines;
             }
         }
+
+        public void Visit(IRUnsigned8Add instruction)
+        {
+            writer.WriteLine($"{0x80 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
+        }
+
+        public void Visit(IRUnsigned16Add instruction)
+        {
+            writer.WriteLine($"{0x82 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
+        }
+
+        public void Visit(IRUnsigned32Add instruction)
+        {
+            writer.WriteLine($"{0x84 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
+        }
     }
 }
