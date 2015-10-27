@@ -110,37 +110,34 @@ namespace GekkoAssembler
                 return ParseFloat32Equal(line, instructionPointer, lines);
 
             if (line.StartsWith("u8add "))
-                return ParseUnsigned8Add(line, instructionPointer, lines);
+                return ParseUnsigned8Add(line, instructionPointer);
             if (line.StartsWith("u16add "))
-                return ParseUnsigned16Add(line, instructionPointer, lines);
+                return ParseUnsigned16Add(line, instructionPointer);
             if (line.StartsWith("u32add "))
-                return ParseUnsigned32Add(line, instructionPointer, lines);
+                return ParseUnsigned32Add(line, instructionPointer);
 
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
         }
 
-        private IIRUnit ParseUnsigned8Add(string line, int instructionPointer, Queue<string> lines)
+        private IIRUnit ParseUnsigned8Add(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u8add");
             var value = (byte)ParseIntegerLiteral(parameters[0]);
-            var block = assembleAllLines(lines, instructionPointer);
-            return new IRUnsigned8Add(instructionPointer, value, block);
+            return new IRUnsigned8Add(instructionPointer, value);
         }
 
-        private IIRUnit ParseUnsigned16Add(string line, int instructionPointer, Queue<string> lines)
+        private IIRUnit ParseUnsigned16Add(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u16add");
             var value = (ushort)ParseIntegerLiteral(parameters[0]);
-            var block = assembleAllLines(lines, instructionPointer);
-            return new IRUnsigned16Add(instructionPointer, value, block);
+            return new IRUnsigned16Add(instructionPointer, value);
         }
 
-        private IIRUnit ParseUnsigned32Add(string line, int instructionPointer, Queue<string> lines)
+        private IIRUnit ParseUnsigned32Add(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u32add");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
-            var block = assembleAllLines(lines, instructionPointer);
-            return new IRUnsigned32Add(instructionPointer, value, block);
+            return new IRUnsigned32Add(instructionPointer, value);
         }
 
         private IIRUnit ParseUnsigned8Equal(string line, int instructionPointer, Queue<string> lines)

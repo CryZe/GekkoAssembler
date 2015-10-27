@@ -5,13 +5,10 @@
         public int Address { get; }
         public byte Value { get; }
 
-        public IRCodeBlock ConditionalCode { get; }
-
-        public IRUnsigned8Add(int address, byte value, IRCodeBlock conditionalCode)
+        public IRUnsigned8Add(int address, byte value)
         {
             Address = address;
             Value = value;
-            ConditionalCode = conditionalCode;
         }
 
         public void Accept(IIRUnitVisitor visitor)

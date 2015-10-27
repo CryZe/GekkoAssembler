@@ -5,13 +5,10 @@
         public int Address { get; }
         public uint Value { get; }
 
-        public IRCodeBlock ConditionalCode { get; }
-
-        public IRUnsigned32Add(int address, uint value, IRCodeBlock conditionalCode)
+        public IRUnsigned32Add(int address, uint value)
         {
             Address = address;
             Value = value;
-            ConditionalCode = conditionalCode;
         }
 
         public void Accept(IIRUnitVisitor visitor)
