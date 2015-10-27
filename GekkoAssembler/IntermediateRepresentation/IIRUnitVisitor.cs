@@ -14,5 +14,6 @@
         void Visit(IRUnsigned8Add instruction);
         void Visit(IRUnsigned16Add instruction);
         void Visit(IRUnsigned32Add instruction);
+        void Visit(IRFloat32Add instruction);
     }
 }

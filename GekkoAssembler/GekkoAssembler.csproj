@@ -62,6 +62,7 @@
     <Compile Include="IntermediateRepresentation\IRUnsigned8Add.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned16Add.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned32Add.cs" />
+    <Compile Include="IntermediateRepresentation\IRFloat32Add.cs" />
     <Compile Include="Optimizers\IOptimizer.cs" />
     <Compile Include="Optimizers\IRCombinedWriteData.cs" />
     <Compile Include="IntermediateRepresentation\IRWriteData.cs" />

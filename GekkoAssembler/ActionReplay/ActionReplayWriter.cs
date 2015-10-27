@@ -174,5 +174,10 @@ namespace GekkoAssembler.ActionReplay
         {
             writer.WriteLine($"{0x84 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
         }
+
+        public void Visit(IRFloat32Add instruction)
+        {
+            writer.WriteLine($"{0x86 << 24 | instruction.Address & 0x1FFFFFF:X8} {BitConverter.ToUInt32(BitConverter.GetBytes(instruction.Value), 0):X8}");
+        }
     }
 }

@@ -115,6 +115,8 @@ namespace GekkoAssembler
                 return ParseUnsigned16Add(line, instructionPointer);
             if (line.StartsWith("u32add "))
                 return ParseUnsigned32Add(line, instructionPointer);
+            if (line.StartsWith("f32add "))
+                return ParseFloat32Add(line, instructionPointer);
 
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
         }
@@ -138,6 +140,13 @@ namespace GekkoAssembler
             var parameters = ParseParameters(line, "u32add");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
             return new IRUnsigned32Add(instructionPointer, value);
+        }
+
+        private IIRUnit ParseFloat32Add(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "f32add");
+            var value = (float)ParseFloatLiteral(parameters[0]);
+            return new IRFloat32Add(instructionPointer, value);
         }
 
         private IIRUnit ParseUnsigned8Equal(string line, int instructionPointer, Queue<string> lines)
