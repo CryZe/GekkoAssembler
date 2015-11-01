@@ -62,13 +62,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GekkoAssembler\GekkoAssembler.csproj">
-      <Project>{0d98da65-c2e7-41b3-a9be-f39ace880ae2}</Project>
-      <Name>GekkoAssembler</Name>
-    </ProjectReference>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+    <ProjectReference Include="..\GekkoAssembler.Common\GekkoAssembler.Common.csproj">
+      <Project>{17c57ac1-fbf1-49a0-9e50-9f68af809898}</Project>
+      <Name>GekkoAssembler.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

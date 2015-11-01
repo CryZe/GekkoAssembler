@@ -8,7 +8,7 @@ namespace GekkoAssembler.IntermediateRepresentation
 
         public IRCodeBlock(IEnumerable<IIRUnit> units)
         {
-            Units = new List<IIRUnit>(units).AsReadOnly();
+            Units = new List<IIRUnit>(units);
         }
 
         void IIRUnit.Accept(IIRUnitVisitor visitor)
