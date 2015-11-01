@@ -52,7 +52,7 @@ namespace GekkoAssembler
             var units = new List<IIRUnit>();
             string line;
 
-            while ((line = dequeueNextLine(lines)) != null)
+            while (!string.IsNullOrWhiteSpace(line = dequeueNextLine(lines)))
             {
                 if (line.EndsWith(":"))
                 {
