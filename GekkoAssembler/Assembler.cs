@@ -115,6 +115,12 @@ namespace GekkoAssembler
                 return ParseUnsigned16Add(line, instructionPointer);
             if (line.StartsWith("u32add "))
                 return ParseUnsigned32Add(line, instructionPointer);
+            if (line.StartsWith("s8add "))
+                return ParseSigned8Add(line, instructionPointer);
+            if (line.StartsWith("s16add "))
+                return ParseSigned16Add(line, instructionPointer);
+            if (line.StartsWith("s32add "))
+                return ParseSigned32Add(line, instructionPointer);
             if (line.StartsWith("f32add "))
                 return ParseFloat32Add(line, instructionPointer);
 
@@ -140,6 +146,27 @@ namespace GekkoAssembler
             var parameters = ParseParameters(line, "u32add");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
             return new IRUnsigned32Add(instructionPointer, value);
+        }
+
+        private IIRUnit ParseSigned8Add(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "s8add");
+            var value = (sbyte)ParseIntegerLiteral(parameters[0]);
+            return new IRSigned8Add(instructionPointer, value);
+        }
+
+        private IIRUnit ParseSigned16Add(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "s16add");
+            var value = (short)ParseIntegerLiteral(parameters[0]);
+            return new IRSigned16Add(instructionPointer, value);
+        }
+
+        private IIRUnit ParseSigned32Add(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "s32add");
+            var value = ParseIntegerLiteral(parameters[0]);
+            return new IRSigned32Add(instructionPointer, value);
         }
 
         private IIRUnit ParseFloat32Add(string line, int instructionPointer)

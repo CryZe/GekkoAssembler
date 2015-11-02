@@ -101,6 +101,9 @@
     <Compile Include="DataSections\Unsigned16DataSection.cs" />
     <Compile Include="DataSections\Unsigned32DataSection.cs" />
     <Compile Include="Writers\GeckoWriter.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned8Add.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned16Add.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned32Add.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

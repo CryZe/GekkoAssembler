@@ -168,6 +168,27 @@ namespace GekkoAssembler.Writers
             writer.WriteLine($"84200000 {instruction.Address:X8}");
         }
 
+        public void Visit(IRSigned8Add instruction)
+        {
+            writer.WriteLine($"82000000 {instruction.Address:X8}");
+            writer.WriteLine($"86000000 {instruction.Value:X8}");
+            writer.WriteLine($"84000000 {instruction.Address:X8}");
+        }
+
+        public void Visit(IRSigned16Add instruction)
+        {
+            writer.WriteLine($"82100000 {instruction.Address:X8}");
+            writer.WriteLine($"86000000 {instruction.Value:X8}");
+            writer.WriteLine($"84100000 {instruction.Address:X8}");
+        }
+
+        public void Visit(IRSigned32Add instruction)
+        {
+            writer.WriteLine($"82200000 {instruction.Address:X8}");
+            writer.WriteLine($"86000000 {instruction.Value:X8}");
+            writer.WriteLine($"84200000 {instruction.Address:X8}");
+        }
+
         public void Visit(IRFloat32Add instruction)
         {
             writer.WriteLine($"82200000 {instruction.Address:X8}");
