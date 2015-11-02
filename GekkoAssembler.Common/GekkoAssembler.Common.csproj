@@ -99,6 +99,13 @@
     <Compile Include="IntermediateRepresentation\IRSigned16Add.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned32Add.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned8Add.cs" />
+    <Compile Include="IntermediateRepresentation\IRFloat32Unequal.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned16Unequal.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned32Unequal.cs" />
+    <Compile Include="IntermediateRepresentation\IRSigned8Unequal.cs" />
+    <Compile Include="IntermediateRepresentation\IRUnsigned16Unequal.cs" />
+    <Compile Include="IntermediateRepresentation\IRUnsigned32Unequal.cs" />
+    <Compile Include="IntermediateRepresentation\IRUnsigned8Unequal.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

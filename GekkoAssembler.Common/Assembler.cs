@@ -109,6 +109,21 @@ namespace GekkoAssembler
             if (line.StartsWith("f32equal "))
                 return ParseFloat32Equal(line, instructionPointer, lines);
 
+            if (line.StartsWith("u8unequal "))
+                return ParseUnsigned8Unequal(line, instructionPointer, lines);
+            if (line.StartsWith("u16unequal "))
+                return ParseUnsigned16Unequal(line, instructionPointer, lines);
+            if (line.StartsWith("u32unequal "))
+                return ParseUnsigned32Unequal(line, instructionPointer, lines);
+            if (line.StartsWith("s8unequal "))
+                return ParseSigned8Unequal(line, instructionPointer, lines);
+            if (line.StartsWith("s16unequal "))
+                return ParseSigned16Unequal(line, instructionPointer, lines);
+            if (line.StartsWith("s32unequal "))
+                return ParseSigned32Unequal(line, instructionPointer, lines);
+            if (line.StartsWith("f32unequal "))
+                return ParseFloat32Unequal(line, instructionPointer, lines);
+
             if (line.StartsWith("u8add "))
                 return ParseUnsigned8Add(line, instructionPointer);
             if (line.StartsWith("u16add "))
@@ -126,6 +141,8 @@ namespace GekkoAssembler
 
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
         }
+
+        #region Add
 
         private IIRUnit ParseUnsigned8Add(string line, int instructionPointer)
         {
@@ -175,6 +192,10 @@ namespace GekkoAssembler
             var value = (float)ParseFloatLiteral(parameters[0]);
             return new IRFloat32Add(instructionPointer, value);
         }
+
+        #endregion
+
+        #region Equal
 
         private IIRUnit ParseUnsigned8Equal(string line, int instructionPointer, Queue<string> lines)
         {
@@ -232,6 +253,68 @@ namespace GekkoAssembler
             return new IRFloat32Equal(instructionPointer, value, block);
         }
 
+        #endregion
+
+        #region Unequal
+
+        private IIRUnit ParseUnsigned8Unequal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u8unequal");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned8Unequal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned16Unequal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u16unequal");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned16Unequal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned32Unequal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u32unequal");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned32Unequal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned8Unequal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s8unequal");
+            var value = (sbyte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned8Unequal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned16Unequal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s16unequal");
+            var value = (short)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned16Unequal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned32Unequal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s32unequal");
+            var value = ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned32Unequal(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseFloat32Unequal(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "f32unequal");
+            var value = (float)ParseFloatLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRFloat32Unequal(instructionPointer, value, block);
+        }
+
+        #endregion
+
         private GekkoDataSection ParseDataSection(string line, int instructionPointer)
         {
             if (line.StartsWith("str "))
@@ -259,6 +342,8 @@ namespace GekkoAssembler
 
             throw new ArgumentException($"The specified data section { line } is not supported.");
         }
+
+        #region Data Sections
 
         private GekkoDataSection ParseStringDataSection(string line, int instructionPointer)
         {
@@ -342,6 +427,8 @@ namespace GekkoAssembler
             return new Float64DataSection(instructionPointer, value);
         }
 
+        #endregion
+
         private GekkoInstruction ParseInstruction(string line, int instructionPointer)
         {
             if (line.StartsWith("blr"))
@@ -399,6 +486,8 @@ namespace GekkoAssembler
 
             throw new ArgumentException($"The specified instruction { line } is not supported.");
         }
+
+        #region Gekko Instructions
 
         private GekkoInstruction ParseInstructionSUB(string line, int instructionPointer)
         {
@@ -599,6 +688,18 @@ namespace GekkoAssembler
             return new OrImmediateInstruction(instructionPointer, ra, rs, uimm);
         }
 
+        private GekkoInstruction ParseInstructionNOP(string line, int instructionPointer)
+        {
+            return new NoOperationInstruction(instructionPointer);
+        }
+
+        private GekkoInstruction ParseInstructionBLR(string line, int instructionPointer)
+        {
+            return new BranchToLinkRegisterInstruction(instructionPointer);
+        }
+
+        #endregion
+
         private int ParseRegister(string register)
         {
             string literal;
@@ -624,16 +725,6 @@ namespace GekkoAssembler
         private string[] ParseParameters(string line, string op)
         {
             return line.Substring(op.Length).Replace(" ", "").Replace("\t", "").Replace(")","").Split(',', '(');
-        }
-
-        private GekkoInstruction ParseInstructionNOP(string line, int instructionPointer)
-        {
-            return new NoOperationInstruction(instructionPointer);
-        }
-
-        private GekkoInstruction ParseInstructionBLR(string line, int instructionPointer)
-        {
-            return new BranchToLinkRegisterInstruction(instructionPointer);
         }
 
         private int ParseInstructionPointerLabel(string line)

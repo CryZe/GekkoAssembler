@@ -63,6 +63,8 @@ namespace GekkoAssembler.Writers
             block.Accept(this);
         }
 
+        #region Equal
+
         public void Visit(IRUnsigned8Equal instruction)
         {
             writer.WriteLine($"82000000 {instruction.Address:X8}");
@@ -116,6 +118,65 @@ namespace GekkoAssembler.Writers
             WriteActivator(instruction.ConditionalCode, 0x20, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
         }
 
+        #endregion
+
+        #region Unequal
+
+        public void Visit(IRUnsigned8Unequal instruction)
+        {
+            writer.WriteLine($"82000000 {instruction.Address:X8}");
+            writer.WriteLine($"80000001 {instruction.Value:X8}");
+            writer.WriteLine($"A2000000 0100FF00");
+
+            var lines = GetCodeBlockLines(instruction.ConditionalCode);
+
+            foreach (var line in lines)
+                writer.WriteLine(line);
+
+            writer.WriteLine("E2000001 00000000");
+        }
+
+        public void Visit(IRUnsigned16Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned32Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, (int)instruction.Value);
+        }
+
+        public void Visit(IRSigned8Unequal instruction)
+        {
+            writer.WriteLine($"82000000 {instruction.Address:X8}");
+            writer.WriteLine($"80000001 {instruction.Value:X8}");
+            writer.WriteLine($"A2000000 0100FF00");
+
+            var lines = GetCodeBlockLines(instruction.ConditionalCode);
+
+            foreach (var line in lines)
+                writer.WriteLine(line);
+
+            writer.WriteLine("E2000001 00000000");
+        }
+
+        public void Visit(IRSigned16Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned32Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRFloat32Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+        }
+
+        #endregion
+
         private void WriteActivator(IRCodeBlock block, int type, int address, int value)
         {
             var lines = GetCodeBlockLines(block);
@@ -146,6 +207,8 @@ namespace GekkoAssembler.Writers
                 return lines;
             }
         }
+
+        #region Add
 
         public void Visit(IRUnsigned8Add instruction)
         {
@@ -195,5 +258,7 @@ namespace GekkoAssembler.Writers
             writer.WriteLine($"86900000 {BitConverter.ToUInt32(BitConverter.GetBytes(instruction.Value), 0):X8}");
             writer.WriteLine($"84200000 {instruction.Address:X8}");
         }
+
+        #endregion
     }
 }

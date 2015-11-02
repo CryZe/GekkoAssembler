@@ -80,6 +80,8 @@ namespace GekkoAssembler.Writers
             block.Accept(this);
         }
 
+        #region Equal
+
         public void Visit(IRUnsigned8Equal instruction)
         {
             WriteActivator(instruction.ConditionalCode, 0x08, instruction.Address, instruction.Value);
@@ -114,6 +116,47 @@ namespace GekkoAssembler.Writers
         {
             WriteActivator(instruction.ConditionalCode, 0x0C, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
         }
+
+        #endregion
+
+        #region Unequal
+
+        public void Visit(IRUnsigned8Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x10, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned16Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x12, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned32Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x14, instruction.Address, (int)instruction.Value);
+        }
+
+        public void Visit(IRSigned8Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x10, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned16Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x12, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned32Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x14, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRFloat32Unequal instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x14, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+        }
+
+        #endregion
 
         private void WriteActivator(IRCodeBlock block, int type, int address, int value)
         {
@@ -160,6 +203,8 @@ namespace GekkoAssembler.Writers
             }
         }
 
+        #region Add
+
         public void Visit(IRUnsigned8Add instruction)
         {
             writer.WriteLine($"{0x80 << 24 | instruction.Address & 0x1FFFFFF:X8} {instruction.Value:X8}");
@@ -194,5 +239,7 @@ namespace GekkoAssembler.Writers
         {
             writer.WriteLine($"{0x86 << 24 | instruction.Address & 0x1FFFFFF:X8} {BitConverter.ToUInt32(BitConverter.GetBytes(instruction.Value), 0):X8}");
         }
+
+        #endregion
     }
 }
