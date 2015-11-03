@@ -94,7 +94,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned32Equal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x0C, instruction.Address, (int)instruction.Value);
+            WriteActivator(instruction.ConditionalCode, 0x0C, instruction.Address, instruction.Value);
         }
 
         public void Visit(IRSigned8Equal instruction)
@@ -133,7 +133,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned32Unequal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x14, instruction.Address, (int)instruction.Value);
+            WriteActivator(instruction.ConditionalCode, 0x14, instruction.Address, instruction.Value);
         }
 
         public void Visit(IRSigned8Unequal instruction)
@@ -158,7 +158,47 @@ namespace GekkoAssembler.Writers
 
         #endregion
 
-        private void WriteActivator(IRCodeBlock block, int type, int address, int value)
+        #region Less Than
+
+        public void Visit(IRUnsigned8LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned16LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned32LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned8LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x18, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned16LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x1A, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned32LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x1C, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRFloat32LessThan instruction)
+        {
+            //Note: There's no way of representing Floating Point Less Than. Using Signed 32 Bit Less Than instead.
+            WriteActivator(instruction.ConditionalCode, 0x1C, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+        }
+
+        #endregion
+
+        private void WriteActivator<T>(IRCodeBlock block, int type, int address, T value)
         {
             var lines = GetCodeBlockLines(block);
 

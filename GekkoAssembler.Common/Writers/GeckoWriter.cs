@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GekkoAssembler.IntermediateRepresentation;
+using System.Globalization;
 
 namespace GekkoAssembler.Writers
 {
@@ -67,16 +68,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned8Equal instruction)
         {
-            writer.WriteLine($"82000000 {instruction.Address:X8}");
-            writer.WriteLine($"80000001 {instruction.Value:X8}");
-            writer.WriteLine($"A0000000 0100FF00");
-
-            var lines = GetCodeBlockLines(instruction.ConditionalCode);
-
-            foreach (var line in lines)
-                writer.WriteLine(line);
-
-            writer.WriteLine("E2000001 00000000");
+            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRUnsigned16Equal instruction)
@@ -86,21 +78,12 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned32Equal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x20, instruction.Address, (int)instruction.Value);
+            WriteActivator(instruction.ConditionalCode, 0x20, instruction.Address, instruction.Value);
         }
 
         public void Visit(IRSigned8Equal instruction)
         {
-            writer.WriteLine($"82000000 {instruction.Address:X8}");
-            writer.WriteLine($"80000001 {instruction.Value:X8}");
-            writer.WriteLine($"A0000000 0100FF00");
-
-            var lines = GetCodeBlockLines(instruction.ConditionalCode);
-
-            foreach (var line in lines)
-                writer.WriteLine(line);
-
-            writer.WriteLine("E2000001 00000000");
+            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRSigned16Equal instruction)
@@ -124,16 +107,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned8Unequal instruction)
         {
-            writer.WriteLine($"82000000 {instruction.Address:X8}");
-            writer.WriteLine($"80000001 {instruction.Value:X8}");
-            writer.WriteLine($"A2000000 0100FF00");
-
-            var lines = GetCodeBlockLines(instruction.ConditionalCode);
-
-            foreach (var line in lines)
-                writer.WriteLine(line);
-
-            writer.WriteLine("E2000001 00000000");
+            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRUnsigned16Unequal instruction)
@@ -143,21 +117,12 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned32Unequal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, (int)instruction.Value);
+            WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, instruction.Value);
         }
 
         public void Visit(IRSigned8Unequal instruction)
         {
-            writer.WriteLine($"82000000 {instruction.Address:X8}");
-            writer.WriteLine($"80000001 {instruction.Value:X8}");
-            writer.WriteLine($"A2000000 0100FF00");
-
-            var lines = GetCodeBlockLines(instruction.ConditionalCode);
-
-            foreach (var line in lines)
-                writer.WriteLine(line);
-
-            writer.WriteLine("E2000001 00000000");
+            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRSigned16Unequal instruction)
@@ -177,13 +142,58 @@ namespace GekkoAssembler.Writers
 
         #endregion
 
-        private void WriteActivator(IRCodeBlock block, int type, int address, int value)
+        #region Less Than
+
+        public void Visit(IRUnsigned8LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value, 0xFF000000);
+        }
+
+        public void Visit(IRUnsigned16LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned32LessThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x26, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned8LessThan instruction)
+        {
+            //Note: There is no way of representing Signed 8 Bit Less Than. Using Unsigned 8 Bit Less Than instead.
+            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value, 0xFF000000);
+        }
+
+        public void Visit(IRSigned16LessThan instruction)
+        {
+            //Note: There is no way of representing Signed 16 Bit Less Than. Using Unigned 16 Bit Less Than instead.
+            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned32LessThan instruction)
+        {
+            //Note: There is no way of representing Signed 32 Bit Less Than. Using Unsigned 32 Bit Less Than instead.
+            WriteActivator(instruction.ConditionalCode, 0x26, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRFloat32LessThan instruction)
+        {
+            //Note: There is no way of representing Floating Point Less Than. Using Unsigned 32 Bit Less Than instead.
+            WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+        }
+
+        #endregion
+
+        private void WriteActivator<T>(IRCodeBlock block, int type, int address, T value, uint mask = 0)
         {
             var lines = GetCodeBlockLines(block);
 
             if (lines.Count > 0)
             {
-                writer.WriteLine($"{type << 24 | address & 0x1FFFFFF:X8} {value:X8}");
+                writer.Write($"{type << 24 | address & 0x1FFFFFF:X8} ");
+                var masked = uint.Parse($"{value:X8}", NumberStyles.HexNumber, CultureInfo.InvariantCulture) | mask;
+                writer.WriteLine($"{masked:X8}");
                 foreach (var line in lines)
                     writer.WriteLine(line);
                 writer.WriteLine("E2000001 00000000");

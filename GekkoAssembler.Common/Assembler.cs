@@ -124,6 +124,21 @@ namespace GekkoAssembler
             if (line.StartsWith("f32unequal "))
                 return ParseFloat32Unequal(line, instructionPointer, lines);
 
+            if (line.StartsWith("u8lessthan "))
+                return ParseUnsigned8LessThan(line, instructionPointer, lines);
+            if (line.StartsWith("u16lessthan "))
+                return ParseUnsigned16LessThan(line, instructionPointer, lines);
+            if (line.StartsWith("u32lessthan "))
+                return ParseUnsigned32LessThan(line, instructionPointer, lines);
+            if (line.StartsWith("s8lessthan "))
+                return ParseSigned8LessThan(line, instructionPointer, lines);
+            if (line.StartsWith("s16lessthan "))
+                return ParseSigned16LessThan(line, instructionPointer, lines);
+            if (line.StartsWith("s32lessthan "))
+                return ParseSigned32LessThan(line, instructionPointer, lines);
+            if (line.StartsWith("f32lessthan "))
+                return ParseFloat32LessThan(line, instructionPointer, lines);
+
             if (line.StartsWith("u8add "))
                 return ParseUnsigned8Add(line, instructionPointer);
             if (line.StartsWith("u16add "))
@@ -311,6 +326,66 @@ namespace GekkoAssembler
             var value = (float)ParseFloatLiteral(parameters[0]);
             var block = assembleAllLines(lines, instructionPointer);
             return new IRFloat32Unequal(instructionPointer, value, block);
+        }
+
+        #endregion
+
+        #region Less Than
+
+        private IIRUnit ParseUnsigned8LessThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u8lessthan");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned8LessThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned16LessThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u16lessthan");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned16LessThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned32LessThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u32lessthan");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned32LessThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned8LessThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s8lessthan");
+            var value = (sbyte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned8LessThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned16LessThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s16lessthan");
+            var value = (short)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned16LessThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned32LessThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s32lessthan");
+            var value = ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned32LessThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseFloat32LessThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "f32lessthan");
+            var value = (float)ParseFloatLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRFloat32LessThan(instructionPointer, value, block);
         }
 
         #endregion
