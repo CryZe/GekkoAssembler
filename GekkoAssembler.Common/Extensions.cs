@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+
 namespace GekkoAssembler
 {
-    public static class EndianExtensions
+    public static class Extensions
     {
         public static byte[] SwapEndian16(this byte[] data)
         {
@@ -36,6 +40,11 @@ namespace GekkoAssembler
             data[3] = data[4];
             data[4] = temp;
             return data;
+        }
+
+        public static ReadOnlyCollection<T> AsReadOnly<T>(this IEnumerable<T> enumerable)
+        {
+            return new ReadOnlyCollection<T>(enumerable.ToList());
         }
     }
 }

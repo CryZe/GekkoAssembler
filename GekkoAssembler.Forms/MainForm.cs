@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using GekkoAssembler.Writers;
 
@@ -38,22 +31,20 @@ namespace GekkoAssembler.Forms
             var lines = txtInput.Text.Split('\n');
             var gekkoAssembly = assembler.AssembleAllLines(lines);
 
-            using (var stream = new MemoryStream())
-            {
-                if (cmbType.SelectedItem.ToString() == "Gecko")
-                {
-                    new GeckoWriter(stream).Visit(gekkoAssembly);
-                }
-                else
-                {
-                    new ActionReplayWriter(stream).Visit(gekkoAssembly);
-                }
+            ICodeWriter writer;
 
-                stream.Seek(0, SeekOrigin.Begin);
-                var reader = new StreamReader(stream);
-                var output = reader.ReadToEnd();
-                txtOutput.Text = output;
+            if (cmbType.SelectedItem.ToString() == "Gecko")
+            {
+                writer = new GeckoWriter();
             }
+            else
+            {
+                writer = new ActionReplayWriter();
+            }
+
+            var code = writer.WriteCode(gekkoAssembly);
+
+            txtOutput.Text = string.Join(Environment.NewLine, code.Lines);
         }
     }
 }

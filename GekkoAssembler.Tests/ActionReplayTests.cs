@@ -16,26 +16,14 @@ namespace GekkoAssembler.Tests
 
             var assembler = new Assembler();
             var gekkoAssembly = assembler.AssembleAllLines(inputLines);
-            using (var stream = new MemoryStream())
+
+            var writer = new ActionReplayWriter();
+            var code = writer.WriteCode(gekkoAssembly);
+            var actualLines = code.Lines;
+
+            for (var i = 0; i < Math.Min(outputLines.Length, actualLines.Count); ++i)
             {
-                var arWriter = new ActionReplayWriter(stream);
-                gekkoAssembly.Accept(arWriter);
-
-                stream.Seek(0, SeekOrigin.Begin);
-                var reader = new StreamReader(stream);
-
-                var actualLines = new List<string>();
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    actualLines.Add(line);
-                }
-                
-                for (var i = 0; i < Math.Min(outputLines.Length, actualLines.Count); ++i)
-                {
-                    Assert.AreEqual(outputLines[i], actualLines[i], $"Line {i + 1}: {message}");
-                }
-                
+                Assert.AreEqual(outputLines[i], actualLines[i], $"Line {i + 1}: {message}");
             }
         }
 

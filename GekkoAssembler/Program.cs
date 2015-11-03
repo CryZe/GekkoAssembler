@@ -24,9 +24,13 @@ namespace GekkoAssembler
             var lines = ReadAllLines(filePath);
             var assembler = new Assembler();
             var gekkoAssembly = assembler.AssembleAllLines(lines);
-            var stream = Console.OpenStandardOutput();
-            var arWriter = new GeckoWriter(stream);
-            gekkoAssembly.Accept(arWriter);
+            var writer = new GeckoWriter();
+            var code = writer.WriteCode(gekkoAssembly);
+
+            foreach (var line in code.Lines)
+            {
+                Console.WriteLine(line);
+            }
         }
     }
 }

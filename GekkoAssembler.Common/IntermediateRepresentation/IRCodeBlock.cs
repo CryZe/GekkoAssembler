@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace GekkoAssembler.IntermediateRepresentation
 {
     public class IRCodeBlock : IIRUnit
     {
-        public IEnumerable<IIRUnit> Units { get; }
+        public ReadOnlyCollection<IIRUnit> Units { get; }
 
         public IRCodeBlock(IEnumerable<IIRUnit> units)
         {
-            Units = new List<IIRUnit>(units);
+            Units = units.AsReadOnly();
         }
 
         void IIRUnit.Accept(IIRUnitVisitor visitor)

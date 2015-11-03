@@ -28,7 +28,7 @@ namespace GekkoAssembler.Optimizers
                             units = units.TakeWhile(x => x != last)
                                         .Concat(new[] { combined })
                                         .Concat(units.SkipWhile(x => x != current).Skip(1))
-                                        .ToList();
+                                        .AsReadOnly();
                             replaced = true;
                             break;
                         }

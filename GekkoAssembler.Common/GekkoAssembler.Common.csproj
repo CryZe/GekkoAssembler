@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assembler.cs" />
+    <Compile Include="CodeBuilder.cs" />
     <Compile Include="DataSections\Float32DataSection.cs" />
     <Compile Include="DataSections\Float64DataSection.cs" />
     <Compile Include="DataSections\GekkoDataSection.cs" />
@@ -50,7 +51,7 @@
     <Compile Include="DataSections\Unsigned32DataSection.cs" />
     <Compile Include="DataSections\Unsigned64DataSection.cs" />
     <Compile Include="DataSections\Unsigned8DataSection.cs" />
-    <Compile Include="EndianExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GekkoInstructions\AddImmediateInstruction.cs" />
     <Compile Include="GekkoInstructions\AddImmediateShiftedInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchInstruction.cs" />
@@ -94,8 +95,9 @@
     <Compile Include="Optimizers\WriteDataOptimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecialPurposeRegister.cs" />
+    <Compile Include="Writers\ActionReplayVisitor.cs" />
     <Compile Include="Writers\ActionReplayWriter.cs" />
-    <Compile Include="Writers\GeckoWriter.cs" />
+    <Compile Include="Writers\GeckoVisitor.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned16Add.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned32Add.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned8Add.cs" />
@@ -113,6 +115,9 @@
     <Compile Include="IntermediateRepresentation\IRUnsigned16LessThan.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned32LessThan.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned8LessThan.cs" />
+    <Compile Include="Code.cs" />
+    <Compile Include="Writers\GeckoWriter.cs" />
+    <Compile Include="Writers\ICodeWriter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
