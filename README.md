@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/CryZe/GekkoAssembler.svg)](https://travis-ci.org/CryZe/GekkoAssembler) [![Build status](https://ci.appveyor.com/api/projects/status/gbs2ur6lfolmipxn?svg=true)](https://ci.appveyor.com/project/CryZe/gekkoassembler)
 
-Assembles Gekko Assembly to an Action Replay Cheat Code.
+Assembles Gekko Assembly to an Action Replay or Gecko Cheat Code.
 
 ## Examples
 
