@@ -94,6 +94,7 @@
             // txtInput
             // 
             this.txtInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtInput.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInput.Location = new System.Drawing.Point(0, 0);
             this.txtInput.Multiline = true;
             this.txtInput.Name = "txtInput";
@@ -106,6 +107,7 @@
             // txtOutput
             // 
             this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtOutput.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOutput.Location = new System.Drawing.Point(0, 0);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
@@ -117,6 +119,7 @@
             // txtErrorsAndWarnings
             // 
             this.txtErrorsAndWarnings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtErrorsAndWarnings.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtErrorsAndWarnings.Location = new System.Drawing.Point(0, 0);
             this.txtErrorsAndWarnings.Multiline = true;
             this.txtErrorsAndWarnings.Name = "txtErrorsAndWarnings";
