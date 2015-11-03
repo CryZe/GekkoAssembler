@@ -28,7 +28,7 @@ namespace GekkoAssembler.Forms
 
         private void assemble()
         {
-            txtErrorsAndWarnings.Text = txtOutput.Text = string.Empty;
+            txtErrorsAndWarnings.Text = string.Empty;
 
             var assembler = new Assembler();
             var lines = txtInput.Text.Split('\n');
@@ -54,7 +54,7 @@ namespace GekkoAssembler.Forms
             }
             catch (Exception ex)
             {
-                txtErrorsAndWarnings.Text = ex.Message;
+                txtErrorsAndWarnings.Text = $"Error: {ex.Message}";
             }
         }
 
