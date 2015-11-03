@@ -29,6 +29,14 @@
         void Visit(IRSigned32LessThan instruction);
         void Visit(IRFloat32LessThan instruction);
 
+        void Visit(IRUnsigned8GreaterThan instruction);
+        void Visit(IRUnsigned16GreaterThan instruction);
+        void Visit(IRUnsigned32GreaterThan instruction);
+        void Visit(IRSigned8GreaterThan instruction);
+        void Visit(IRSigned16GreaterThan instruction);
+        void Visit(IRSigned32GreaterThan instruction);
+        void Visit(IRFloat32GreaterThan instruction);
+
         void Visit(IRUnsigned8Add instruction);
         void Visit(IRUnsigned16Add instruction);
         void Visit(IRUnsigned32Add instruction);

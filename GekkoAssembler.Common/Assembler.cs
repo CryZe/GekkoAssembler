@@ -139,6 +139,21 @@ namespace GekkoAssembler
             if (line.StartsWith("f32lessthan "))
                 return ParseFloat32LessThan(line, instructionPointer, lines);
 
+            if (line.StartsWith("u8greaterthan "))
+                return ParseUnsigned8GreaterThan(line, instructionPointer, lines);
+            if (line.StartsWith("u16greaterthan "))
+                return ParseUnsigned16GreaterThan(line, instructionPointer, lines);
+            if (line.StartsWith("u32greaterthan "))
+                return ParseUnsigned32GreaterThan(line, instructionPointer, lines);
+            if (line.StartsWith("s8greaterthan "))
+                return ParseSigned8GreaterThan(line, instructionPointer, lines);
+            if (line.StartsWith("s16greaterthan "))
+                return ParseSigned16GreaterThan(line, instructionPointer, lines);
+            if (line.StartsWith("s32greaterthan "))
+                return ParseSigned32GreaterThan(line, instructionPointer, lines);
+            if (line.StartsWith("f32greaterthan "))
+                return ParseFloat32GreaterThan(line, instructionPointer, lines);
+
             if (line.StartsWith("u8add "))
                 return ParseUnsigned8Add(line, instructionPointer);
             if (line.StartsWith("u16add "))
@@ -386,6 +401,66 @@ namespace GekkoAssembler
             var value = (float)ParseFloatLiteral(parameters[0]);
             var block = assembleAllLines(lines, instructionPointer);
             return new IRFloat32LessThan(instructionPointer, value, block);
+        }
+
+        #endregion
+
+        #region Greater Than
+
+        private IIRUnit ParseUnsigned8GreaterThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u8greaterthan");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned8GreaterThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned16GreaterThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u16greaterthan");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned16GreaterThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned32GreaterThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u32greaterthan");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned32GreaterThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned8GreaterThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s8greaterthan");
+            var value = (sbyte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned8GreaterThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned16GreaterThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s16greaterthan");
+            var value = (short)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned16GreaterThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseSigned32GreaterThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "s32greaterthan");
+            var value = ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRSigned32GreaterThan(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseFloat32GreaterThan(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "f32greaterthan");
+            var value = (float)ParseFloatLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRFloat32GreaterThan(instructionPointer, value, block);
         }
 
         #endregion

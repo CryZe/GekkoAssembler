@@ -188,8 +188,52 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRFloat32LessThan instruction)
         {
-            Builder.AddWarning("There's no way of representing \"Floating Point Less Than\", using \"Signed 32 Bit Less Than\" instead. That's correct for positive floating point numbers.");
-            WriteActivator(instruction.ConditionalCode, 0x1C, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+            if (instruction.Value < 0)
+                WriteActivator(instruction.ConditionalCode, 0x34, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+            else
+                WriteActivator(instruction.ConditionalCode, 0x1C, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+        }
+
+        #endregion
+
+        #region Greater Than
+
+        public void Visit(IRUnsigned8GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x30, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned16GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x32, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned32GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x34, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned8GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x20, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned16GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned32GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x24, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRFloat32GreaterThan instruction)
+        {
+            if (instruction.Value < 0)
+                WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+            else
+                WriteActivator(instruction.ConditionalCode, 0x24, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
         }
 
         #endregion

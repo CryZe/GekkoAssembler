@@ -179,6 +179,49 @@ namespace GekkoAssembler.Writers
 
         #endregion
 
+        #region Greater Than
+
+        public void Visit(IRUnsigned8GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, instruction.Value, 0xFF000000);
+        }
+
+        public void Visit(IRUnsigned16GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned32GreaterThan instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x24, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned8GreaterThan instruction)
+        {
+            Builder.AddWarning("There is no way of representing \"Signed 8 Bit Greater Than\", using \"Unsigned 8 Bit Greater Than\" instead.");
+            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, instruction.Value, 0xFF000000);
+        }
+
+        public void Visit(IRSigned16GreaterThan instruction)
+        {
+            Builder.AddWarning("There is no way of representing \"Signed 16 Bit Greater Than\", using \"Unigned 16 Bit Greater Than\" instead.");
+            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRSigned32GreaterThan instruction)
+        {
+            Builder.AddWarning("There is no way of representing \"Signed 32 Bit Greater Than\", using \"Unsigned 32 Bit Greater Than\" instead.");
+            WriteActivator(instruction.ConditionalCode, 0x24, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRFloat32GreaterThan instruction)
+        {
+            Builder.AddWarning("There is no way of representing \"Floating Point Greater Than\", using \"Unsigned 32 Bit Greater Than\" instead. That's correct for positive floating point numbers.");
+            WriteActivator(instruction.ConditionalCode, 0x24, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
+        }
+
+        #endregion
+
         private void WriteActivator<T>(IRCodeBlock block, int type, int address, T value, uint mask = 0)
         {
             var code = new GeckoWriter().WriteCode(block);
