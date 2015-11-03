@@ -188,7 +188,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRFloat32LessThan instruction)
         {
-            //Note: There's no way of representing Floating Point Less Than. Using Signed 32 Bit Less Than instead.
+            Builder.AddWarning("There's no way of representing \"Floating Point Less Than\", using \"Signed 32 Bit Less Than\" instead. That's correct for positive floating point numbers.");
             WriteActivator(instruction.ConditionalCode, 0x1C, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
         }
 

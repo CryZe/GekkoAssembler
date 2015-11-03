@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using GekkoAssembler.Writers;
 
@@ -25,26 +26,46 @@ namespace GekkoAssembler.Forms
             }
         }
 
-        private void btnAssemble_Click(object sender, EventArgs e)
+        private void assemble()
         {
+            txtErrorsAndWarnings.Text = txtOutput.Text = string.Empty;
+
             var assembler = new Assembler();
             var lines = txtInput.Text.Split('\n');
-            var gekkoAssembly = assembler.AssembleAllLines(lines);
-
-            ICodeWriter writer;
-
-            if (cmbType.SelectedItem.ToString() == "Gecko")
+            try
             {
-                writer = new GeckoWriter();
+                var gekkoAssembly = assembler.AssembleAllLines(lines);
+
+                ICodeWriter writer;
+
+                if (cmbType.SelectedItem.ToString() == "Gecko")
+                {
+                    writer = new GeckoWriter();
+                }
+                else
+                {
+                    writer = new ActionReplayWriter();
+                }
+
+                var code = writer.WriteCode(gekkoAssembly);
+
+                txtOutput.Text = string.Join(Environment.NewLine, code.Lines);
+                txtErrorsAndWarnings.Text = string.Join(Environment.NewLine, code.Errors.Select(x => $"Error: {x}").Concat(code.Warnings.Select(x => $"Warning: {x}")));
             }
-            else
+            catch (Exception ex)
             {
-                writer = new ActionReplayWriter();
+                txtErrorsAndWarnings.Text = ex.Message;
             }
+        }
 
-            var code = writer.WriteCode(gekkoAssembly);
+        private void txtInput_TextChanged(object sender, EventArgs e)
+        {
+            assemble();
+        }
 
-            txtOutput.Text = string.Join(Environment.NewLine, code.Lines);
+        private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            assemble();
         }
     }
 }

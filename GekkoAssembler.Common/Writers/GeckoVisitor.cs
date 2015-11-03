@@ -155,25 +155,25 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRSigned8LessThan instruction)
         {
-            //Note: There is no way of representing Signed 8 Bit Less Than. Using Unsigned 8 Bit Less Than instead.
+            Builder.AddWarning("There is no way of representing \"Signed 8 Bit Less Than\", using \"Unsigned 8 Bit Less Than\" instead.");
             WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRSigned16LessThan instruction)
         {
-            //Note: There is no way of representing Signed 16 Bit Less Than. Using Unigned 16 Bit Less Than instead.
+            Builder.AddWarning("There is no way of representing \"Signed 16 Bit Less Than\", using \"Unigned 16 Bit Less Than\" instead.");
             WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value);
         }
 
         public void Visit(IRSigned32LessThan instruction)
         {
-            //Note: There is no way of representing Signed 32 Bit Less Than. Using Unsigned 32 Bit Less Than instead.
+            Builder.AddWarning("There is no way of representing \"Signed 32 Bit Less Than\", using \"Unsigned 32 Bit Less Than\" instead.");
             WriteActivator(instruction.ConditionalCode, 0x26, instruction.Address, instruction.Value);
         }
 
         public void Visit(IRFloat32LessThan instruction)
         {
-            //Note: There is no way of representing Floating Point Less Than. Using Unsigned 32 Bit Less Than instead.
+            Builder.AddWarning("There is no way of representing \"Floating Point Less Than\", using \"Unsigned 32 Bit Less Than\" instead. That's correct for positive floating point numbers.");
             WriteActivator(instruction.ConditionalCode, 0x22, instruction.Address, BitConverter.ToInt32(BitConverter.GetBytes(instruction.Value), 0));
         }
 
