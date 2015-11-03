@@ -62,7 +62,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned8Equal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRUnsigned16Equal instruction)
@@ -77,7 +77,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRSigned8Equal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRSigned16Equal instruction)
@@ -101,7 +101,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned8Unequal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRUnsigned16Unequal instruction)
@@ -116,7 +116,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRSigned8Unequal instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x2A, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRSigned16Unequal instruction)
@@ -140,7 +140,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned8LessThan instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRUnsigned16LessThan instruction)
@@ -156,7 +156,7 @@ namespace GekkoAssembler.Writers
         public void Visit(IRSigned8LessThan instruction)
         {
             Builder.AddWarning("There is no way of representing \"Signed 8 Bit Less Than\", using \"Unsigned 8 Bit Less Than\" instead.");
-            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x2E, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRSigned16LessThan instruction)
@@ -183,7 +183,7 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned8GreaterThan instruction)
         {
-            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRUnsigned16GreaterThan instruction)
@@ -199,7 +199,7 @@ namespace GekkoAssembler.Writers
         public void Visit(IRSigned8GreaterThan instruction)
         {
             Builder.AddWarning("There is no way of representing \"Signed 8 Bit Greater Than\", using \"Unsigned 8 Bit Greater Than\" instead.");
-            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address, instruction.Value, 0xFF000000);
+            WriteActivator(instruction.ConditionalCode, 0x2C, instruction.Address - 1, instruction.Value, 0xFF000000);
         }
 
         public void Visit(IRSigned16GreaterThan instruction)
