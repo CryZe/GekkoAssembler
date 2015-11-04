@@ -27,7 +27,7 @@ namespace GekkoAssembler.Tests
             }
         }
 
-        [Test(Description = "D-Pad Down for Storage")]
+        [Test(TestName = "D-Pad Down for Storage")]
         public void TestStorage()
         {
             var input = ActionReplayResources.StorageInput;
@@ -37,7 +37,7 @@ namespace GekkoAssembler.Tests
             Test(input, output, message);
         }
 
-        [Test(Description = "R + D-Pad Right to Load Earth Temple")]
+        [Test(TestName = "R + D-Pad Right to Load Earth Temple")]
         public void TestLoadEarthTemple()
         {
             var input = ActionReplayResources.LoadEarthTempleInput;
@@ -47,7 +47,7 @@ namespace GekkoAssembler.Tests
             Test(input, output, message);
         }
 
-        [Test(Description = "Show Stage Information")]
+        [Test(TestName = "Show Stage Information")]
         public void TestShowStageInformation()
         {
             var input = ActionReplayResources.ShowStageInformationInput;
@@ -57,7 +57,7 @@ namespace GekkoAssembler.Tests
             Test(input, output, message);
         }
 
-        [Test(Description = "Show In-Game Timer")]
+        [Test(TestName = "Show In-Game Timer")]
         public void TestShowIGT()
         {
             var input = ActionReplayResources.ShowIGTInput;
@@ -67,7 +67,7 @@ namespace GekkoAssembler.Tests
             Test(input, output, message);
         }
 
-        [Test(Description = "Write Pattern Optimizer")]
+        [Test(TestName = "Write Pattern Optimizer")]
         public void TestWritePatternOptimizer()
         {
             var input = ActionReplayResources.WritePatternOptimizerInput;
