@@ -20,7 +20,7 @@ namespace GekkoAssembler
 
         public Assembler()
         {
-            Optimizers = new List<IOptimizer>() { new WriteDataOptimizer() };
+            Optimizers = new List<IOptimizer>() { new IRMultiUnitOptimizer(), new WriteDataOptimizer() };
         }
 
         private static string reduceLineToCode(string line)
@@ -34,7 +34,7 @@ namespace GekkoAssembler
         public IRCodeBlock AssembleAllLines(IEnumerable<string> lines)
         {
             var instructionPointer = 0x00000000;
-            return assembleAllLines(new Queue<string>(lines), instructionPointer);
+            return assembleAllLinesRef(new Queue<string>(lines), ref instructionPointer);
         }
 
         private IEnumerable<string> GetCodeLines(Queue<string> lines)
@@ -48,7 +48,12 @@ namespace GekkoAssembler
             }
         }
 
-        private IRCodeBlock assembleAllLines(Queue<string> lines, int instructionPointer)
+        public IRCodeBlock assembleAllLines(Queue<string> lines, int instructionPointer)
+        {
+            return assembleAllLinesRef(lines, ref instructionPointer);
+        }
+
+        private IRCodeBlock assembleAllLinesRef(Queue<string> lines, ref int instructionPointer)
         {
             var units = new List<IIRUnit>();
 
@@ -63,7 +68,7 @@ namespace GekkoAssembler
                     if (line == "!end")
                         break;
 
-                    var specialInstruction = ParseSpecialInstruction(line.Substring(1), instructionPointer, lines);
+                    var specialInstruction = ParseSpecialInstruction(line.Substring(1), ref instructionPointer, lines);
                     units.Add(specialInstruction);
                 }
                 else if (line.StartsWith("."))
@@ -92,7 +97,7 @@ namespace GekkoAssembler
             return block;
         }
 
-        private IIRUnit ParseSpecialInstruction(string line, int instructionPointer, Queue<string> lines)
+        private IIRUnit ParseSpecialInstruction(string line, ref int instructionPointer, Queue<string> lines)
         {
             if (line.StartsWith("u8equal "))
                 return ParseUnsigned8Equal(line, instructionPointer, lines);
@@ -169,7 +174,26 @@ namespace GekkoAssembler
             if (line.StartsWith("f32add "))
                 return ParseFloat32Add(line, instructionPointer);
 
+            if (line.StartsWith("repeat "))
+                return ParseRepeat(line, ref instructionPointer, lines);
+
             throw new ArgumentException($"The specified special instruction { line } is not supported.");
+        }
+
+        private IIRUnit ParseRepeat(string line, ref int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "repeat");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var units = new List<IIRUnit>();
+            for (var i = 0; i < value - 1; ++i)
+            {
+                units.AddRange(assembleAllLinesRef(new Queue<string>(lines), ref instructionPointer).Units);
+            }
+            if (value > 0)
+            {
+                units.AddRange(assembleAllLinesRef(lines, ref instructionPointer).Units);
+            }
+            return new IRMultiUnit(units);
         }
 
         #region Add

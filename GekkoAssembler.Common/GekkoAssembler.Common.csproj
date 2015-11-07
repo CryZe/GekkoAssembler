@@ -84,6 +84,7 @@
     <Compile Include="IntermediateRepresentation\IRFloat32Add.cs" />
     <Compile Include="IntermediateRepresentation\IRFloat32Equal.cs" />
     <Compile Include="IntermediateRepresentation\IRFloat32GreaterThan.cs" />
+    <Compile Include="IntermediateRepresentation\IRMultiUnit.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned16Equal.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned16GreaterThan.cs" />
     <Compile Include="IntermediateRepresentation\IRSigned32Equal.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="IntermediateRepresentation\IRUnsigned8GreaterThan.cs" />
     <Compile Include="IntermediateRepresentation\IRWriteData.cs" />
     <Compile Include="Optimizers\CustomIRWriteData.cs" />
+    <Compile Include="Optimizers\IRMultiUnitOptimizer.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Optimizers\IOptimizer.cs" />
     <Compile Include="Optimizers\IRCombinedWriteData.cs" />
