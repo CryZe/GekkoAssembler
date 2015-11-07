@@ -22,7 +22,10 @@ namespace GekkoAssembler.Optimizers
                         var currentWriteData = current as IRWriteData;
                         var lastWriteData = last as IRWriteData;
 
-                        if (currentWriteData.Address == lastWriteData.Address + lastWriteData.Data.Length)
+                        var lastBeganAligned = lastWriteData.Address % 4 == 0;
+                        var consecutive = currentWriteData.Address == lastWriteData.Address + lastWriteData.Data.Length;
+
+                        if (lastBeganAligned && consecutive)
                         {
                             var combined = new IRCombinedWriteData(lastWriteData, currentWriteData);
                             units = units.TakeWhile(x => x != last)
