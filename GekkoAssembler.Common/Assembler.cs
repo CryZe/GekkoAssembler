@@ -37,22 +37,22 @@ namespace GekkoAssembler
             return assembleAllLines(new Queue<string>(lines), instructionPointer);
         }
 
-        private string dequeueNextLine(Queue<string> lines)
+        private IEnumerable<string> GetCodeLines(Queue<string> lines)
         {
-            string line = null;
-            while (lines.Any()
-                && string.IsNullOrWhiteSpace(line = reduceLineToCode(lines.Dequeue())))
-            { }
-
-            return line;
+            while (lines.Any())
+            {
+                var line = lines.Dequeue();
+                line = reduceLineToCode(line);
+                if (!string.IsNullOrWhiteSpace(line))
+                    yield return line;
+            }
         }
 
         private IRCodeBlock assembleAllLines(Queue<string> lines, int instructionPointer)
         {
             var units = new List<IIRUnit>();
-            string line;
 
-            while (!string.IsNullOrWhiteSpace(line = dequeueNextLine(lines)))
+            foreach (var line in GetCodeLines(lines))
             {
                 if (line.EndsWith(":"))
                 {
