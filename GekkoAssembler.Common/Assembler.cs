@@ -70,7 +70,7 @@ namespace GekkoAssembler
                 {
                     var dataSection = ParseDataSection(line.Substring(1), instructionPointer);
                     units.Add(dataSection);
-                    instructionPointer += dataSection.Data.Length;
+                    instructionPointer += dataSection.Length;
                 }
                 else
                 {

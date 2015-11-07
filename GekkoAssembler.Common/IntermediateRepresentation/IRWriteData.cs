@@ -4,6 +4,7 @@
     {
         public abstract int Address { get; }
         public abstract byte[] Data { get; }
+        public int Length => Data.Length;
 
         public void Accept(IIRUnitVisitor visitor)
         {

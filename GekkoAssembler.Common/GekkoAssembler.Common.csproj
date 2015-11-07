@@ -100,6 +100,7 @@
     <Compile Include="IntermediateRepresentation\IRUnsigned8Equal.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned8GreaterThan.cs" />
     <Compile Include="IntermediateRepresentation\IRWriteData.cs" />
+    <Compile Include="Optimizers\CustomIRWriteData.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Optimizers\IOptimizer.cs" />
     <Compile Include="Optimizers\IRCombinedWriteData.cs" />

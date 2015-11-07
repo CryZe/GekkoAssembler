@@ -231,20 +231,19 @@ namespace GekkoAssembler.Tests {
         ///04491A64 00000070
         ///04491A80 00000000
         ///00491A84 00000001
-        ///04491A89 53746167
-        ///02491A8D 0000653A
-        ///00491A8F 00000020
-        ///00491AC6 000000FF
-        ///04491AC7 526F6F6D
-        ///02491ACB 00003A20
+        ///00491A89 00000053
+        ///02491A8A 00007461
+        ///04491A8C 67653A20
+        ///02491AC6 0000FF52
+        ///04491AC8 6F6F6D3A
+        ///00491ACC 00000020
         ///04491B04 FF456E74
         ///04491B08 72616E63
         ///02491B0C 0000653A
         ///00491B0E 00000020
-        ///00491B42 000000FF
-        ///04491B43 4C617965
-        ///02491B47 0000723A
-        ///00491B49 00000020
+        ///02491B42 0000FF4C
+        ///04491B44 61796572
+        ///02491B48 00003A20
         ///00491BBE 00000000
         ///043B7FF4 25582C20
         ///043B7FF8 25582C20
@@ -254,6 +253,7 @@ namespace GekkoAssembler.Tests {
         ///0400645C 489F9BA5
         ///04A00000 9421FFF0
         ///04A00004 7C0802A6
+        ///04A00008 90010014
         /// [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string ShowStageInformationOutput {
@@ -302,13 +302,11 @@ namespace GekkoAssembler.Tests {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die 00123456 0000054C
-        ///0412345B ABCDABCD
-        ///0212345F 0000ABCD
-        ///00123461 000000AB
-        ///00123462 000000CE
-        ///04123463 12349999
-        ///00123467 00000099 ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die 02123456 00004C4C
+        ///04123458 4C4C4CAB
+        ///0412345C CDABCDAB
+        ///04123460 CDABCE12
+        ///04123464 34999999 ähnelt.
         /// </summary>
         internal static string WritePatternOptimizerOutput {
             get {

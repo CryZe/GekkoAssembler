@@ -18,30 +18,30 @@ namespace GekkoAssembler.Writers
         {
             var i = 0;
 
-            if (instruction.Data.Length <= 4)
+            if (instruction.Length <= 4)
             {
-                if (i + 4 == instruction.Data.Length)
+                if (i + 4 == instruction.Length)
                 {
                     Builder.WriteLine($"{0x04 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 24 | instruction.Data[i + 1] << 16 | instruction.Data[i + 2] << 8 | instruction.Data[i + 3]:X8}");
                     i += 4;
                 }
 
-                if (i + 2 <= instruction.Data.Length)
+                if (i + 2 <= instruction.Length)
                 {
                     Builder.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 8 | instruction.Data[i + 1]:X8}");
                     i += 2;
                 }
 
-                if (i < instruction.Data.Length)
+                if (i < instruction.Length)
                 {
                     Builder.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i]:X8}");
                 }
             }
             else
             {
-                Builder.WriteLine($"{0x06 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data.Length:X8}");
+                Builder.WriteLine($"{0x06 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Length:X8}");
 
-                while (i < instruction.Data.Length)
+                while (i < instruction.Length)
                 {
                     var bytes = instruction.Data.Skip(i).Take(8).ToList();
                     bytes.AddRange(Enumerable.Repeat<byte>(0, 8 - bytes.Count()));
