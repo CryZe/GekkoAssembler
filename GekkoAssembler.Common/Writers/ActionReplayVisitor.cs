@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GekkoAssembler.IntermediateRepresentation;
 
@@ -14,6 +15,12 @@ namespace GekkoAssembler.Writers
         }
 
         public void Visit(IRWriteData instruction)
+        {
+            foreach (var line in GetWriteDataLines(instruction))
+                Builder.WriteLine(line);
+        }
+
+        private static IEnumerable<string> GetWriteDataLines(IRWriteData instruction)
         {
             var i = 0;
 
@@ -42,7 +49,7 @@ namespace GekkoAssembler.Writers
                     if (patternCount > 4)
                     {
                         //Single Byte Pattern of more than 4 bytes found
-                        Builder.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount-1:X6}{valueI:X2}");
+                        yield return $"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount - 1:X6}{valueI:X2}";
                         i += patternCount;
                         continue;
                     }
@@ -63,32 +70,32 @@ namespace GekkoAssembler.Writers
 
                     if (patternCount > 2)
                     {
-                        Builder.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount-1:X4}{valueI << 8 | valueI2:X4}");
+                        yield return $"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount - 1:X4}{valueI << 8 | valueI2:X4}";
                         i += 2 * patternCount;
                         continue;
                     }
                 }
 
-                Builder.WriteLine($"{0x04 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 24 | instruction.Data[i + 1] << 16 | instruction.Data[i + 2] << 8 | instruction.Data[i + 3]:X8}");
+                yield return $"{0x04 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 24 | instruction.Data[i + 1] << 16 | instruction.Data[i + 2] << 8 | instruction.Data[i + 3]:X8}";
                 i += 4;
             }
 
             if (i + 3 <= instruction.Length && instruction.Data[i] == instruction.Data[i + 1] && instruction.Data[i] == instruction.Data[i + 2])
             {
                 //3 times the same byte can be optimized into a single write
-                Builder.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} 000003{instruction.Data[i]:X2}");
+                yield return $"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} 000003{instruction.Data[i]:X2}";
                 i += 3;
             }
 
             if (i + 2 <= instruction.Length)
             {
-                Builder.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 8 | instruction.Data[i + 1]:X8}");
+                yield return $"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i] << 8 | instruction.Data[i + 1]:X8}";
                 i += 2;
             }
 
             if (i < instruction.Length)
             {
-                Builder.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i]:X8}");
+                yield return $"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {instruction.Data[i]:X8}";
             }
         }
 
