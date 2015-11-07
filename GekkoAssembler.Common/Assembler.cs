@@ -188,15 +188,16 @@ namespace GekkoAssembler
         private IIRUnit ParseRepeat(string line, ref int instructionPointer, Queue<string> lines)
         {
             var parameters = ParseParameters(line, "repeat");
-            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var value = ParseIntegerLiteral(parameters[0]);
             var units = new List<IIRUnit>();
             for (var i = 0; i < value - 1; ++i)
             {
                 units.AddRange(assembleAllLinesRef(new Queue<string>(lines), ref instructionPointer).Units);
             }
+            var lastRepeat = assembleAllLinesRef(lines, ref instructionPointer).Units;
             if (value > 0)
             {
-                units.AddRange(assembleAllLinesRef(lines, ref instructionPointer).Units);
+                units.AddRange(lastRepeat);
             }
             return new IRMultiUnit(units);
         }
