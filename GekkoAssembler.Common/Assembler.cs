@@ -609,12 +609,18 @@ namespace GekkoAssembler
                 return ParseInstructionLBZ(line, instructionPointer);
             if (line.StartsWith("lis "))
                 return ParseInstructionLIS(line, instructionPointer);
+            if (line.StartsWith("lfs "))
+                return ParseInstructionLFS(line, instructionPointer);
             if (line.StartsWith("ori "))
                 return ParseInstructionORI(line, instructionPointer);
             if (line.StartsWith("crclr "))
                 return ParseInstructionCRCLR(line, instructionPointer);
             if (line.StartsWith("crxor "))
                 return ParseInstructionCRXOR(line, instructionPointer);
+            if (line.StartsWith("creqv "))
+                return ParseInstructionCREQV(line, instructionPointer);
+            if (line.StartsWith("crset "))
+                return ParseInstructionCRSET(line, instructionPointer);
             if (line.StartsWith("sub "))
                 return ParseInstructionSUB(line, instructionPointer);
             if (line.StartsWith("subf "))
@@ -750,6 +756,15 @@ namespace GekkoAssembler
             return new LoadByteAndZeroInstruction(instructionPointer, rd, ra, offset);
         }
 
+        private GekkoInstruction ParseInstructionLFS(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "lfs");
+            var rd = ParseRegister(parameters[0]);
+            var offset = ParseIntegerLiteral(parameters[1]);
+            var ra = ParseRegister(parameters[2]);
+            return new LoadFloatingPointSingleInstruction(instructionPointer, rd, ra, offset);
+        }
+
         private GekkoInstruction ParseInstructionBLA(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "bla");
@@ -792,6 +807,22 @@ namespace GekkoAssembler
             var crba = ParseConditionRegister(parameters[1]);
             var crbb = ParseConditionRegister(parameters[2]);
             return new ConditionRegisterXORInstruction(instructionPointer, crbd, crba, crbb);
+        }
+
+        private GekkoInstruction ParseInstructionCRSET(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "crset");
+            var crbd = ParseConditionRegister(parameters[0]);
+            return new ConditionRegisterSetInstruction(instructionPointer, crbd);
+        }
+
+        private GekkoInstruction ParseInstructionCREQV(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "creqv");
+            var crbd = ParseConditionRegister(parameters[0]);
+            var crba = ParseConditionRegister(parameters[1]);
+            var crbb = ParseConditionRegister(parameters[2]);
+            return new ConditionRegisterEquivalentInstruction(instructionPointer, crbd, crba, crbb);
         }
 
         private GekkoInstruction ParseInstructionMULLI(string line, int instructionPointer)

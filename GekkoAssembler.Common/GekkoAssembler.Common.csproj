@@ -57,10 +57,13 @@
     <Compile Include="GekkoInstructions\BranchInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchToLinkRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterClearInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterEquivalentInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterSetInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterXORInstruction.cs" />
     <Compile Include="GekkoInstructions\DivideWordInstruction.cs" />
     <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadByteAndZeroInstruction.cs" />
+    <Compile Include="GekkoInstructions\LoadFloatingPointSingleInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadHalfWordAndZeroInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadImmediateShiftedInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadWordAndZeroInstruction.cs" />
