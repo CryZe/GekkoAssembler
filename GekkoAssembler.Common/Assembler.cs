@@ -465,7 +465,7 @@ namespace GekkoAssembler
 
         #endregion
 
-        private GekkoDataSection ParseDataSection(string line, int instructionPointer)
+        private IRWriteData ParseDataSection(string line, int instructionPointer)
         {
             if (line.StartsWith("str "))
                 return ParseStringDataSection(line, instructionPointer);
@@ -495,7 +495,7 @@ namespace GekkoAssembler
 
         #region Data Sections
 
-        private GekkoDataSection ParseStringDataSection(string line, int instructionPointer)
+        private IRWriteData ParseStringDataSection(string line, int instructionPointer)
         {
             var literal = line.Substring(line.IndexOf("\""));
             var text = ParseStringLiteral(literal);
@@ -507,70 +507,70 @@ namespace GekkoAssembler
             return literal.Substring(1, literal.Length - 2);
         }
 
-        private GekkoDataSection ParseUnsigned8DataSection(string line, int instructionPointer)
+        private IRWriteData ParseUnsigned8DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u8");
             var value = (byte)ParseIntegerLiteral(parameters[0]);
             return new Unsigned8DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseUnsigned16DataSection(string line, int instructionPointer)
+        private IRWriteData ParseUnsigned16DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u16");
             var value = (ushort)ParseIntegerLiteral(parameters[0]);
             return new Unsigned16DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseUnsigned32DataSection(string line, int instructionPointer)
+        private IRWriteData ParseUnsigned32DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u32");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
             return new Unsigned32DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseUnsigned64DataSection(string line, int instructionPointer)
+        private IRWriteData ParseUnsigned64DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "u64");
             var value = (ulong)ParseInteger64Literal(parameters[0]);
             return new Unsigned64DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseSigned8DataSection(string line, int instructionPointer)
+        private IRWriteData ParseSigned8DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "s8");
             var value = (sbyte)ParseIntegerLiteral(parameters[0]);
             return new Signed8DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseSigned16DataSection(string line, int instructionPointer)
+        private IRWriteData ParseSigned16DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "s16");
             var value = (short)ParseIntegerLiteral(parameters[0]);
             return new Signed16DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseSigned32DataSection(string line, int instructionPointer)
+        private IRWriteData ParseSigned32DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "s32");
             var value = ParseIntegerLiteral(parameters[0]);
             return new Signed32DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseSigned64DataSection(string line, int instructionPointer)
+        private IRWriteData ParseSigned64DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "s64");
             var value = ParseInteger64Literal(parameters[0]);
             return new Signed64DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseFloat32DataSection(string line, int instructionPointer)
+        private IRWriteData ParseFloat32DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "f32");
             var value = (float)ParseFloatLiteral(parameters[0]);
             return new Float32DataSection(instructionPointer, value);
         }
 
-        private GekkoDataSection ParseFloat64DataSection(string line, int instructionPointer)
+        private IRWriteData ParseFloat64DataSection(string line, int instructionPointer)
         {
             var parameters = ParseParameters(line, "f64");
             var value = ParseFloatLiteral(parameters[0]);

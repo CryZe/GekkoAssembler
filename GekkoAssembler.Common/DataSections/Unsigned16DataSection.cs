@@ -2,16 +2,12 @@ using System;
 
 namespace GekkoAssembler.DataSections
 {
-    public class Unsigned16DataSection : GekkoDataSection
+    public sealed class Unsigned16DataSection : GekkoDataSection<ushort>
     {
-        public override int Address { get; }
         public override byte[] Data => BitConverter.GetBytes(Value).SwapEndian16();
-        public ushort Value { get; }
 
-        public Unsigned16DataSection(int address, ushort value)
+        public Unsigned16DataSection(int address, ushort value) : base(address, value)
         {
-            Address = address;
-            Value = value;
         }
     }
 }

@@ -1,15 +1,11 @@
 namespace GekkoAssembler.DataSections
 {
-    public class Signed8DataSection : GekkoDataSection
+    public sealed class Signed8DataSection : GekkoDataSection<sbyte>
     {
-        public override int Address { get; }
-        public override byte[] Data => new byte[] { (byte)Value };
-        public sbyte Value { get; }
+        public override byte[] Data => new[] { (byte)Value };
 
-        public Signed8DataSection(int address, sbyte value)
+        public Signed8DataSection(int address, sbyte value) : base(address, value)
         {
-            Address = address;
-            Value = value;
         }
     }
 }

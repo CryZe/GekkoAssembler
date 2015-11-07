@@ -2,16 +2,12 @@ using System.Text;
 
 namespace GekkoAssembler.DataSections
 {
-    public class StringDataSection : GekkoDataSection
+    public sealed class StringDataSection : GekkoDataSection<string>
     {
-        public override int Address { get; }
-        public override byte[] Data => Encoding.UTF8.GetBytes(Text);
-        public string Text { get; }
+        public override byte[] Data => Encoding.UTF8.GetBytes(Value);
 
-        public StringDataSection(int address, string text)
+        public StringDataSection(int address, string text) : base(address, text)
         {
-            Address = address;
-            Text = text;
         }
     }
 }
