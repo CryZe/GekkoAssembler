@@ -25,13 +25,24 @@ namespace GekkoAssembler.Writers
                     var valueI = instruction.Data[i];
 
                     var patternCount = instruction.Data.Skip(i + 1).TakeWhile(x => x == valueI).Count() + 1;
-                    //Keep Alignment
-                    patternCount = 4 * (patternCount / 4);
+
+                    var bytesLeft = instruction.Length - (i + patternCount);
+
+                    if (bytesLeft >= 4)
+                    {
+                        //Keep Alignment
+                        patternCount = 4 * (patternCount / 4);
+                    }
+                    else if (bytesLeft >= 2)
+                    {
+                        //Keep Alignment
+                        patternCount = 2 * (patternCount / 2);
+                    }
 
                     if (patternCount > 4)
                     {
                         //Single Byte Pattern of more than 4 bytes found
-                        Builder.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount:X6}{valueI:X2}");
+                        Builder.WriteLine($"{0x00 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount-1:X6}{valueI:X2}");
                         i += patternCount;
                         continue;
                     }
@@ -41,12 +52,18 @@ namespace GekkoAssembler.Writers
                     var patternCountI1 = instruction.Data.Skip(i + 2).Where((x, id) => id % 2 == 0).TakeWhile(x => x == valueI).Count() + 1;
                     var patternCountI2 = instruction.Data.Skip(i + 2).Where((x, id) => id % 2 == 1).TakeWhile(x => x == valueI2).Count() + 1;
                     patternCount = Math.Min(patternCountI1, patternCountI2);
-                    //Keep Alignment
-                    patternCount = 2 * (patternCount / 2);
+
+                    bytesLeft = instruction.Length - (i + 2 * patternCount);
+
+                    if (bytesLeft >= 4)
+                    {
+                        //Keep Alignment
+                        patternCount = 2 * (patternCount / 2);
+                    }
 
                     if (patternCount > 2)
                     {
-                        Builder.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount:X4}{valueI << 8 | valueI2:X4}");
+                        Builder.WriteLine($"{0x02 << 24 | (instruction.Address + i) & 0x1FFFFFF:X8} {patternCount-1:X4}{valueI << 8 | valueI2:X4}");
                         i += 2 * patternCount;
                         continue;
                     }
