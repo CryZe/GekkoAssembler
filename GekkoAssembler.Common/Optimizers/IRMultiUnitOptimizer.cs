@@ -11,8 +11,8 @@ namespace GekkoAssembler.Optimizers
             var units = block.Units;
 
             var newUnits = units
-                .Select(x => x is IRCodeBlock ? Optimize(x as IRCodeBlock) : x)
-                .SelectMany(x => x is IRMultiUnit ? (x as IRMultiUnit).Inner : (IEnumerable<IIRUnit>)new[] { x });
+                .SelectMany(x => x is IRMultiUnit ? (x as IRMultiUnit).Inner : (IEnumerable<IIRUnit>)new[] { x })
+                .Select(x => x is IRCodeBlock ? Optimize(x as IRCodeBlock) : x);
 
             return new IRCodeBlock(newUnits);
         }
