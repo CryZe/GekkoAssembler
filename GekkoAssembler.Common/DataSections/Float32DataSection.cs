@@ -2,16 +2,12 @@ using System;
 
 namespace GekkoAssembler.DataSections
 {
-    public class Float32DataSection : GekkoDataSection
+    public sealed class Float32DataSection : GekkoDataSection<float>
     {
-        public override int Address { get; }
         public override byte[] Data => BitConverter.GetBytes(Value).SwapEndian32();
-        public float Value { get; }
 
-        public Float32DataSection(int address, float value)
+        public Float32DataSection(int address, float value) : base(address, value)
         {
-            Address = address;
-            Value = value;
         }
     }
 }
