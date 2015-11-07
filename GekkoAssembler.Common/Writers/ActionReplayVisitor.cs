@@ -80,6 +80,22 @@ namespace GekkoAssembler.Writers
             block.Accept(this);
         }
 
+        #region Mask
+
+        public void Visit(IRUnsigned8Mask instruction)
+        {
+            Builder.AddWarning("There is no way of representing Masks, using \"Unsigned 8 Equal\" instead.");
+            WriteActivator(instruction.ConditionalCode, 0x08, instruction.Address, instruction.Value);
+        }
+
+        public void Visit(IRUnsigned16Mask instruction)
+        {
+            Builder.AddWarning("There is no way of representing Masks, using \"Unsigned 16 Equal\" instead.");
+            WriteActivator(instruction.ConditionalCode, 0x0A, instruction.Address, instruction.Value);
+        }
+
+        #endregion
+
         #region Equal
 
         public void Visit(IRUnsigned8Equal instruction)

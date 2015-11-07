@@ -58,6 +58,20 @@ namespace GekkoAssembler.Writers
             block.Accept(this);
         }
 
+        #region Mask
+
+        public void Visit(IRUnsigned8Mask instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address - 1, instruction.Value, (uint)(0xFF000000 | (~instruction.Value << 16)));
+        }
+
+        public void Visit(IRUnsigned16Mask instruction)
+        {
+            WriteActivator(instruction.ConditionalCode, 0x28, instruction.Address, instruction.Value, (uint)(~instruction.Value << 16));
+        }
+
+        #endregion
+
         #region Equal
 
         public void Visit(IRUnsigned8Equal instruction)

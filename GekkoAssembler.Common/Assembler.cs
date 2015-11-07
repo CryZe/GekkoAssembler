@@ -99,6 +99,11 @@ namespace GekkoAssembler
 
         private IIRUnit ParseSpecialInstruction(string line, ref int instructionPointer, Queue<string> lines)
         {
+            if (line.StartsWith("u8mask "))
+                return ParseUnsigned8Mask(line, instructionPointer, lines);
+            if (line.StartsWith("u16mask "))
+                return ParseUnsigned16Mask(line, instructionPointer, lines);
+
             if (line.StartsWith("u8equal "))
                 return ParseUnsigned8Equal(line, instructionPointer, lines);
             if (line.StartsWith("u16equal "))
@@ -195,6 +200,26 @@ namespace GekkoAssembler
             }
             return new IRMultiUnit(units);
         }
+
+        #region Mask
+
+        private IIRUnit ParseUnsigned8Mask(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u8mask");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned8Mask(instructionPointer, value, block);
+        }
+
+        private IIRUnit ParseUnsigned16Mask(string line, int instructionPointer, Queue<string> lines)
+        {
+            var parameters = ParseParameters(line, "u16mask");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var block = assembleAllLines(lines, instructionPointer);
+            return new IRUnsigned16Mask(instructionPointer, value, block);
+        }
+
+        #endregion
 
         #region Add
 
