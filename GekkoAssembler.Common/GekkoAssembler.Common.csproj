@@ -56,8 +56,14 @@
     <Compile Include="GekkoInstructions\AddImmediateShiftedInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchToLinkRegisterInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterANDComplementInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterANDInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterClearInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterEquivalentInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterNANDInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterNORInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterORComplementInstruction.cs" />
+    <Compile Include="GekkoInstructions\ConditionRegisterORInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterSetInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterXORInstruction.cs" />
     <Compile Include="GekkoInstructions\DivideWordInstruction.cs" />
