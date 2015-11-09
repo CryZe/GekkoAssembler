@@ -41,7 +41,7 @@ namespace GekkoAssembler.Optimizers
                 }
             }
 
-            return new IRCodeBlock(units.Select(x => x is IRCodeBlock ? Merge(x as IRCodeBlock) : x));
+            return units.Select(x => x is IRCodeBlock ? Merge(x as IRCodeBlock) : x).ToCodeBlock();
         }
 
         private IRCodeBlock FixAlignmentIssues(IRCodeBlock block)
@@ -50,7 +50,7 @@ namespace GekkoAssembler.Optimizers
 
             units = units.SelectMany(x => x is IRWriteData ? FixAlignmentIssues(x as IRWriteData) : new[] { x }).AsReadOnly();
             
-            return new IRCodeBlock(units.Select(x => x is IRCodeBlock ? FixAlignmentIssues(x as IRCodeBlock) : x));
+            return units.Select(x => x is IRCodeBlock ? FixAlignmentIssues(x as IRCodeBlock) : x).ToCodeBlock();
         }
 
         private IEnumerable<IIRUnit> FixAlignmentIssues(IRWriteData dataSection)

@@ -20,7 +20,7 @@ namespace GekkoAssembler
 
         public Assembler()
         {
-            Optimizers = new List<IOptimizer>() { new IRMultiUnitOptimizer(), new WriteDataOptimizer() };
+            Optimizers = new List<IOptimizer>() { new GeneralOptimizer() };
         }
 
         private static string reduceLineToCode(string line)
@@ -87,7 +87,7 @@ namespace GekkoAssembler
                 }
             }
 
-            var block = new IRCodeBlock(units);
+            var block = units.ToCodeBlock();
 
             foreach (var optimizer in Optimizers)
             {

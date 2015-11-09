@@ -354,23 +354,17 @@ namespace GekkoAssembler.Writers
 
         public void Visit(IRUnsigned8BitSet instruction)
         {
-            Builder.AddWarning("There is no way of representing Bit Sets, using \"Unsigned 8 Write\" instead.");
-            var dataSection = new CustomIRWriteData(instruction.Address, new[] { instruction.Value });
-            Visit(dataSection);
+            throw new ArgumentException("Bit Sets are not supported.");
         }
 
         public void Visit(IRUnsigned16BitSet instruction)
         {
-            Builder.AddWarning("There is no way of representing Bit Sets, using \"Unsigned 16 Write\" instead.");
-            var dataSection = new CustomIRWriteData(instruction.Address, BitConverter.GetBytes(instruction.Value).SwapEndian16());
-            Visit(dataSection);
+            throw new ArgumentException("Bit Sets are not supported.");
         }
 
         public void Visit(IRUnsigned32BitSet instruction)
         {
-            Builder.AddWarning("There is no way of representing Bit Sets, using \"Unsigned 32 Write\" instead.");
-            var dataSection = new CustomIRWriteData(instruction.Address, BitConverter.GetBytes(instruction.Value).SwapEndian32());
-            Visit(dataSection);
+            throw new ArgumentException("Bit Sets are not supported.");
         }
 
         #endregion

@@ -107,6 +107,9 @@
     <Compile Include="IntermediateRepresentation\IRUnsigned8BitSet.cs" />
     <Compile Include="IntermediateRepresentation\IRWriteData.cs" />
     <Compile Include="IntermediateRepresentation\CustomIRWriteData.cs" />
+    <Compile Include="Optimizers\ActionReplayOptimizer.cs" />
+    <Compile Include="Optimizers\CompositeOptimizer.cs" />
+    <Compile Include="Optimizers\GeneralOptimizer.cs" />
     <Compile Include="Optimizers\IRMultiUnitOptimizer.cs" />
     <Compile Include="Option.cs" />
     <Compile Include="Optimizers\IOptimizer.cs" />

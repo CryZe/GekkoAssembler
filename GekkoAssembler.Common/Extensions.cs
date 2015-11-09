@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using GekkoAssembler.IntermediateRepresentation;
 
 namespace GekkoAssembler
 {
@@ -45,6 +47,25 @@ namespace GekkoAssembler
         public static ReadOnlyCollection<T> AsReadOnly<T>(this IEnumerable<T> enumerable)
         {
             return new ReadOnlyCollection<T>(enumerable.ToList());
+        }
+
+        public static IEnumerable<IIRUnit> Replace<T>(this IEnumerable<IIRUnit> enumerable, Func<T, IIRUnit> selector)
+            where T : IIRUnit
+        {
+            return enumerable.Replace(selector, x => true);
+        }
+
+        public static IEnumerable<IIRUnit> Replace<T>(this IEnumerable<IIRUnit> enumerable, Func<T, IIRUnit> selector, Func<T, bool> predicate)
+            where T : IIRUnit
+        {
+            return enumerable
+                .Select(x => x is IRCodeBlock ? (x as IRCodeBlock).Units.Replace(selector, predicate).ToCodeBlock() : x)
+                .Select(x => x is T && predicate((T)x) ? selector((T)x) : x);
+        }
+
+        public static IRCodeBlock ToCodeBlock(this IEnumerable<IIRUnit> units)
+        {
+            return new IRCodeBlock(units);
         }
     }
 }

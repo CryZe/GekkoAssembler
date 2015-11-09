@@ -1,4 +1,5 @@
 ﻿using GekkoAssembler.IntermediateRepresentation;
+using GekkoAssembler.Optimizers;
 
 namespace GekkoAssembler.Writers
 {
@@ -8,6 +9,10 @@ namespace GekkoAssembler.Writers
         {
             var builder = new CodeBuilder();
             var visitor = new ActionReplayVisitor(builder);
+            var optimizer = new ActionReplayOptimizer(builder);
+
+            block = optimizer.Optimize(block);
+
             visitor.Visit(block);
 
             return builder.Build();
