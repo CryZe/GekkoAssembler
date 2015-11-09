@@ -40,6 +40,10 @@
         void Visit(IRSigned32GreaterThan instruction);
         void Visit(IRFloat32GreaterThan instruction);
 
+        void Visit(IRUnsigned8BitSet instruction);
+        void Visit(IRUnsigned16BitSet instruction);
+        void Visit(IRUnsigned32BitSet instruction);
+
         void Visit(IRUnsigned8Add instruction);
         void Visit(IRUnsigned16Add instruction);
         void Visit(IRUnsigned32Add instruction);

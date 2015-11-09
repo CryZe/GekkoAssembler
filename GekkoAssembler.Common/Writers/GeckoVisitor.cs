@@ -399,5 +399,30 @@ namespace GekkoAssembler.Writers
         }
 
         #endregion
+
+        #region Bit Set
+
+        public void Visit(IRUnsigned8BitSet instruction)
+        {
+            Builder.WriteLine($"82000000 {instruction.Address:X8}");
+            Builder.WriteLine($"86200000 {instruction.Value:X8}");
+            Builder.WriteLine($"84000000 {instruction.Address:X8}");
+        }
+
+        public void Visit(IRUnsigned16BitSet instruction)
+        {
+            Builder.WriteLine($"82100000 {instruction.Address:X8}");
+            Builder.WriteLine($"86200000 {instruction.Value:X8}");
+            Builder.WriteLine($"84100000 {instruction.Address:X8}");
+        }
+
+        public void Visit(IRUnsigned32BitSet instruction)
+        {
+            Builder.WriteLine($"82200000 {instruction.Address:X8}");
+            Builder.WriteLine($"86200000 {instruction.Value:X8}");
+            Builder.WriteLine($"84200000 {instruction.Address:X8}");
+        }
+
+        #endregion
     }
 }

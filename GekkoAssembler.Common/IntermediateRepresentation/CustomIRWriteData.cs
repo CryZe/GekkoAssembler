@@ -1,6 +1,4 @@
-﻿using GekkoAssembler.IntermediateRepresentation;
-
-namespace GekkoAssembler.Optimizers
+﻿namespace GekkoAssembler.IntermediateRepresentation
 {
     public class CustomIRWriteData : IRWriteData
     {

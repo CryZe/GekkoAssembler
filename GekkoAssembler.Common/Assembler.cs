@@ -165,19 +165,26 @@ namespace GekkoAssembler
                 return ParseFloat32GreaterThan(line, instructionPointer, lines);
 
             if (line.StartsWith("u8add "))
-                return ParseUnsigned8Add(line, instructionPointer);
+                return ParseUnsigned8Add(line, ref instructionPointer);
             if (line.StartsWith("u16add "))
-                return ParseUnsigned16Add(line, instructionPointer);
+                return ParseUnsigned16Add(line, ref instructionPointer);
             if (line.StartsWith("u32add "))
-                return ParseUnsigned32Add(line, instructionPointer);
+                return ParseUnsigned32Add(line, ref instructionPointer);
             if (line.StartsWith("s8add "))
-                return ParseSigned8Add(line, instructionPointer);
+                return ParseSigned8Add(line, ref instructionPointer);
             if (line.StartsWith("s16add "))
-                return ParseSigned16Add(line, instructionPointer);
+                return ParseSigned16Add(line, ref instructionPointer);
             if (line.StartsWith("s32add "))
-                return ParseSigned32Add(line, instructionPointer);
+                return ParseSigned32Add(line, ref instructionPointer);
             if (line.StartsWith("f32add "))
-                return ParseFloat32Add(line, instructionPointer);
+                return ParseFloat32Add(line, ref instructionPointer);
+
+            if (line.StartsWith("u8bitset "))
+                return ParseUnsigned8BitSet(line, ref instructionPointer);
+            if (line.StartsWith("u16bitset "))
+                return ParseUnsigned16BitSet(line, ref instructionPointer);
+            if (line.StartsWith("u32bitset "))
+                return ParseUnsigned32BitSet(line, ref instructionPointer);
 
             if (line.StartsWith("repeat "))
                 return ParseRepeat(line, ref instructionPointer, lines);
@@ -222,55 +229,100 @@ namespace GekkoAssembler
 
         #endregion
 
+        #region Bit Set
+
+        private IIRUnit ParseUnsigned8BitSet(string line, ref int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u8bitset");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var result = new IRUnsigned8BitSet(instructionPointer, value);
+            ++instructionPointer;
+            return result;
+        }
+
+        private IIRUnit ParseUnsigned16BitSet(string line, ref int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u16bitset");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var result = new IRUnsigned16BitSet(instructionPointer, value);
+            instructionPointer += 2;
+            return result;
+        }
+
+        private IIRUnit ParseUnsigned32BitSet(string line, ref int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u32bitset");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            var result = new IRUnsigned32BitSet(instructionPointer, value);
+            instructionPointer += 4;
+            return result;
+        }
+
+        #endregion
+
         #region Add
 
-        private IIRUnit ParseUnsigned8Add(string line, int instructionPointer)
+        private IIRUnit ParseUnsigned8Add(string line, ref int instructionPointer)
         {
             var parameters = ParseParameters(line, "u8add");
             var value = (byte)ParseIntegerLiteral(parameters[0]);
-            return new IRUnsigned8Add(instructionPointer, value);
+            var result = new IRUnsigned8Add(instructionPointer, value);
+            ++instructionPointer;
+            return result;
         }
 
-        private IIRUnit ParseUnsigned16Add(string line, int instructionPointer)
+        private IIRUnit ParseUnsigned16Add(string line, ref int instructionPointer)
         {
             var parameters = ParseParameters(line, "u16add");
             var value = (ushort)ParseIntegerLiteral(parameters[0]);
-            return new IRUnsigned16Add(instructionPointer, value);
+            var result = new IRUnsigned16Add(instructionPointer, value);
+            instructionPointer += 2;
+            return result;
         }
 
-        private IIRUnit ParseUnsigned32Add(string line, int instructionPointer)
+        private IIRUnit ParseUnsigned32Add(string line, ref int instructionPointer)
         {
             var parameters = ParseParameters(line, "u32add");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
-            return new IRUnsigned32Add(instructionPointer, value);
+            var result = new IRUnsigned32Add(instructionPointer, value);
+            instructionPointer += 4;
+            return result;
         }
 
-        private IIRUnit ParseSigned8Add(string line, int instructionPointer)
+        private IIRUnit ParseSigned8Add(string line, ref int instructionPointer)
         {
             var parameters = ParseParameters(line, "s8add");
             var value = (sbyte)ParseIntegerLiteral(parameters[0]);
-            return new IRSigned8Add(instructionPointer, value);
+            var result = new IRSigned8Add(instructionPointer, value);
+            ++instructionPointer;
+            return result;
         }
 
-        private IIRUnit ParseSigned16Add(string line, int instructionPointer)
+        private IIRUnit ParseSigned16Add(string line, ref int instructionPointer)
         {
             var parameters = ParseParameters(line, "s16add");
             var value = (short)ParseIntegerLiteral(parameters[0]);
-            return new IRSigned16Add(instructionPointer, value);
+            var result = new IRSigned16Add(instructionPointer, value);
+            instructionPointer += 2;
+            return result;
         }
 
-        private IIRUnit ParseSigned32Add(string line, int instructionPointer)
+        private IIRUnit ParseSigned32Add(string line, ref int instructionPointer)
         {
             var parameters = ParseParameters(line, "s32add");
             var value = ParseIntegerLiteral(parameters[0]);
-            return new IRSigned32Add(instructionPointer, value);
+            var result = new IRSigned32Add(instructionPointer, value);
+            instructionPointer += 4;
+            return result;
         }
 
-        private IIRUnit ParseFloat32Add(string line, int instructionPointer)
+        private IIRUnit ParseFloat32Add(string line, ref int instructionPointer)
         {
             var parameters = ParseParameters(line, "f32add");
             var value = (float)ParseFloatLiteral(parameters[0]);
-            return new IRFloat32Add(instructionPointer, value);
+            var result = new IRFloat32Add(instructionPointer, value);
+            instructionPointer += 4;
+            return result;
         }
 
         #endregion
