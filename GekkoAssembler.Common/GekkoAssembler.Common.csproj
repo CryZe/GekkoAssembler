@@ -68,6 +68,8 @@
     <Compile Include="GekkoInstructions\ConditionRegisterXORInstruction.cs" />
     <Compile Include="GekkoInstructions\DivideWordInstruction.cs" />
     <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
+    <Compile Include="GekkoInstructions\InstructionCacheBlockInvalidateInstruction.cs" />
+    <Compile Include="GekkoInstructions\InstructionSynchronizeInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadByteAndZeroInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadFloatingPointSingleInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadHalfWordAndZeroInstruction.cs" />
