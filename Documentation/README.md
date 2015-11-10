@@ -7,7 +7,7 @@
 	- [Floating Point Literals](#floating-point-literals)
 	- [String Literals](#string-literals)
 - [Types](#types)
-	- [Address Specifiers](#address-specifiers)
+- [Address Specifiers](#address-specifiers)
 - [Gekko CPU Instructions](#gekko-cpu-instructions)
 - [Data Sections](#data-sections)
 - [Cheat Instructions](#cheat-instructions)
@@ -79,7 +79,7 @@ str | dynamic | String | String of characters
 
 Note that Strings are not null terminated. If you want to null terminate them, append a u8 of 0 afterwards.
 
-### Address Specifiers
+## Address Specifiers
 
 ```
 <INTEGER>:
