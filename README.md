@@ -4,6 +4,9 @@
 
 Assembles Gekko Assembly to an Action Replay or Gecko Cheat Code.
 
+The Full Documentation for the Gekko Assembler can be found here:
+[Gekko Assembler Documentation](Documentation/README.md)
+
 ## Examples
 
 ### Usage of CPU Instructions
