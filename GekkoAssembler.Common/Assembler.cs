@@ -723,6 +723,10 @@ namespace GekkoAssembler
                 return ParseInstructionCRXOR(line, instructionPointer);
             if (line.StartsWith("divw "))
                 return ParseInstructionDIVW(line, instructionPointer);
+            if (line.StartsWith("icbi "))
+                return ParseInstructionICBI(line, instructionPointer);
+            if (line.StartsWith("isync"))
+                return ParseInstructionISYNC(instructionPointer);
             if (line.StartsWith("lbz "))
                 return ParseInstructionLBZ(line, instructionPointer);
             if (line.StartsWith("lfs "))
@@ -925,6 +929,19 @@ namespace GekkoAssembler
             var ra = ParseRegister(parameters[1]);
             var rb = ParseRegister(parameters[2]);
             return new DivideWordInstruction(instructionPointer, rd, ra, rb, false, false);
+        }
+
+        private GekkoInstruction ParseInstructionICBI(string line, int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "icbi");
+            var ra = ParseRegister(parameters[0]);
+            var rb = ParseRegister(parameters[1]);
+            return new InstructionCacheBlockInvalidateInstruction(instructionPointer, ra, rb);
+        }
+
+        private GekkoInstruction ParseInstructionISYNC(int instructionPointer)
+        {
+            return new InstructionSynchronizeInstruction(instructionPointer);
         }
 
         private GekkoInstruction ParseInstructionLBZ(string line, int instructionPointer)
