@@ -44,6 +44,10 @@
         void Visit(IRUnsigned16BitSet instruction);
         void Visit(IRUnsigned32BitSet instruction);
 
+        void Visit(IRUnsigned8BitUnset instruction);
+        void Visit(IRUnsigned16BitUnset instruction);
+        void Visit(IRUnsigned32BitUnset instruction);
+
         void Visit(IRUnsigned8Add instruction);
         void Visit(IRUnsigned16Add instruction);
         void Visit(IRUnsigned32Add instruction);

@@ -350,21 +350,40 @@ namespace GekkoAssembler.Writers
 
         #endregion
 
-        #region Bit Set
+        #region Setting Bits
 
         public void Visit(IRUnsigned8BitSet instruction)
         {
-            throw new ArgumentException("Bit Sets are not supported.");
+            throw new ArgumentException("Setting Bits is not supported.");
         }
 
         public void Visit(IRUnsigned16BitSet instruction)
         {
-            throw new ArgumentException("Bit Sets are not supported.");
+            throw new ArgumentException("Setting Bits is not supported.");
         }
 
         public void Visit(IRUnsigned32BitSet instruction)
         {
-            throw new ArgumentException("Bit Sets are not supported.");
+            throw new ArgumentException("Setting Bits is not supported.");
+        }
+
+        #endregion
+
+        #region Unsetting Bits
+
+        public void Visit(IRUnsigned8BitUnset instruction)
+        {
+            throw new ArgumentException("Unsetting Bits is not supported.");
+        }
+
+        public void Visit(IRUnsigned16BitUnset instruction)
+        {
+            throw new ArgumentException("Unsetting Bits is not supported.");
+        }
+
+        public void Visit(IRUnsigned32BitUnset instruction)
+        {
+            throw new ArgumentException("Unsetting Bits is not supported.");
         }
 
         #endregion

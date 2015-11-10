@@ -186,6 +186,13 @@ namespace GekkoAssembler
             if (line.StartsWith("u32bitset "))
                 return ParseUnsigned32BitSet(line, ref instructionPointer);
 
+            if (line.StartsWith("u8bitunset "))
+                return ParseUnsigned8BitUnset(line, ref instructionPointer);
+            if (line.StartsWith("u16bitunset "))
+                return ParseUnsigned16BitUnset(line, ref instructionPointer);
+            if (line.StartsWith("u32bitunset "))
+                return ParseUnsigned32BitUnset(line, ref instructionPointer);
+
             if (line.StartsWith("repeat "))
                 return ParseRepeat(line, ref instructionPointer, lines);
 
@@ -229,7 +236,7 @@ namespace GekkoAssembler
 
         #endregion
 
-        #region Bit Set
+        #region Setting Bits
 
         private IIRUnit ParseUnsigned8BitSet(string line, ref int instructionPointer)
         {
@@ -254,6 +261,37 @@ namespace GekkoAssembler
             var parameters = ParseParameters(line, "u32bitset");
             var value = (uint)ParseIntegerLiteral(parameters[0]);
             var result = new IRUnsigned32BitSet(instructionPointer, value);
+            instructionPointer += 4;
+            return result;
+        }
+
+        #endregion
+
+        #region Unsetting Bits
+
+        private IIRUnit ParseUnsigned8BitUnset(string line, ref int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u8bitunset");
+            var value = (byte)ParseIntegerLiteral(parameters[0]);
+            var result = new IRUnsigned8BitUnset(instructionPointer, value);
+            ++instructionPointer;
+            return result;
+        }
+
+        private IIRUnit ParseUnsigned16BitUnset(string line, ref int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u16bitunset");
+            var value = (ushort)ParseIntegerLiteral(parameters[0]);
+            var result = new IRUnsigned16BitUnset(instructionPointer, value);
+            instructionPointer += 2;
+            return result;
+        }
+
+        private IIRUnit ParseUnsigned32BitUnset(string line, ref int instructionPointer)
+        {
+            var parameters = ParseParameters(line, "u32bitunset");
+            var value = (uint)ParseIntegerLiteral(parameters[0]);
+            var result = new IRUnsigned32BitUnset(instructionPointer, value);
             instructionPointer += 4;
             return result;
         }
