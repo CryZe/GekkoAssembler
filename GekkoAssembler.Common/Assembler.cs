@@ -102,102 +102,105 @@ namespace GekkoAssembler
         {
             var tokens = TokenizeLine(line);
 
-            if (tokens[0] == "u8mask")
-                return ParseUnsigned8Mask(tokens, instructionPointer, lines);
-            if (tokens[0] == "u16mask")
-                return ParseUnsigned16Mask(tokens, instructionPointer, lines);
+            switch (tokens[0])
+            {
+                case "u8mask":
+                    return ParseUnsigned8Mask(tokens, instructionPointer, lines);
+                case "u16mask":
+                    return ParseUnsigned16Mask(tokens, instructionPointer, lines);
 
-            if (tokens[0] == "u8equal")
-                return ParseUnsigned8Equal(tokens, instructionPointer, lines);
-            if (tokens[0] == "u16equal")
-                return ParseUnsigned16Equal(tokens, instructionPointer, lines);
-            if (tokens[0] == "u32equal")
-                return ParseUnsigned32Equal(tokens, instructionPointer, lines);
-            if (tokens[0] == "s8equal")
-                return ParseSigned8Equal(tokens, instructionPointer, lines);
-            if (tokens[0] == "s16equal")
-                return ParseSigned16Equal(tokens, instructionPointer, lines);
-            if (tokens[0] == "s32equal")
-                return ParseSigned32Equal(tokens, instructionPointer, lines);
-            if (tokens[0] == "f32equal")
-                return ParseFloat32Equal(tokens, instructionPointer, lines);
+                case "u8equal":
+                    return ParseUnsigned8Equal(tokens, instructionPointer, lines);
+                case "u16equal":
+                    return ParseUnsigned16Equal(tokens, instructionPointer, lines);
+                case "u32equal":
+                    return ParseUnsigned32Equal(tokens, instructionPointer, lines);
+                case "s8equal":
+                    return ParseSigned8Equal(tokens, instructionPointer, lines);
+                case "s16equal":
+                    return ParseSigned16Equal(tokens, instructionPointer, lines);
+                case "s32equal":
+                    return ParseSigned32Equal(tokens, instructionPointer, lines);
+                case "f32equal":
+                    return ParseFloat32Equal(tokens, instructionPointer, lines);
 
-            if (tokens[0] == "u8unequal")
-                return ParseUnsigned8Unequal(tokens, instructionPointer, lines);
-            if (tokens[0] == "u16unequal")
-                return ParseUnsigned16Unequal(tokens, instructionPointer, lines);
-            if (tokens[0] == "u32unequal")
-                return ParseUnsigned32Unequal(tokens, instructionPointer, lines);
-            if (tokens[0] == "s8unequal")
-                return ParseSigned8Unequal(tokens, instructionPointer, lines);
-            if (tokens[0] == "s16unequal")
-                return ParseSigned16Unequal(tokens, instructionPointer, lines);
-            if (tokens[0] == "s32unequal")
-                return ParseSigned32Unequal(tokens, instructionPointer, lines);
-            if (tokens[0] == "f32unequal")
-                return ParseFloat32Unequal(tokens, instructionPointer, lines);
+                case "u8unequal":
+                    return ParseUnsigned8Unequal(tokens, instructionPointer, lines);
+                case "u16unequal":
+                    return ParseUnsigned16Unequal(tokens, instructionPointer, lines);
+                case "u32unequal":
+                    return ParseUnsigned32Unequal(tokens, instructionPointer, lines);
+                case "s8unequal":
+                    return ParseSigned8Unequal(tokens, instructionPointer, lines);
+                case "s16unequal":
+                    return ParseSigned16Unequal(tokens, instructionPointer, lines);
+                case "s32unequal":
+                    return ParseSigned32Unequal(tokens, instructionPointer, lines);
+                case "f32unequal":
+                    return ParseFloat32Unequal(tokens, instructionPointer, lines);
 
-            if (tokens[0] == "u8lessthan")
-                return ParseUnsigned8LessThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "u16lessthan")
-                return ParseUnsigned16LessThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "u32lessthan")
-                return ParseUnsigned32LessThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "s8lessthan")
-                return ParseSigned8LessThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "s16lessthan")
-                return ParseSigned16LessThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "s32lessthan")
-                return ParseSigned32LessThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "f32lessthan")
-                return ParseFloat32LessThan(tokens, instructionPointer, lines);
+                case "u8lessthan":
+                    return ParseUnsigned8LessThan(tokens, instructionPointer, lines);
+                case "u16lessthan":
+                    return ParseUnsigned16LessThan(tokens, instructionPointer, lines);
+                case "u32lessthan":
+                    return ParseUnsigned32LessThan(tokens, instructionPointer, lines);
+                case "s8lessthan":
+                    return ParseSigned8LessThan(tokens, instructionPointer, lines);
+                case "s16lessthan":
+                    return ParseSigned16LessThan(tokens, instructionPointer, lines);
+                case "s32lessthan":
+                    return ParseSigned32LessThan(tokens, instructionPointer, lines);
+                case "f32lessthan":
+                    return ParseFloat32LessThan(tokens, instructionPointer, lines);
 
-            if (tokens[0] == "u8greaterthan")
-                return ParseUnsigned8GreaterThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "u16greaterthan")
-                return ParseUnsigned16GreaterThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "u32greaterthan")
-                return ParseUnsigned32GreaterThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "s8greaterthan")
-                return ParseSigned8GreaterThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "s16greaterthan")
-                return ParseSigned16GreaterThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "s32greaterthan")
-                return ParseSigned32GreaterThan(tokens, instructionPointer, lines);
-            if (tokens[0] == "f32greaterthan")
-                return ParseFloat32GreaterThan(tokens, instructionPointer, lines);
+                case "u8greaterthan":
+                    return ParseUnsigned8GreaterThan(tokens, instructionPointer, lines);
+                case "u16greaterthan":
+                    return ParseUnsigned16GreaterThan(tokens, instructionPointer, lines);
+                case "u32greaterthan":
+                    return ParseUnsigned32GreaterThan(tokens, instructionPointer, lines);
+                case "s8greaterthan":
+                    return ParseSigned8GreaterThan(tokens, instructionPointer, lines);
+                case "s16greaterthan":
+                    return ParseSigned16GreaterThan(tokens, instructionPointer, lines);
+                case "s32greaterthan":
+                    return ParseSigned32GreaterThan(tokens, instructionPointer, lines);
+                case "f32greaterthan":
+                    return ParseFloat32GreaterThan(tokens, instructionPointer, lines);
 
-            if (tokens[0] == "u8add")
-                return ParseUnsigned8Add(tokens, ref instructionPointer);
-            if (tokens[0] == "u16add")
-                return ParseUnsigned16Add(tokens, ref instructionPointer);
-            if (tokens[0] == "u32add")
-                return ParseUnsigned32Add(tokens, ref instructionPointer);
-            if (tokens[0] == "s8add")
-                return ParseSigned8Add(tokens, ref instructionPointer);
-            if (tokens[0] == "s16add")
-                return ParseSigned16Add(tokens, ref instructionPointer);
-            if (tokens[0] == "s32add")
-                return ParseSigned32Add(tokens, ref instructionPointer);
-            if (tokens[0] == "f32add")
-                return ParseFloat32Add(tokens, ref instructionPointer);
+                case "u8add":
+                    return ParseUnsigned8Add(tokens, ref instructionPointer);
+                case "u16add":
+                    return ParseUnsigned16Add(tokens, ref instructionPointer);
+                case "u32add":
+                    return ParseUnsigned32Add(tokens, ref instructionPointer);
+                case "s8add":
+                    return ParseSigned8Add(tokens, ref instructionPointer);
+                case "s16add":
+                    return ParseSigned16Add(tokens, ref instructionPointer);
+                case "s32add":
+                    return ParseSigned32Add(tokens, ref instructionPointer);
+                case "f32add":
+                    return ParseFloat32Add(tokens, ref instructionPointer);
 
-            if (tokens[0] == "u8bitset")
-                return ParseUnsigned8BitSet(tokens, ref instructionPointer);
-            if (tokens[0] == "u16bitset")
-                return ParseUnsigned16BitSet(tokens, ref instructionPointer);
-            if (tokens[0] == "u32bitset")
-                return ParseUnsigned32BitSet(tokens, ref instructionPointer);
+                case "u8bitset":
+                    return ParseUnsigned8BitSet(tokens, ref instructionPointer);
+                case "u16bitset":
+                    return ParseUnsigned16BitSet(tokens, ref instructionPointer);
+                case "u32bitset":
+                    return ParseUnsigned32BitSet(tokens, ref instructionPointer);
 
-            if (tokens[0] == "u8bitunset")
-                return ParseUnsigned8BitUnset(tokens, ref instructionPointer);
-            if (tokens[0] == "u16bitunset")
-                return ParseUnsigned16BitUnset(tokens, ref instructionPointer);
-            if (tokens[0] == "u32bitunset")
-                return ParseUnsigned32BitUnset(tokens, ref instructionPointer);
+                case "u8bitunset":
+                    return ParseUnsigned8BitUnset(tokens, ref instructionPointer);
+                case "u16bitunset":
+                    return ParseUnsigned16BitUnset(tokens, ref instructionPointer);
+                case "u32bitunset":
+                    return ParseUnsigned32BitUnset(tokens, ref instructionPointer);
 
-            if (tokens[0] == "repeat")
-                return ParseRepeat(tokens, ref instructionPointer, lines);
+                case "repeat":
+                    return ParseRepeat(tokens, ref instructionPointer, lines);
+            }
 
             throw new ArgumentException($"The specified special instruction { tokens[0] } is not supported.");
         }
@@ -568,28 +571,31 @@ namespace GekkoAssembler
         {
             var tokens = TokenizeLine(line);
 
-            if (tokens[0] == "str")
-                return ParseStringDataSection(line, instructionPointer);
-            if (tokens[0] == "u8")
-                return ParseUnsigned8DataSection(tokens, instructionPointer);
-            if (tokens[0] == "u16")
-                return ParseUnsigned16DataSection(tokens, instructionPointer);
-            if (tokens[0] == "u32")
-                return ParseUnsigned32DataSection(tokens, instructionPointer);
-            if (tokens[0] == "u64")
-                return ParseUnsigned64DataSection(tokens, instructionPointer);
-            if (tokens[0] == "s8")
-                return ParseSigned8DataSection(tokens, instructionPointer);
-            if (tokens[0] == "s16")
-                return ParseSigned16DataSection(tokens, instructionPointer);
-            if (tokens[0] == "s32")
-                return ParseSigned32DataSection(tokens, instructionPointer);
-            if (tokens[0] == "s64")
-                return ParseSigned64DataSection(tokens, instructionPointer);
-            if (tokens[0] == "f32")
-                return ParseFloat32DataSection(tokens, instructionPointer);
-            if (tokens[0] == "f64")
-                return ParseFloat64DataSection(tokens, instructionPointer);
+            switch (tokens[0])
+            {
+                case "str":
+                    return ParseStringDataSection(line, instructionPointer);
+                case "u8":
+                    return ParseUnsigned8DataSection(tokens, instructionPointer);
+                case "u16":
+                    return ParseUnsigned16DataSection(tokens, instructionPointer);
+                case "u32":
+                    return ParseUnsigned32DataSection(tokens, instructionPointer);
+                case "u64":
+                    return ParseUnsigned64DataSection(tokens, instructionPointer);
+                case "s8":
+                    return ParseSigned8DataSection(tokens, instructionPointer);
+                case "s16":
+                    return ParseSigned16DataSection(tokens, instructionPointer);
+                case "s32":
+                    return ParseSigned32DataSection(tokens, instructionPointer);
+                case "s64":
+                    return ParseSigned64DataSection(tokens, instructionPointer);
+                case "f32":
+                    return ParseFloat32DataSection(tokens, instructionPointer);
+                case "f64":
+                    return ParseFloat64DataSection(tokens, instructionPointer);
+            }
 
             throw new ArgumentException($"The specified data section { tokens[0] } is not supported.");
         }
@@ -674,84 +680,87 @@ namespace GekkoAssembler
         {
             var tokens = TokenizeLine(line);
 
-            if (tokens[0] == "addi")
-                return ParseInstructionADDI(tokens, instructionPointer);
-            if (tokens[0] == "addis")
-                return ParseInstructionADDIS(tokens, instructionPointer);
-            if (tokens[0] == "b")
-                return ParseInstructionB(tokens, instructionPointer);
-            if (tokens[0] == "ba")
-                return ParseInstructionBA(tokens, instructionPointer);
-            if (tokens[0] == "bl")
-                return ParseInstructionBL(tokens, instructionPointer);
-            if (tokens[0] == "bla")
-                return ParseInstructionBLA(tokens, instructionPointer);
-            if (tokens[0] == "blr")
-                return ParseInstructionBLR(instructionPointer);
-            if (tokens[0] == "crand")
-                return ParseInstructionCRAND(tokens, instructionPointer);
-            if (tokens[0] == "crandc")
-                return ParseInstructionCRANDC(tokens, instructionPointer);
-            if (tokens[0] == "crclr")
-                return ParseInstructionCRCLR(tokens, instructionPointer);
-            if (tokens[0] == "creqv")
-                return ParseInstructionCREQV(tokens, instructionPointer);
-            if (tokens[0] == "crmove")
-                return ParseInstructionCRMOVE(tokens, instructionPointer);
-            if (tokens[0] == "crnand")
-                return ParseInstructionCRNAND(tokens, instructionPointer);
-            if (tokens[0] == "crnor")
-                return ParseInstructionCRNOR(tokens, instructionPointer);
-            if (tokens[0] == "crnot")
-                return ParseInstructionCRNOT(tokens, instructionPointer);
-            if (tokens[0] == "cror")
-                return ParseInstructionCROR(tokens, instructionPointer);
-            if (tokens[0] == "crorc")
-                return ParseInstructionCRORC(tokens, instructionPointer);
-            if (tokens[0] == "crset")
-                return ParseInstructionCRSET(tokens, instructionPointer);
-            if (tokens[0] == "crxor")
-                return ParseInstructionCRXOR(tokens, instructionPointer);
-            if (tokens[0] == "divw")
-                return ParseInstructionDIVW(tokens, instructionPointer);
-            if (tokens[0] == "icbi")
-                return ParseInstructionICBI(tokens, instructionPointer);
-            if (tokens[0] == "isync")
-                return ParseInstructionISYNC(instructionPointer);
-            if (tokens[0] == "lbz")
-                return ParseInstructionLBZ(tokens, instructionPointer);
-            if (tokens[0] == "lfs")
-                return ParseInstructionLFS(tokens, instructionPointer);
-            if (tokens[0] == "lhz")
-                return ParseInstructionLHZ(tokens, instructionPointer);
-            if (tokens[0] == "lis")
-                return ParseInstructionLIS(tokens, instructionPointer);
-            if (tokens[0] == "lwz")
-                return ParseInstructionLWZ(tokens, instructionPointer);
-            if (tokens[0] == "mflr")
-                return ParseInstructionMFLR(tokens, instructionPointer);
-            if (tokens[0] == "mfspr")
-                return ParseInstructionMFSPR(tokens, instructionPointer);
-            if (tokens[0] == "mtlr")
-                return ParseInstructionMTLR(tokens, instructionPointer);
-            if (tokens[0] == "mtspr")
-                return ParseInstructionMTSPR(tokens, instructionPointer);
-            if (tokens[0] == "mulli")
-                return ParseInstructionMULLI(tokens, instructionPointer);
-            if (tokens[0] == "mullw")
-                return ParseInstructionMULLW(tokens, instructionPointer);
-            if (tokens[0] == "nop")
-                return ParseInstructionNOP(instructionPointer);
-            if (tokens[0] == "ori")
-                return ParseInstructionORI(tokens, instructionPointer);
-            if (tokens[0] == "stw")
-                return ParseInstructionSTW(tokens, instructionPointer);
-            if (tokens[0] == "stwu")
-                return ParseInstructionSTWU(tokens, instructionPointer);
-            if (tokens[0] == "sub")
-                return ParseInstructionSUB(tokens, instructionPointer);
-            if (tokens[0] == "subf")
-                return ParseInstructionSUBF(tokens, instructionPointer);
+            switch (tokens[0])
+            {
+                case "addi":
+                    return ParseInstructionADDI(tokens, instructionPointer);
+                case "addis":
+                    return ParseInstructionADDIS(tokens, instructionPointer);
+                case "b":
+                    return ParseInstructionB(tokens, instructionPointer);
+                case "ba":
+                    return ParseInstructionBA(tokens, instructionPointer);
+                case "bl":
+                    return ParseInstructionBL(tokens, instructionPointer);
+                case "bla":
+                    return ParseInstructionBLA(tokens, instructionPointer);
+                case "blr":
+                    return ParseInstructionBLR(instructionPointer);
+                case "crand":
+                    return ParseInstructionCRAND(tokens, instructionPointer);
+                case "crandc":
+                    return ParseInstructionCRANDC(tokens, instructionPointer);
+                case "crclr":
+                    return ParseInstructionCRCLR(tokens, instructionPointer);
+                case "creqv":
+                    return ParseInstructionCREQV(tokens, instructionPointer);
+                case "crmove":
+                    return ParseInstructionCRMOVE(tokens, instructionPointer);
+                case "crnand":
+                    return ParseInstructionCRNAND(tokens, instructionPointer);
+                case "crnor":
+                    return ParseInstructionCRNOR(tokens, instructionPointer);
+                case "crnot":
+                    return ParseInstructionCRNOT(tokens, instructionPointer);
+                case "cror":
+                    return ParseInstructionCROR(tokens, instructionPointer);
+                case "crorc":
+                    return ParseInstructionCRORC(tokens, instructionPointer);
+                case "crset":
+                    return ParseInstructionCRSET(tokens, instructionPointer);
+                case "crxor":
+                    return ParseInstructionCRXOR(tokens, instructionPointer);
+                case "divw":
+                    return ParseInstructionDIVW(tokens, instructionPointer);
+                case "icbi":
+                    return ParseInstructionICBI(tokens, instructionPointer);
+                case "isync":
+                    return ParseInstructionISYNC(instructionPointer);
+                case "lbz":
+                    return ParseInstructionLBZ(tokens, instructionPointer);
+                case "lfs":
+                    return ParseInstructionLFS(tokens, instructionPointer);
+                case "lhz":
+                    return ParseInstructionLHZ(tokens, instructionPointer);
+                case "lis":
+                    return ParseInstructionLIS(tokens, instructionPointer);
+                case "lwz":
+                    return ParseInstructionLWZ(tokens, instructionPointer);
+                case "mflr":
+                    return ParseInstructionMFLR(tokens, instructionPointer);
+                case "mfspr":
+                    return ParseInstructionMFSPR(tokens, instructionPointer);
+                case "mtlr":
+                    return ParseInstructionMTLR(tokens, instructionPointer);
+                case "mtspr":
+                    return ParseInstructionMTSPR(tokens, instructionPointer);
+                case "mulli":
+                    return ParseInstructionMULLI(tokens, instructionPointer);
+                case "mullw":
+                    return ParseInstructionMULLW(tokens, instructionPointer);
+                case "nop":
+                    return ParseInstructionNOP(instructionPointer);
+                case "ori":
+                    return ParseInstructionORI(tokens, instructionPointer);
+                case "stw":
+                    return ParseInstructionSTW(tokens, instructionPointer);
+                case "stwu":
+                    return ParseInstructionSTWU(tokens, instructionPointer);
+                case "sub":
+                    return ParseInstructionSUB(tokens, instructionPointer);
+                case "subf":
+                    return ParseInstructionSUBF(tokens, instructionPointer);
+            }
 
             throw new ArgumentException($"The specified instruction { tokens[0] } is not supported.");
         }
