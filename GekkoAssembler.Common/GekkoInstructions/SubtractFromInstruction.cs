@@ -2,7 +2,6 @@
 {
     public class SubtractFromInstruction : GekkoInstruction
     {
-        public override int Address { get; }
         public override int ByteCode
             => 0x7C000050 | (RegisterDestination << 21) | (RegisterA << 16) | (RegisterB << 11) | ((OE ? 1 : 0) << 10) | (RC ? 1 : 0);
 
@@ -12,9 +11,8 @@
         public bool OE { get; }
         public bool RC { get; }
 
-        public SubtractFromInstruction(int address, int registerDestination, int registerA, int registerB, bool oe = false, bool rc = false)
+        public SubtractFromInstruction(int address, int registerDestination, int registerA, int registerB, bool oe = false, bool rc = false) : base(address)
         {
-            Address = address;
             RegisterDestination = registerDestination;
             RegisterA = registerA;
             RegisterB = registerB;

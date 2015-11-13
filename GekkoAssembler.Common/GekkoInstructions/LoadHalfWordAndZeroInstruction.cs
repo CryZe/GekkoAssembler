@@ -2,7 +2,6 @@
 {
     public class LoadHalfWordAndZeroInstruction : GekkoInstruction
     {
-        public override int Address { get; }
         public override int ByteCode
             => (((((40 << 5) | RegisterDestination) << 5) | RegisterA) << 16) | Offset;
 
@@ -10,9 +9,8 @@
         public int RegisterA { get; }
         public int Offset { get; }
 
-        public LoadHalfWordAndZeroInstruction(int address, int registerDestination, int registerA, int offset)
+        public LoadHalfWordAndZeroInstruction(int address, int registerDestination, int registerA, int offset) : base(address)
         {
-            Address = address;
             RegisterDestination = registerDestination;
             RegisterA = registerA;
             Offset = offset;
