@@ -25,6 +25,7 @@ namespace GekkoAssembler
             {"adde"   , ParseInstructionADDE   },
             {"adde."  , ParseInstructionADDE   },
             {"addeo"  , ParseInstructionADDE   },
+            {"addeo." , ParseInstructionADDE   },
             {"addi"   , ParseInstructionADDI   },
             {"addis"  , ParseInstructionADDIS  },
             {"addme"  , ParseInstructionADDME  },
