@@ -1103,12 +1103,22 @@ namespace GekkoAssembler
             else
                 throw new ArgumentException("Not a valid register", nameof(register));
 
-            return ParseIntegerLiteral(literal);
+            int registerNumber = ParseIntegerLiteral(literal);
+
+            if (registerNumber < 0 || registerNumber > 31)
+                throw new ArgumentException("General-purpose registers and floating-point registers must be within the range 0-31");
+
+            return registerNumber;
         }
 
         private static int ParseConditionRegister(string register)
         {
-            return ParseIntegerLiteral(register.Substring(3));
+            int registerNumber = ParseIntegerLiteral(register.Substring(3));
+
+            if (registerNumber < 0 || registerNumber > 7)
+                throw new ArgumentException("Condition registers must be within the range 0-7");
+
+            return registerNumber;
         }
 
         private static int ParseInstructionPointerLabel(string line)
