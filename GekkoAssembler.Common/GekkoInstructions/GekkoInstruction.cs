@@ -7,6 +7,12 @@ namespace GekkoAssembler.GekkoInstructions
     {
         public abstract int ByteCode { get; }
 
+        public override int Address { get; }
         public override byte[] Data => BitConverter.GetBytes(ByteCode).SwapEndian32();
+
+        protected GekkoInstruction(int address)
+        {
+            Address = address;
+        }
     }
 }

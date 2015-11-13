@@ -2,12 +2,10 @@
 {
     public class BranchToLinkRegisterInstruction : GekkoInstruction
     {
-        public override int Address { get; }
         public override int ByteCode => 0x4E800020;
 
-        public BranchToLinkRegisterInstruction(int address)
+        public BranchToLinkRegisterInstruction(int address) : base(address)
         {
-            Address = address;
         }
     }
 }
