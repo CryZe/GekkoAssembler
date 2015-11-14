@@ -6,7 +6,7 @@
 
         public InstructionCacheBlockInvalidateInstruction(int address, int rA, int rB) : base(address)
         {
-            this.ByteCode = (31 << 26 | rA << 16 | rB << 11 | 982 << 1);
+            ByteCode = (31 << 26 | rA << 16 | rB << 11 | 982 << 1);
         }
     }
 }

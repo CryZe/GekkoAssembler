@@ -6,7 +6,7 @@
 
         public ConditionRegisterNANDInstruction(int address, int crD, int crA, int crB) : base(address)
         {
-            this.ByteCode = (19 << 26 | crD << 21 | crA << 16 | crB << 11 | 225 << 1);
+            ByteCode = (19 << 26 | crD << 21 | crA << 16 | crB << 11 | 225 << 1);
         }
     }
 }

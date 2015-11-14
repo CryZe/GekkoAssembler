@@ -6,7 +6,7 @@
 
         public InstructionSynchronizeInstruction(int address) : base(address)
         {
-            this.ByteCode = (19 << 26 | 150 << 1);
+            ByteCode = (19 << 26 | 150 << 1);
         }
     }
 }

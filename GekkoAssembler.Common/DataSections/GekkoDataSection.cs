@@ -10,8 +10,8 @@ namespace GekkoAssembler.DataSections
 
         protected GekkoDataSection(int address, T value)
         {
-            this.Value = value;
-            this.Address = address;
+            Value = value;
+            Address = address;
         }
     }
 }
