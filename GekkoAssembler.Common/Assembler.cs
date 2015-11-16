@@ -27,6 +27,8 @@ namespace GekkoAssembler
             {"addeo"  , ParseInstructionADDE   },
             {"addeo." , ParseInstructionADDE   },
             {"addi"   , ParseInstructionADDI   },
+            {"addic"  , ParseInstructionADDIC  },
+            {"addic." , ParseInstructionADDIC  },
             {"addis"  , ParseInstructionADDIS  },
             {"addme"  , ParseInstructionADDME  },
             {"addme." , ParseInstructionADDME  },
@@ -74,6 +76,8 @@ namespace GekkoAssembler
             {"stw"    , ParseInstructionSTW    },
             {"stwu"   , ParseInstructionSTWU   },
             {"sub"    , ParseInstructionSUB    },
+            {"subic"  , ParseInstructionADDIC  }, // Simplified mnemonic for addic
+            {"subic." , ParseInstructionADDIC  }, // Simplified mnemonic for addic.
             {"subf"   , ParseInstructionSUBF   }
         };
 
@@ -802,6 +806,24 @@ namespace GekkoAssembler
             var rd = ParseRegister(tokens[1]);
             var ra = ParseRegister(tokens[2]);
             return new AddToZeroExtendedInstruction(instructionPointer, rd, ra, tokens[0].Contains("o"), tokens[0].EndsWith("."));
+        }
+
+        private static GekkoInstruction ParseInstructionADDIC(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+            var ra = ParseRegister(tokens[2]);
+            int simm = ParseIntegerLiteral(tokens[3]);
+
+            if (tokens[0] == "addic")
+                return new AddImmediateCarryingInstruction(instructionPointer, rd, ra, simm);
+            if (tokens[0] == "addic.")
+                return new AddImmediateCarryingAndRecordInstruction(instructionPointer, rd, ra, simm);
+
+            // subic mnemonics
+            if (tokens[0] == "subic")
+                return new AddImmediateCarryingInstruction(instructionPointer, rd, ra, -simm);
+            // subic.
+            return new AddImmediateCarryingAndRecordInstruction(instructionPointer, rd, ra, -simm);
         }
 
         private static GekkoInstruction ParseInstructionADDIS(string[] tokens, int instructionPointer)

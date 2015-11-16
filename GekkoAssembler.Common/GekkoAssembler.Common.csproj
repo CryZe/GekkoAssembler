@@ -54,6 +54,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="GekkoInstructions\AddCarryingInstruction.cs" />
     <Compile Include="GekkoInstructions\AddExtendedInstruction.cs" />
+    <Compile Include="GekkoInstructions\AddImmediateCarryingAndRecordInstruction.cs" />
+    <Compile Include="GekkoInstructions\AddImmediateCarryingInstruction.cs" />
     <Compile Include="GekkoInstructions\AddImmediateInstruction.cs" />
     <Compile Include="GekkoInstructions\AddImmediateShiftedInstruction.cs" />
     <Compile Include="GekkoInstructions\AddInstruction.cs" />
