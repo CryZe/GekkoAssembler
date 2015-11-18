@@ -40,6 +40,10 @@ namespace GekkoAssembler
             {"addzeo.", ParseInstructionADDZE  },
             {"and"    , ParseInstructionAND    },
             {"and."   , ParseInstructionAND    },
+            {"andc"   , ParseInstructionAND    },
+            {"andc."  , ParseInstructionAND    },
+            {"andi."  , ParseInstructionAND    },
+            {"andis." , ParseInstructionAND    },
             {"b"      , ParseInstructionB      },
             {"ba"     , ParseInstructionBA     },
             {"bl"     , ParseInstructionBL     },
@@ -838,8 +842,20 @@ namespace GekkoAssembler
         {
             var ra = ParseRegister(tokens[1]);
             var rs = ParseRegister(tokens[2]);
+
+            if (tokens[0].Contains("i"))
+            {
+                var uimm = ParseIntegerLiteral(tokens[3]);
+                var shifted = tokens[0].Contains("s");
+
+                return new AndImmediateInstruction(instructionPointer, ra, rs, uimm, shifted);
+            }
+
             var rb = ParseRegister(tokens[3]);
-            return new AndInstruction(instructionPointer, ra, rs, rb, tokens[0].EndsWith("."));
+            var rc = tokens[0].EndsWith(".");
+            var complement = tokens[0].Contains("c");
+
+            return new AndInstruction(instructionPointer, ra, rs, rb, rc, complement);
         }
 
         private static GekkoInstruction ParseInstructionB(string[] tokens, int instructionPointer)

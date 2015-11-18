@@ -61,6 +61,7 @@
     <Compile Include="GekkoInstructions\AddInstruction.cs" />
     <Compile Include="GekkoInstructions\AddToMinusOneExtendedInstruction.cs" />
     <Compile Include="GekkoInstructions\AddToZeroExtendedInstruction.cs" />
+    <Compile Include="GekkoInstructions\AndImmediateInstruction.cs" />
     <Compile Include="GekkoInstructions\AndInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchToLinkRegisterInstruction.cs" />
