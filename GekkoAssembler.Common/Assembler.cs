@@ -118,7 +118,14 @@ namespace GekkoAssembler
             {"lwzu"   , ParseInstructionLoadInteger    },
             {"lwzux"  , ParseInstructionLoadInteger    },
             {"lwzx"   , ParseInstructionLoadInteger    },
+            {"mcrf"   , ParseInstructionMoveToCR       },
+            {"mcrfs"  , ParseInstructionMoveToCR       },
+            {"mcrxr"  , ParseInstructionMoveToCR       },
+            {"mfcr"   , ParseInstructionMFCR           },
+            {"mffs"   , ParseInstructionMFFS           },
+            {"mffs."  , ParseInstructionMFFS           },
             {"mflr"   , ParseInstructionMFLR           },
+            {"mfmsr"  , ParseInstructionMFMSR          },
             {"mfspr"  , ParseInstructionMFSPR          },
             {"mtlr"   , ParseInstructionMTLR           },
             {"mtspr"  , ParseInstructionMTSPR          },
@@ -1275,6 +1282,41 @@ namespace GekkoAssembler
             var rd = ParseRegister(tokens[1]);
             var simm = ParseIntegerLiteral(tokens[2]);
             return new LoadImmediateShiftedInstruction(instructionPointer, rd, simm);
+        }
+
+        private static GekkoInstruction ParseInstructionMoveToCR(string[] tokens, int instructionPointer)
+        {
+            var crfd = ParseConditionRegister(tokens[1]);
+
+            if (tokens[0] == "mcrxr")
+                return new MoveToConditionRegisterInstruction(instructionPointer, crfd);
+
+            var crfs = ParseConditionRegister(tokens[2]);
+            var fromFPSCR = tokens[0].EndsWith("s");
+
+            return new MoveToConditionRegisterInstruction(instructionPointer, crfd, crfs, fromFPSCR);
+        }
+
+        private static GekkoInstruction ParseInstructionMFCR(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+
+            return new MoveFromConditionRegisterInstruction(instructionPointer, rd);
+        }
+
+        private static GekkoInstruction ParseInstructionMFFS(string[] tokens, int instructionPointer)
+        {
+            var rc  = tokens[0].EndsWith(".");
+            var frd = ParseRegister(tokens[1]);
+
+            return new MoveFromFPSCRInstruction(instructionPointer, frd, rc);
+        }
+
+        private static GekkoInstruction ParseInstructionMFMSR(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+
+            return new MoveFromMSRInstruction(instructionPointer, rd);
         }
 
         private static GekkoInstruction ParseInstructionMFLR(string[] tokens, int instructionPointer)

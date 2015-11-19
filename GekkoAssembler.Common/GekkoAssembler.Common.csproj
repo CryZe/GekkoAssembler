@@ -94,8 +94,12 @@
     <Compile Include="GekkoInstructions\LoadImmediateShiftedInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadWordInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadWordIndexedInstruction.cs" />
+    <Compile Include="GekkoInstructions\MoveFromConditionRegisterInstruction.cs" />
+    <Compile Include="GekkoInstructions\MoveFromFPSCRInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveFromLinkRegisterInstruction.cs" />
+    <Compile Include="GekkoInstructions\MoveFromMSRInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveFromSpecialPurposeRegisterInstruction.cs" />
+    <Compile Include="GekkoInstructions\MoveToConditionRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveToLinkRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveToSpecialPurposeRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\MultiplyLowImmediateInstruction.cs" />
