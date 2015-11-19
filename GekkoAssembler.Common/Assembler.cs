@@ -57,6 +57,8 @@ namespace GekkoAssembler
             {"cmplwi" , ParseInstructionCMP    },
             {"cmpw"   , ParseInstructionCMP    },
             {"cmpwi"  , ParseInstructionCMP    },
+            {"cntlzw" , ParseInstructionCNTLZW },
+            {"cntlzw.", ParseInstructionCNTLZW },
             {"crand"  , ParseInstructionCRAND  },
             {"crandc" , ParseInstructionCRANDC },
             {"crclr"  , ParseInstructionCRCLR  },
@@ -930,6 +932,15 @@ namespace GekkoAssembler
                 var rb = ParseRegister(tokens[4]);
                 return new CompareInstruction(instructionPointer, crfd, L, ra, rb, logical_variant);
             }
+        }
+
+        private static GekkoInstruction ParseInstructionCNTLZW(string[] tokens, int instructionPointer)
+        {
+            var rc = tokens[0].EndsWith(".");
+            var ra = ParseRegister(tokens[1]);
+            var rs = ParseRegister(tokens[2]);
+
+            return new CountLeadingZeroesWordInstruction(instructionPointer, ra, rs, rc);
         }
 
         private static GekkoInstruction ParseInstructionCRAND(string[] tokens, int instructionPointer)
