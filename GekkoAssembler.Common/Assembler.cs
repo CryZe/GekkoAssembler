@@ -14,75 +14,92 @@ namespace GekkoAssembler
     {
         private static readonly Dictionary<string, Func<string[], int, GekkoInstruction>> instructionTable = new Dictionary<string, Func<string[], int, GekkoInstruction>>
         {
-            {"add"    , ParseInstructionADD    },
-            {"add."   , ParseInstructionADD    },
-            {"addo"   , ParseInstructionADD    },
-            {"addo."  , ParseInstructionADD    },
-            {"addc"   , ParseInstructionADDC   },
-            {"addc."  , ParseInstructionADDC   },
-            {"addco"  , ParseInstructionADDC   },
-            {"addco." , ParseInstructionADDC   },
-            {"adde"   , ParseInstructionADDE   },
-            {"adde."  , ParseInstructionADDE   },
-            {"addeo"  , ParseInstructionADDE   },
-            {"addeo." , ParseInstructionADDE   },
-            {"addi"   , ParseInstructionADDI   },
-            {"addic"  , ParseInstructionADDIC  },
-            {"addic." , ParseInstructionADDIC  },
-            {"addis"  , ParseInstructionADDIS  },
-            {"addme"  , ParseInstructionADDME  },
-            {"addme." , ParseInstructionADDME  },
-            {"addmeo" , ParseInstructionADDME  },
-            {"addmeo.", ParseInstructionADDME  },
-            {"addze"  , ParseInstructionADDZE  },
-            {"addze." , ParseInstructionADDZE  },
-            {"addzeo" , ParseInstructionADDZE  },
-            {"addzeo.", ParseInstructionADDZE  },
-            {"and"    , ParseInstructionAND    },
-            {"and."   , ParseInstructionAND    },
-            {"andc"   , ParseInstructionAND    },
-            {"andc."  , ParseInstructionAND    },
-            {"andi."  , ParseInstructionAND    },
-            {"andis." , ParseInstructionAND    },
-            {"b"      , ParseInstructionB      },
-            {"ba"     , ParseInstructionBA     },
-            {"bl"     , ParseInstructionBL     },
-            {"bla"    , ParseInstructionBLA    },
-            {"blr"    , ParseInstructionBLR    },
-            {"crand"  , ParseInstructionCRAND  },
-            {"crandc" , ParseInstructionCRANDC },
-            {"crclr"  , ParseInstructionCRCLR  },
-            {"creqv"  , ParseInstructionCREQV  },
-            {"crmove" , ParseInstructionCRMOVE },
-            {"crnand" , ParseInstructionCRNAND },
-            {"crnor"  , ParseInstructionCRNOR  },
-            {"crnot"  , ParseInstructionCRNOT  },
-            {"cror"   , ParseInstructionCROR   },
-            {"crorc"  , ParseInstructionCRORC  },
-            {"crset"  , ParseInstructionCRSET  },
-            {"crxor"  , ParseInstructionCRXOR  },
-            {"divw"   , ParseInstructionDIVW   },
-            {"icbi"   , ParseInstructionICBI   },
-            {"isync"  , ParseInstructionISYNC  },
-            {"lbz"    , ParseInstructionLBZ    },
-            {"lfs"    , ParseInstructionLFS    },
-            {"lhz"    , ParseInstructionLHZ    },
-            {"lis"    , ParseInstructionLIS    },
-            {"lwz"    , ParseInstructionLWZ    },
-            {"mflr"   , ParseInstructionMFLR   },
-            {"mfspr"  , ParseInstructionMFSPR  },
-            {"mtlr"   , ParseInstructionMTLR   },
-            {"mtspr"  , ParseInstructionMTSPR  },
-            {"mulli"  , ParseInstructionMULLI  },
-            {"mullw"  , ParseInstructionMULLW  },
-            {"nop"    , ParseInstructionNOP    },
-            {"ori"    , ParseInstructionORI    },
-            {"stw"    , ParseInstructionSTW    },
-            {"stwu"   , ParseInstructionSTWU   },
-            {"sub"    , ParseInstructionSUB    },
-            {"subic"  , ParseInstructionADDIC  }, // Simplified mnemonic for addic
-            {"subic." , ParseInstructionADDIC  }, // Simplified mnemonic for addic.
-            {"subf"   , ParseInstructionSUBF   }
+            {"add"    , ParseInstructionADD       },
+            {"add."   , ParseInstructionADD       },
+            {"addo"   , ParseInstructionADD       },
+            {"addo."  , ParseInstructionADD       },
+            {"addc"   , ParseInstructionADDC      },
+            {"addc."  , ParseInstructionADDC      },
+            {"addco"  , ParseInstructionADDC      },
+            {"addco." , ParseInstructionADDC      },
+            {"adde"   , ParseInstructionADDE      },
+            {"adde."  , ParseInstructionADDE      },
+            {"addeo"  , ParseInstructionADDE      },
+            {"addeo." , ParseInstructionADDE      },
+            {"addi"   , ParseInstructionADDI      },
+            {"addic"  , ParseInstructionADDIC     },
+            {"addic." , ParseInstructionADDIC     },
+            {"addis"  , ParseInstructionADDIS     },
+            {"addme"  , ParseInstructionADDME     },
+            {"addme." , ParseInstructionADDME     },
+            {"addmeo" , ParseInstructionADDME     },
+            {"addmeo.", ParseInstructionADDME     },
+            {"addze"  , ParseInstructionADDZE     },
+            {"addze." , ParseInstructionADDZE     },
+            {"addzeo" , ParseInstructionADDZE     },
+            {"addzeo.", ParseInstructionADDZE     },
+            {"and"    , ParseInstructionAND       },
+            {"and."   , ParseInstructionAND       },
+            {"andc"   , ParseInstructionAND       },
+            {"andc."  , ParseInstructionAND       },
+            {"andi."  , ParseInstructionAND       },
+            {"andis." , ParseInstructionAND       },
+            {"b"      , ParseInstructionB         },
+            {"ba"     , ParseInstructionBA        },
+            {"bl"     , ParseInstructionBL        },
+            {"bla"    , ParseInstructionBLA       },
+            {"blr"    , ParseInstructionBLR       },
+            {"cmp"    , ParseInstructionCMP       },
+            {"cmpi"   , ParseInstructionCMP       },
+            {"cmpl"   , ParseInstructionCMP       },
+            {"cmpli"  , ParseInstructionCMP       },
+            {"cmplw"  , ParseInstructionCMP       },
+            {"cmplwi" , ParseInstructionCMP       },
+            {"cmpw"   , ParseInstructionCMP       },
+            {"cmpwi"  , ParseInstructionCMP       },
+            {"cntlzw" , ParseInstructionCNTLZW    },
+            {"cntlzw.", ParseInstructionCNTLZW    },
+            {"crand"  , ParseInstructionCRAND     },
+            {"crandc" , ParseInstructionCRANDC    },
+            {"crclr"  , ParseInstructionCRCLR     },
+            {"creqv"  , ParseInstructionCREQV     },
+            {"crmove" , ParseInstructionCRMOVE    },
+            {"crnand" , ParseInstructionCRNAND    },
+            {"crnor"  , ParseInstructionCRNOR     },
+            {"crnot"  , ParseInstructionCRNOT     },
+            {"cror"   , ParseInstructionCROR      },
+            {"crorc"  , ParseInstructionCRORC     },
+            {"crset"  , ParseInstructionCRSET     },
+            {"crxor"  , ParseInstructionCRXOR     },
+            {"dcbf"   , ParseInstructionDataCache },
+            {"dcbi"   , ParseInstructionDataCache },
+            {"dcbst"  , ParseInstructionDataCache },
+            {"dcbt"   , ParseInstructionDataCache },
+            {"dcbtst" , ParseInstructionDataCache },
+            {"dcbz"   , ParseInstructionDataCache },
+            {"dcbz_l" , ParseInstructionDataCache },
+            {"divw"   , ParseInstructionDIVW      },
+            {"icbi"   , ParseInstructionICBI      },
+            {"isync"  , ParseInstructionISYNC     },
+            {"lbz"    , ParseInstructionLBZ       },
+            {"lfs"    , ParseInstructionLFS       },
+            {"lhz"    , ParseInstructionLHZ       },
+            {"lis"    , ParseInstructionLIS       },
+            {"lwz"    , ParseInstructionLWZ       },
+            {"mflr"   , ParseInstructionMFLR      },
+            {"mfspr"  , ParseInstructionMFSPR     },
+            {"mtlr"   , ParseInstructionMTLR      },
+            {"mtspr"  , ParseInstructionMTSPR     },
+            {"mulli"  , ParseInstructionMULLI     },
+            {"mullw"  , ParseInstructionMULLW     },
+            {"nop"    , ParseInstructionNOP       },
+            {"ori"    , ParseInstructionORI       },
+            {"stw"    , ParseInstructionSTW       },
+            {"stwu"   , ParseInstructionSTWU      },
+            {"sub"    , ParseInstructionSUB       },
+            {"subic"  , ParseInstructionADDIC     }, // Simplified mnemonic for addic
+            {"subic." , ParseInstructionADDIC     }, // Simplified mnemonic for addic.
+            {"subf"   , ParseInstructionSUBF      }
         };
 
         public List<IOptimizer> Optimizers { get; }
@@ -887,6 +904,52 @@ namespace GekkoAssembler
             return new BranchToLinkRegisterInstruction(instructionPointer);
         }
 
+        private static GekkoInstruction ParseInstructionCMP(string[] tokens, int instructionPointer)
+        {
+            bool immediate       = tokens[0].Contains("i");
+            bool logical_variant = tokens[0].Contains("l");
+            bool w_mnemonic      = tokens[0].Contains("w");
+
+            var crfd = ParseConditionRegister(tokens[1]);
+
+            if (w_mnemonic)
+            {
+                var ra = ParseRegister(tokens[2]);
+
+                if (immediate)
+                {
+                    var imm = ParseIntegerLiteral(tokens[3]);
+                    return new CompareImmediateInstruction(instructionPointer, crfd, 0, ra, imm, logical_variant);
+                }
+
+                var rb = ParseRegister(tokens[3]);
+                return new CompareInstruction(instructionPointer, crfd, 0, ra, rb, logical_variant);
+            }
+            else
+            {
+                var ra = ParseRegister(tokens[3]);
+                var L = ParseIntegerLiteral(tokens[2]);
+
+                if (immediate)
+                {
+                    var imm = ParseIntegerLiteral(tokens[4]);
+                    return new CompareImmediateInstruction(instructionPointer, crfd, L, ra, imm, logical_variant);
+                }
+
+                var rb = ParseRegister(tokens[4]);
+                return new CompareInstruction(instructionPointer, crfd, L, ra, rb, logical_variant);
+            }
+        }
+
+        private static GekkoInstruction ParseInstructionCNTLZW(string[] tokens, int instructionPointer)
+        {
+            var rc = tokens[0].EndsWith(".");
+            var ra = ParseRegister(tokens[1]);
+            var rs = ParseRegister(tokens[2]);
+
+            return new CountLeadingZeroesWordInstruction(instructionPointer, ra, rs, rc);
+        }
+
         private static GekkoInstruction ParseInstructionCRAND(string[] tokens, int instructionPointer)
         {
             var crbd = ParseConditionRegister(tokens[1]);
@@ -977,6 +1040,30 @@ namespace GekkoAssembler
             var crba = ParseConditionRegister(tokens[2]);
             var crbb = ParseConditionRegister(tokens[3]);
             return new ConditionRegisterXORInstruction(instructionPointer, crbd, crba, crbb);
+        }
+
+        private static GekkoInstruction ParseInstructionDataCache(string[] tokens, int instructionPointer)
+        {
+            var ra = ParseRegister(tokens[1]);
+            var rs = ParseRegister(tokens[2]);
+
+            switch (tokens[0])
+            {
+                case "dcbf":
+                    return new DataCacheInstruction(instructionPointer, DataCacheInstruction.PrimaryOpcode.NonDCBZ_L, DataCacheInstruction.SecondaryOpcode.DCBF, ra, rs);
+                case "dcbi":
+                    return new DataCacheInstruction(instructionPointer, DataCacheInstruction.PrimaryOpcode.NonDCBZ_L, DataCacheInstruction.SecondaryOpcode.DCBI, ra, rs);
+                case "dcbst":
+                    return new DataCacheInstruction(instructionPointer, DataCacheInstruction.PrimaryOpcode.NonDCBZ_L, DataCacheInstruction.SecondaryOpcode.DCBST, ra, rs);
+                case "dcbt":
+                    return new DataCacheInstruction(instructionPointer, DataCacheInstruction.PrimaryOpcode.NonDCBZ_L, DataCacheInstruction.SecondaryOpcode.DCBT, ra, rs);
+                case "dcbtst":
+                    return new DataCacheInstruction(instructionPointer, DataCacheInstruction.PrimaryOpcode.NonDCBZ_L, DataCacheInstruction.SecondaryOpcode.DCBTST, ra, rs);
+                case "dcbz":
+                    return new DataCacheInstruction(instructionPointer, DataCacheInstruction.PrimaryOpcode.NonDCBZ_L, DataCacheInstruction.SecondaryOpcode.DCBZ, ra, rs);
+            }
+
+            return new DataCacheInstruction(instructionPointer, DataCacheInstruction.PrimaryOpcode.DCBZ_L, DataCacheInstruction.SecondaryOpcode.DCBZ_L, ra, rs);
         }
 
         private static GekkoInstruction ParseInstructionDIVW(string[] tokens, int instructionPointer)
