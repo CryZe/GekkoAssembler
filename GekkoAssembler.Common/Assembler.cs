@@ -91,6 +91,10 @@ namespace GekkoAssembler
             {"eieio"  , ParseInstructionEIEIO          },
             {"eqv"    , ParseInstructionEQV            },
             {"eqv."   , ParseInstructionEQV            },
+            {"extsb"  , ParseInstructionSignExtension  },
+            {"extsb." , ParseInstructionSignExtension  },
+            {"extsh"  , ParseInstructionSignExtension  },
+            {"extsh." , ParseInstructionSignExtension  },
             {"icbi"   , ParseInstructionICBI           },
             {"isync"  , ParseInstructionISYNC          },
             {"lbz"    , ParseInstructionLBZ            },
@@ -1222,6 +1226,18 @@ namespace GekkoAssembler
             var rs = ParseRegister(tokens[2]);
             var uimm = ParseIntegerLiteral(tokens[3]);
             return new OrImmediateInstruction(instructionPointer, ra, rs, uimm);
+        }
+
+        private static GekkoInstruction ParseInstructionSignExtension(string[] tokens, int instructionPointer)
+        {
+            var rc = tokens[0].EndsWith(".");
+            var ra = ParseRegister(tokens[1]);
+            var rs = ParseRegister(tokens[2]);
+
+            var opcode = tokens[0].Contains("h") ? SignExtensionInstruction.Opcode.Halfword
+                                                 : SignExtensionInstruction.Opcode.Byte;
+
+            return new SignExtensionInstruction(instructionPointer, ra, rs, rc, opcode);
         }
 
         private static GekkoInstruction ParseInstructionSTW(string[] tokens, int instructionPointer)

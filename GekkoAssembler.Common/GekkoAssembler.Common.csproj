@@ -99,6 +99,7 @@
     <Compile Include="GekkoInstructions\MultiplyLowWordInstruction.cs" />
     <Compile Include="GekkoInstructions\NoOperationInstruction.cs" />
     <Compile Include="GekkoInstructions\OrImmediateInstruction.cs" />
+    <Compile Include="GekkoInstructions\SignExtensionInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreWordInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreWordWithUpdateInstruction.cs" />
     <Compile Include="GekkoInstructions\SubtractFromInstruction.cs" />
