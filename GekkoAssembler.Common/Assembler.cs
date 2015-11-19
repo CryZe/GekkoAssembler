@@ -79,6 +79,13 @@ namespace GekkoAssembler
             {"dcbz"   , ParseInstructionDataCache },
             {"dcbz_l" , ParseInstructionDataCache },
             {"divw"   , ParseInstructionDIVW      },
+            {"divw."  , ParseInstructionDIVW      },
+            {"divwo"  , ParseInstructionDIVW      },
+            {"divwo." , ParseInstructionDIVW      },
+            {"divwu"  , ParseInstructionDIVW      },
+            {"divwu." , ParseInstructionDIVW      },
+            {"divwuo" , ParseInstructionDIVW      },
+            {"divwuo.", ParseInstructionDIVW      },
             {"icbi"   , ParseInstructionICBI      },
             {"isync"  , ParseInstructionISYNC     },
             {"lbz"    , ParseInstructionLBZ       },
@@ -1068,10 +1075,15 @@ namespace GekkoAssembler
 
         private static GekkoInstruction ParseInstructionDIVW(string[] tokens, int instructionPointer)
         {
+            var rc = tokens[0].EndsWith(".");
+            var oe = tokens[0].Contains("o");
+            var unsigned = tokens[0].Contains("u");
+
             var rd = ParseRegister(tokens[1]);
             var ra = ParseRegister(tokens[2]);
             var rb = ParseRegister(tokens[3]);
-            return new DivideWordInstruction(instructionPointer, rd, ra, rb, false, false);
+
+            return new DivideWordInstruction(instructionPointer, rd, ra, rb, oe, rc, unsigned);
         }
 
         private static GekkoInstruction ParseInstructionICBI(string[] tokens, int instructionPointer)
