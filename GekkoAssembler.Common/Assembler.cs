@@ -97,11 +97,27 @@ namespace GekkoAssembler
             {"extsh." , ParseInstructionSignExtension  },
             {"icbi"   , ParseInstructionICBI           },
             {"isync"  , ParseInstructionISYNC          },
-            {"lbz"    , ParseInstructionLBZ            },
+            {"lbz"    , ParseInstructionLoadInteger    },
+            {"lbzu"   , ParseInstructionLoadInteger    },
+            {"lbzux"  , ParseInstructionLoadInteger    },
+            {"lbzx"   , ParseInstructionLoadInteger    },
             {"lfs"    , ParseInstructionLFS            },
-            {"lhz"    , ParseInstructionLHZ            },
+            {"lha"    , ParseInstructionLoadInteger    },
+            {"lhau"   , ParseInstructionLoadInteger    },
+            {"lhaux"  , ParseInstructionLoadInteger    },
+            {"lhax"   , ParseInstructionLoadInteger    },
+            {"lhbrx"  , ParseInstructionLoadInteger    },
+            {"lhz"    , ParseInstructionLoadInteger    },
+            {"lhzu"   , ParseInstructionLoadInteger    },
+            {"lhzux"  , ParseInstructionLoadInteger    },
+            {"lhzx"   , ParseInstructionLoadInteger    },
             {"lis"    , ParseInstructionLIS            },
-            {"lwz"    , ParseInstructionLWZ            },
+            {"lwarx"  , ParseInstructionLoadInteger    },
+            {"lwbrx"  , ParseInstructionLoadInteger    },
+            {"lwz"    , ParseInstructionLoadInteger    },
+            {"lwzu"   , ParseInstructionLoadInteger    },
+            {"lwzux"  , ParseInstructionLoadInteger    },
+            {"lwzx"   , ParseInstructionLoadInteger    },
             {"mflr"   , ParseInstructionMFLR           },
             {"mfspr"  , ParseInstructionMFSPR          },
             {"mtlr"   , ParseInstructionMTLR           },
@@ -1134,12 +1150,116 @@ namespace GekkoAssembler
             return new InstructionSynchronizeInstruction(instructionPointer);
         }
 
-        private static GekkoInstruction ParseInstructionLBZ(string[] tokens, int instructionPointer)
+        private static GekkoInstruction ParseInstructionLoadInteger(string[] tokens, int instructionPointer)
         {
             var rd = ParseRegister(tokens[1]);
-            var offset = ParseIntegerLiteral(tokens[2]);
-            var ra = ParseRegister(tokens[3]);
-            return new LoadByteAndZeroInstruction(instructionPointer, rd, ra, offset);
+           
+            var algebraic = tokens[0].Contains("a");
+            var indexed   = tokens[0].EndsWith("x");
+            var updating  = tokens[0].Contains("u");
+            var zero      = tokens[0].Contains("z");
+
+            // Ensures that rA isn't zero or is the same as the destination
+            // register for update instruction variants.
+            Action<int, int> validateUpdatingVariantOperands = (src, dest) => {
+                if (src == 0)
+                    throw new FormatException($"{tokens[0]} cannot have a rA as zero");
+                if (src == dest)
+                    throw new FormatException($"{tokens[0]} cannot have rA and rD as the same register");
+            };
+
+            if (indexed)
+            {
+                var ra = ParseRegister(tokens[2]);
+                var rb = ParseRegister(tokens[3]);
+
+                if (updating)
+                    validateUpdatingVariantOperands(ra, rd);
+
+                // Halfword
+                if (tokens[0].Contains("h"))
+                {
+                    var opcode = LoadHalfWordIndexedInstruction.Opcode.LHBRX;
+
+                    if (algebraic)
+                    {
+                        if (updating)
+                            opcode = LoadHalfWordIndexedInstruction.Opcode.LHAUX;
+                        else
+                            opcode = LoadHalfWordIndexedInstruction.Opcode.LHAX;
+                    }
+                    else if (zero)
+                    {
+                        if (updating)
+                            opcode = LoadHalfWordIndexedInstruction.Opcode.LHZUX;
+                        else
+                            opcode = LoadHalfWordIndexedInstruction.Opcode.LHZX;
+                    }
+
+                    return new LoadHalfWordIndexedInstruction(instructionPointer, rd, ra, rb, opcode);
+                }
+                // Word
+                else if (tokens[0].Contains("w"))
+                {
+                    var opcode = algebraic ? LoadWordIndexedInstruction.Opcode.LWARX :
+                                 updating  ? LoadWordIndexedInstruction.Opcode.LWZUX :
+                                 zero      ? LoadWordIndexedInstruction.Opcode.LWZX
+                                           : LoadWordIndexedInstruction.Opcode.LWBRX;
+
+                    return new LoadWordIndexedInstruction(instructionPointer, rd, ra, rb, opcode);
+                }
+                else // Byte
+                {
+                    var opcode = updating ? LoadByteIndexedInstruction.Opcode.LBZUX
+                                          : LoadByteIndexedInstruction.Opcode.LBZX;
+
+                    return new LoadByteIndexedInstruction(instructionPointer, rd, ra, rb, opcode);
+                }
+            }
+            else
+            {
+                var offset = ParseIntegerLiteral(tokens[2]);
+                var ra     = ParseRegister(tokens[3]);
+
+                if (updating)
+                    validateUpdatingVariantOperands(ra, rd);
+
+                // Halfword
+                if (tokens[0].Contains("h"))
+                {
+                    var opcode = LoadHalfWordInstruction.Opcode.LHA;
+
+                    if (algebraic)
+                    {
+                        if (updating)
+                            opcode = LoadHalfWordInstruction.Opcode.LHAU;
+                    }
+                    else if (zero)
+                    {
+                        if (updating)
+                            opcode = LoadHalfWordInstruction.Opcode.LHZU;
+                        else
+                            opcode = LoadHalfWordInstruction.Opcode.LHZ;
+                    }
+
+                    return new LoadHalfWordInstruction(instructionPointer, rd, offset, ra, opcode);
+                }
+                // Word
+                else if (tokens[0].Contains("w"))
+                {
+                    var opcode = updating ? LoadWordInstruction.Opcode.LWZU
+                                          : LoadWordInstruction.Opcode.LWZ;
+
+                    return new LoadWordInstruction(instructionPointer, rd, offset, ra, opcode);
+                }
+                else // Byte
+                {
+                    var opcode = updating ? LoadByteInstruction.Opcode.LBZU
+                                          : LoadByteInstruction.Opcode.LBZ;
+
+                    return new LoadByteInstruction(instructionPointer, rd, offset, ra, opcode);
+                }
+            }
         }
 
         private static GekkoInstruction ParseInstructionLFS(string[] tokens, int instructionPointer)
@@ -1150,27 +1270,11 @@ namespace GekkoAssembler
             return new LoadFloatingPointSingleInstruction(instructionPointer, rd, ra, offset);
         }
 
-        private static GekkoInstruction ParseInstructionLHZ(string[] tokens, int instructionPointer)
-        {
-            var rd = ParseRegister(tokens[1]);
-            var offset = ParseIntegerLiteral(tokens[2]);
-            var ra = ParseRegister(tokens[3]);
-            return new LoadHalfWordAndZeroInstruction(instructionPointer, rd, ra, offset);
-        }
-
         private static GekkoInstruction ParseInstructionLIS(string[] tokens, int instructionPointer)
         {
             var rd = ParseRegister(tokens[1]);
             var simm = ParseIntegerLiteral(tokens[2]);
             return new LoadImmediateShiftedInstruction(instructionPointer, rd, simm);
-        }
-
-        private static GekkoInstruction ParseInstructionLWZ(string[] tokens, int instructionPointer)
-        {
-            var rd = ParseRegister(tokens[1]);
-            var offset = ParseIntegerLiteral(tokens[2]);
-            var ra = ParseRegister(tokens[3]);
-            return new LoadWordAndZeroInstruction(instructionPointer, rd, ra, offset);
         }
 
         private static GekkoInstruction ParseInstructionMFLR(string[] tokens, int instructionPointer)
