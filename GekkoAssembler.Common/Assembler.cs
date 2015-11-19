@@ -89,6 +89,8 @@ namespace GekkoAssembler
             {"eciwx"  , ParseInstructionExternalControl},
             {"ecowx"  , ParseInstructionExternalControl},
             {"eieio"  , ParseInstructionEIEIO          },
+            {"eqv"    , ParseInstructionEQV            },
+            {"eqv."   , ParseInstructionEQV            },
             {"icbi"   , ParseInstructionICBI           },
             {"isync"  , ParseInstructionISYNC          },
             {"lbz"    , ParseInstructionLBZ            },
@@ -1092,6 +1094,16 @@ namespace GekkoAssembler
         private static GekkoInstruction ParseInstructionEIEIO(string[] tokens, int instructionPointer)
         {
             return new EnforceInOrderExecutionInstruction(instructionPointer);
+        }
+
+        private static GekkoInstruction ParseInstructionEQV(string[] tokens, int instructionPointer)
+        {
+            var rc = tokens[0].EndsWith(".");
+            var ra = ParseRegister(tokens[1]);
+            var rs = ParseRegister(tokens[2]);
+            var rb = ParseRegister(tokens[3]);
+
+            return new EquivalentInstruction (instructionPointer, ra, rs, rb, rc);
         }
 
         private static GekkoInstruction ParseInstructionExternalControl(string[] tokens, int instructionPointer)

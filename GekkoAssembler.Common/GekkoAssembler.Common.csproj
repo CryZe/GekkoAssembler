@@ -81,6 +81,7 @@
     <Compile Include="GekkoInstructions\DataCacheInstruction.cs" />
     <Compile Include="GekkoInstructions\DivideWordInstruction.cs" />
     <Compile Include="GekkoInstructions\EnforceInOrderExecutionInstruction.cs" />
+    <Compile Include="GekkoInstructions\EquivalentInstruction.cs" />
     <Compile Include="GekkoInstructions\ExternalControlInstruction.cs" />
     <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionCacheBlockInvalidateInstruction.cs" />
