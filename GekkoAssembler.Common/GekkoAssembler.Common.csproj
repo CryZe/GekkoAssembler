@@ -78,6 +78,7 @@
     <Compile Include="GekkoInstructions\ConditionRegisterSetInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterXORInstruction.cs" />
     <Compile Include="GekkoInstructions\CountLeadingZeroesWordInstruction.cs" />
+    <Compile Include="GekkoInstructions\DataCacheInstruction.cs" />
     <Compile Include="GekkoInstructions\DivideWordInstruction.cs" />
     <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionCacheBlockInvalidateInstruction.cs" />
