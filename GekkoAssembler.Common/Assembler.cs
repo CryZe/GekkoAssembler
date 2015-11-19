@@ -88,6 +88,7 @@ namespace GekkoAssembler
             {"divwuo.", ParseInstructionDIVW           },
             {"eciwx"  , ParseInstructionExternalControl},
             {"ecowx"  , ParseInstructionExternalControl},
+            {"eieio"  , ParseInstructionEIEIO          },
             {"icbi"   , ParseInstructionICBI           },
             {"isync"  , ParseInstructionISYNC          },
             {"lbz"    , ParseInstructionLBZ            },
@@ -1086,6 +1087,11 @@ namespace GekkoAssembler
             var rb = ParseRegister(tokens[3]);
 
             return new DivideWordInstruction(instructionPointer, rd, ra, rb, oe, rc, unsigned);
+        }
+
+        private static GekkoInstruction ParseInstructionEIEIO(string[] tokens, int instructionPointer)
+        {
+            return new EnforceInOrderExecutionInstruction(instructionPointer);
         }
 
         private static GekkoInstruction ParseInstructionExternalControl(string[] tokens, int instructionPointer)
