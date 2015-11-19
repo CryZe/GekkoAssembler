@@ -126,6 +126,8 @@ namespace GekkoAssembler
             {"mffs."  , ParseInstructionMFFS           },
             {"mflr"   , ParseInstructionMFLR           },
             {"mfmsr"  , ParseInstructionMFMSR          },
+            {"mfsr"   , ParseInstructionMFSR           },
+            {"mfsrin" , ParseInstructionMFSRIN         },
             {"mfspr"  , ParseInstructionMFSPR          },
             {"mtlr"   , ParseInstructionMTLR           },
             {"mtspr"  , ParseInstructionMTSPR          },
@@ -1312,6 +1314,13 @@ namespace GekkoAssembler
             return new MoveFromFPSCRInstruction(instructionPointer, frd, rc);
         }
 
+        private static GekkoInstruction ParseInstructionMFLR(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+            return new MoveFromLinkRegisterInstruction(instructionPointer, rd);
+        }
+
+
         private static GekkoInstruction ParseInstructionMFMSR(string[] tokens, int instructionPointer)
         {
             var rd = ParseRegister(tokens[1]);
@@ -1319,10 +1328,20 @@ namespace GekkoAssembler
             return new MoveFromMSRInstruction(instructionPointer, rd);
         }
 
-        private static GekkoInstruction ParseInstructionMFLR(string[] tokens, int instructionPointer)
+        private static GekkoInstruction ParseInstructionMFSR(string[] tokens, int instructionPointer)
         {
             var rd = ParseRegister(tokens[1]);
-            return new MoveFromLinkRegisterInstruction(instructionPointer, rd);
+            var sr = ParseSegmentRegister(tokens[2]);
+
+            return new MoveFromSegmentRegisterInstruction(instructionPointer, rd, sr);
+        }
+
+        private static GekkoInstruction ParseInstructionMFSRIN(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+            var sr = ParseRegister(tokens[2]);
+
+            return new MoveFromSegmentRegisterIndirectInstruction(instructionPointer, rd, sr);
         }
 
         private static GekkoInstruction ParseInstructionMFSPR(string[] tokens, int instructionPointer)
@@ -1448,6 +1467,19 @@ namespace GekkoAssembler
 
             if (registerNumber < 0 || registerNumber > 7)
                 throw new ArgumentException("Condition registers must be within the range 0-7");
+
+            return registerNumber;
+        }
+
+        private static int ParseSegmentRegister(string register)
+        {
+            if (!register.ToLower().StartsWith("sr"))
+                throw new ArgumentException("Segment registers must be prefixed with 'sr' or 'SR'.");
+
+            int registerNumber = ParseIntegerLiteral(register.Substring(2));
+
+            if (registerNumber < 0 || registerNumber > 15)
+                throw new ArgumentException("Segment registers must be within the range 0-15");
 
             return registerNumber;
         }
