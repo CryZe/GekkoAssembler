@@ -101,6 +101,7 @@
     <Compile Include="GekkoInstructions\MoveFromSegmentRegisterIndirectInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveFromSegmentRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveFromSpecialPurposeRegisterInstruction.cs" />
+    <Compile Include="GekkoInstructions\MoveFromTimeBaseInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveToConditionRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveToLinkRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\MoveToSpecialPurposeRegisterInstruction.cs" />

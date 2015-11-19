@@ -129,6 +129,8 @@ namespace GekkoAssembler
             {"mfsr"   , ParseInstructionMFSR           },
             {"mfsrin" , ParseInstructionMFSRIN         },
             {"mfspr"  , ParseInstructionMFSPR          },
+            {"mftb"   , ParseInstructionMFTB           },
+            {"mftbu"  , ParseInstructionMFTB           },
             {"mtlr"   , ParseInstructionMTLR           },
             {"mtspr"  , ParseInstructionMTSPR          },
             {"mulli"  , ParseInstructionMULLI          },
@@ -1351,6 +1353,22 @@ namespace GekkoAssembler
             return new MoveFromSpecialPurposeRegisterInstruction(instructionPointer, rd, spr);
         }
 
+        private static GekkoInstruction ParseInstructionMFTB(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+
+            // Short-hand mnemonic for the upper time base bits
+            if (tokens[0].EndsWith("u"))
+                return new MoveFromTimeBaseInstruction(instructionPointer, rd, 269);
+
+            // Short-hand mnemonic for the lower time base bits
+            if (tokens.Length == 2)
+                return new MoveFromTimeBaseInstruction(instructionPointer, rd, 268);
+
+            var tb = ParseTimeBaseRegister(tokens[2]);
+            return new MoveFromTimeBaseInstruction(instructionPointer, rd, tb);
+        }
+
         private static GekkoInstruction ParseInstructionMTLR(string[] tokens, int instructionPointer)
         {
             var rs = ParseRegister(tokens[1]);
@@ -1482,6 +1500,23 @@ namespace GekkoAssembler
                 throw new ArgumentException("Segment registers must be within the range 0-15");
 
             return registerNumber;
+        }
+
+        private static int ParseTimeBaseRegister(string register)
+        {
+            switch (register.ToLower())
+            {
+                case "268":
+                case "269":
+                    return int.Parse(register);
+
+                case "tbl":
+                    return 268;
+                case "tbu":
+                    return 269;
+            }
+
+            throw new ArgumentException("Invalid time base register. Must be TBL or TBU");
         }
 
         private static int ParseInstructionPointerLabel(string line)
