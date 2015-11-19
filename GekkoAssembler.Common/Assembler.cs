@@ -118,8 +118,19 @@ namespace GekkoAssembler
             {"lwzu"   , ParseInstructionLoadInteger    },
             {"lwzux"  , ParseInstructionLoadInteger    },
             {"lwzx"   , ParseInstructionLoadInteger    },
+            {"mcrf"   , ParseInstructionMoveToCR       },
+            {"mcrfs"  , ParseInstructionMoveToCR       },
+            {"mcrxr"  , ParseInstructionMoveToCR       },
+            {"mfcr"   , ParseInstructionMFCR           },
+            {"mffs"   , ParseInstructionMFFS           },
+            {"mffs."  , ParseInstructionMFFS           },
             {"mflr"   , ParseInstructionMFLR           },
+            {"mfmsr"  , ParseInstructionMFMSR          },
+            {"mfsr"   , ParseInstructionMFSR           },
+            {"mfsrin" , ParseInstructionMFSRIN         },
             {"mfspr"  , ParseInstructionMFSPR          },
+            {"mftb"   , ParseInstructionMFTB           },
+            {"mftbu"  , ParseInstructionMFTB           },
             {"mtlr"   , ParseInstructionMTLR           },
             {"mtspr"  , ParseInstructionMTSPR          },
             {"mulli"  , ParseInstructionMULLI          },
@@ -1277,10 +1288,62 @@ namespace GekkoAssembler
             return new LoadImmediateShiftedInstruction(instructionPointer, rd, simm);
         }
 
+        private static GekkoInstruction ParseInstructionMoveToCR(string[] tokens, int instructionPointer)
+        {
+            var crfd = ParseConditionRegister(tokens[1]);
+
+            if (tokens[0] == "mcrxr")
+                return new MoveToConditionRegisterInstruction(instructionPointer, crfd);
+
+            var crfs = ParseConditionRegister(tokens[2]);
+            var fromFPSCR = tokens[0].EndsWith("s");
+
+            return new MoveToConditionRegisterInstruction(instructionPointer, crfd, crfs, fromFPSCR);
+        }
+
+        private static GekkoInstruction ParseInstructionMFCR(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+
+            return new MoveFromConditionRegisterInstruction(instructionPointer, rd);
+        }
+
+        private static GekkoInstruction ParseInstructionMFFS(string[] tokens, int instructionPointer)
+        {
+            var rc  = tokens[0].EndsWith(".");
+            var frd = ParseRegister(tokens[1]);
+
+            return new MoveFromFPSCRInstruction(instructionPointer, frd, rc);
+        }
+
         private static GekkoInstruction ParseInstructionMFLR(string[] tokens, int instructionPointer)
         {
             var rd = ParseRegister(tokens[1]);
             return new MoveFromLinkRegisterInstruction(instructionPointer, rd);
+        }
+
+
+        private static GekkoInstruction ParseInstructionMFMSR(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+
+            return new MoveFromMSRInstruction(instructionPointer, rd);
+        }
+
+        private static GekkoInstruction ParseInstructionMFSR(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+            var sr = ParseSegmentRegister(tokens[2]);
+
+            return new MoveFromSegmentRegisterInstruction(instructionPointer, rd, sr);
+        }
+
+        private static GekkoInstruction ParseInstructionMFSRIN(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+            var sr = ParseRegister(tokens[2]);
+
+            return new MoveFromSegmentRegisterIndirectInstruction(instructionPointer, rd, sr);
         }
 
         private static GekkoInstruction ParseInstructionMFSPR(string[] tokens, int instructionPointer)
@@ -1288,6 +1351,22 @@ namespace GekkoAssembler
             var rd = ParseRegister(tokens[1]);
             var spr = ParseIntegerLiteral(tokens[2]);
             return new MoveFromSpecialPurposeRegisterInstruction(instructionPointer, rd, spr);
+        }
+
+        private static GekkoInstruction ParseInstructionMFTB(string[] tokens, int instructionPointer)
+        {
+            var rd = ParseRegister(tokens[1]);
+
+            // Short-hand mnemonic for the upper time base bits
+            if (tokens[0].EndsWith("u"))
+                return new MoveFromTimeBaseInstruction(instructionPointer, rd, 269);
+
+            // Short-hand mnemonic for the lower time base bits
+            if (tokens.Length == 2)
+                return new MoveFromTimeBaseInstruction(instructionPointer, rd, 268);
+
+            var tb = ParseTimeBaseRegister(tokens[2]);
+            return new MoveFromTimeBaseInstruction(instructionPointer, rd, tb);
         }
 
         private static GekkoInstruction ParseInstructionMTLR(string[] tokens, int instructionPointer)
@@ -1408,6 +1487,36 @@ namespace GekkoAssembler
                 throw new ArgumentException("Condition registers must be within the range 0-7");
 
             return registerNumber;
+        }
+
+        private static int ParseSegmentRegister(string register)
+        {
+            if (!register.ToLower().StartsWith("sr"))
+                throw new ArgumentException("Segment registers must be prefixed with 'sr' or 'SR'.");
+
+            int registerNumber = ParseIntegerLiteral(register.Substring(2));
+
+            if (registerNumber < 0 || registerNumber > 15)
+                throw new ArgumentException("Segment registers must be within the range 0-15");
+
+            return registerNumber;
+        }
+
+        private static int ParseTimeBaseRegister(string register)
+        {
+            switch (register.ToLower())
+            {
+                case "268":
+                case "269":
+                    return int.Parse(register);
+
+                case "tbl":
+                    return 268;
+                case "tbu":
+                    return 269;
+            }
+
+            throw new ArgumentException("Invalid time base register. Must be TBL or TBU");
         }
 
         private static int ParseInstructionPointerLabel(string line)
