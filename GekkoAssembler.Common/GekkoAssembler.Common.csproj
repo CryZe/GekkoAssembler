@@ -65,6 +65,8 @@
     <Compile Include="GekkoInstructions\AndInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchToLinkRegisterInstruction.cs" />
+    <Compile Include="GekkoInstructions\CompareImmediateInstruction.cs" />
+    <Compile Include="GekkoInstructions\CompareInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterANDComplementInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterANDInstruction.cs" />
     <Compile Include="GekkoInstructions\ConditionRegisterClearInstruction.cs" />

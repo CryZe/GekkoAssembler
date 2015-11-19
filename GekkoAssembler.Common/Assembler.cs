@@ -49,6 +49,14 @@ namespace GekkoAssembler
             {"bl"     , ParseInstructionBL     },
             {"bla"    , ParseInstructionBLA    },
             {"blr"    , ParseInstructionBLR    },
+            {"cmp"    , ParseInstructionCMP    },
+            {"cmpi"   , ParseInstructionCMP    },
+            {"cmpl"   , ParseInstructionCMP    },
+            {"cmpli"  , ParseInstructionCMP    },
+            {"cmplw"  , ParseInstructionCMP    },
+            {"cmplwi" , ParseInstructionCMP    },
+            {"cmpw"   , ParseInstructionCMP    },
+            {"cmpwi"  , ParseInstructionCMP    },
             {"crand"  , ParseInstructionCRAND  },
             {"crandc" , ParseInstructionCRANDC },
             {"crclr"  , ParseInstructionCRCLR  },
@@ -885,6 +893,43 @@ namespace GekkoAssembler
         private static GekkoInstruction ParseInstructionBLR(string[] tokens, int instructionPointer)
         {
             return new BranchToLinkRegisterInstruction(instructionPointer);
+        }
+
+        private static GekkoInstruction ParseInstructionCMP(string[] tokens, int instructionPointer)
+        {
+            bool immediate       = tokens[0].Contains("i");
+            bool logical_variant = tokens[0].Contains("l");
+            bool w_mnemonic      = tokens[0].Contains("w");
+
+            var crfd = ParseConditionRegister(tokens[1]);
+
+            if (w_mnemonic)
+            {
+                var ra = ParseRegister(tokens[2]);
+
+                if (immediate)
+                {
+                    var imm = ParseIntegerLiteral(tokens[3]);
+                    return new CompareImmediateInstruction(instructionPointer, crfd, 0, ra, imm, logical_variant);
+                }
+
+                var rb = ParseRegister(tokens[3]);
+                return new CompareInstruction(instructionPointer, crfd, 0, ra, rb, logical_variant);
+            }
+            else
+            {
+                var ra = ParseRegister(tokens[3]);
+                var L = ParseIntegerLiteral(tokens[2]);
+
+                if (immediate)
+                {
+                    var imm = ParseIntegerLiteral(tokens[4]);
+                    return new CompareImmediateInstruction(instructionPointer, crfd, L, ra, imm, logical_variant);
+                }
+
+                var rb = ParseRegister(tokens[4]);
+                return new CompareInstruction(instructionPointer, crfd, L, ra, rb, logical_variant);
+            }
         }
 
         private static GekkoInstruction ParseInstructionCRAND(string[] tokens, int instructionPointer)
