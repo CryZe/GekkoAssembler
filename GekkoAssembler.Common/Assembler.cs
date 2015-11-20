@@ -135,6 +135,9 @@ namespace GekkoAssembler
             {"mtspr"  , ParseInstructionMTSPR          },
             {"mulli"  , ParseInstructionMULLI          },
             {"mullw"  , ParseInstructionMULLW          },
+            {"mullw." , ParseInstructionMULLW          },
+            {"mullwo" , ParseInstructionMULLW          },
+            {"mullwo.", ParseInstructionMULLW          },
             {"nop"    , ParseInstructionNOP            },
             {"ori"    , ParseInstructionORI            },
             {"stw"    , ParseInstructionSTW            },
@@ -1392,10 +1395,12 @@ namespace GekkoAssembler
 
         private static GekkoInstruction ParseInstructionMULLW(string[] tokens, int instructionPointer)
         {
+            var oe = tokens[0].Contains("o");
+            var rc = tokens[0].EndsWith(".");
             var rd = ParseRegister(tokens[1]);
             var ra = ParseRegister(tokens[2]);
             var rb = ParseRegister(tokens[3]);
-            return new MultiplyLowWordInstruction(instructionPointer, rd, ra, rb, false, false);
+            return new MultiplyLowWordInstruction(instructionPointer, rd, ra, rb, oe, rc);
         }
 
         private static GekkoInstruction ParseInstructionNOP(string[] tokens, int instructionPointer)
