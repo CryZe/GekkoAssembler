@@ -1,23 +1,12 @@
 ﻿namespace GekkoAssembler.GekkoInstructions
 {
-    public class SubtractFromInstruction : GekkoInstruction
+    public sealed class SubtractFromInstruction : GekkoInstruction
     {
-        public override int ByteCode
-            => 0x7C000050 | (RegisterDestination << 21) | (RegisterA << 16) | (RegisterB << 11) | ((OE ? 1 : 0) << 10) | (RC ? 1 : 0);
+        public override int ByteCode { get; }
 
-        public int RegisterDestination { get; }
-        public int RegisterA { get; }
-        public int RegisterB { get; }
-        public bool OE { get; }
-        public bool RC { get; }
-
-        public SubtractFromInstruction(int address, int registerDestination, int registerA, int registerB, bool oe = false, bool rc = false) : base(address)
+        public SubtractFromInstruction(int address, int rD, int rA, int rB, bool oe, bool rc) : base(address)
         {
-            RegisterDestination = registerDestination;
-            RegisterA = registerA;
-            RegisterB = registerB;
-            OE = oe;
-            RC = rc;
+            ByteCode = (31 << 26 | rD << 21 | rA << 16 | rB << 11 | (oe ? 1 : 0) << 10 | 40 << 1 | (rc ? 1 : 0));
         }
     }
 }

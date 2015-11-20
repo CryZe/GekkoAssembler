@@ -155,10 +155,13 @@ namespace GekkoAssembler
             {"stwu"   , ParseInstructionStoreInteger   },
             {"stwux"  , ParseInstructionStoreInteger   },
             {"stwx"   , ParseInstructionStoreInteger   },
-            {"sub"    , ParseInstructionSUB            },
+            {"sub"    , ParseInstructionSUBF           }, // Simplified mnemonic for subf
             {"subic"  , ParseInstructionADDIC          }, // Simplified mnemonic for addic
             {"subic." , ParseInstructionADDIC          }, // Simplified mnemonic for addic.
-            {"subf"   , ParseInstructionSUBF           }
+            {"subf"   , ParseInstructionSUBF           },
+            {"subf."  , ParseInstructionSUBF           },
+            {"subfo"  , ParseInstructionSUBF           },
+            {"subfo." , ParseInstructionSUBF           },
         };
 
         public List<IOptimizer> Optimizers { get; }
@@ -1532,20 +1535,20 @@ namespace GekkoAssembler
             }
         }
 
-        private static GekkoInstruction ParseInstructionSUB(string[] tokens, int instructionPointer)
-        {
-            var rd = ParseRegister(tokens[1]);
-            var ra = ParseRegister(tokens[2]);
-            var rb = ParseRegister(tokens[3]);
-            return new SubtractFromInstruction(instructionPointer, rd, rb, ra, false, false);
-        }
-
         private static GekkoInstruction ParseInstructionSUBF(string[] tokens, int instructionPointer)
         {
+            var oe = tokens[0].Contains("o");
+            var rc = tokens[0].Contains(".");
+
             var rd = ParseRegister(tokens[1]);
             var ra = ParseRegister(tokens[2]);
             var rb = ParseRegister(tokens[3]);
-            return new SubtractFromInstruction(instructionPointer, rd, ra, rb, false, false);
+
+            // sub mnemonic
+            if (!tokens[0].Contains("f"))
+                return new SubtractFromInstruction(instructionPointer, rd, rb, ra, oe, rc);
+
+            return new SubtractFromInstruction(instructionPointer, rd, ra, rb, oe, rc);
         }
 
         #endregion
