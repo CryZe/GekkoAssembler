@@ -140,12 +140,28 @@ namespace GekkoAssembler
             {"mullwo.", ParseInstructionMULLW          },
             {"nop"    , ParseInstructionNOP            },
             {"ori"    , ParseInstructionORI            },
-            {"stw"    , ParseInstructionSTW            },
-            {"stwu"   , ParseInstructionSTWU           },
-            {"sub"    , ParseInstructionSUB            },
+            {"stb"    , ParseInstructionStoreInteger   },
+            {"stbu"   , ParseInstructionStoreInteger   },
+            {"stbux"  , ParseInstructionStoreInteger   },
+            {"stbx"   , ParseInstructionStoreInteger   },
+            {"sth"    , ParseInstructionStoreInteger   },
+            {"sthbrx" , ParseInstructionStoreInteger   },
+            {"sthu"   , ParseInstructionStoreInteger   },
+            {"sthux"  , ParseInstructionStoreInteger   },
+            {"sthx"   , ParseInstructionStoreInteger   },
+            {"stw"    , ParseInstructionStoreInteger   },
+            {"stwbrx" , ParseInstructionStoreInteger   },
+            {"stwcx." , ParseInstructionStoreInteger   },
+            {"stwu"   , ParseInstructionStoreInteger   },
+            {"stwux"  , ParseInstructionStoreInteger   },
+            {"stwx"   , ParseInstructionStoreInteger   },
+            {"sub"    , ParseInstructionSUBF           }, // Simplified mnemonic for subf
             {"subic"  , ParseInstructionADDIC          }, // Simplified mnemonic for addic
             {"subic." , ParseInstructionADDIC          }, // Simplified mnemonic for addic.
-            {"subf"   , ParseInstructionSUBF           }
+            {"subf"   , ParseInstructionSUBF           },
+            {"subf."  , ParseInstructionSUBF           },
+            {"subfo"  , ParseInstructionSUBF           },
+            {"subfo." , ParseInstructionSUBF           },
         };
 
         public List<IOptimizer> Optimizers { get; }
@@ -1428,36 +1444,111 @@ namespace GekkoAssembler
             return new SignExtensionInstruction(instructionPointer, ra, rs, rc, opcode);
         }
 
-        private static GekkoInstruction ParseInstructionSTW(string[] tokens, int instructionPointer)
+        private static GekkoInstruction ParseInstructionStoreInteger(string[] tokens, int instructionPointer)
         {
             var rs = ParseRegister(tokens[1]);
-            var offset = ParseIntegerLiteral(tokens[2]);
-            var ra = ParseRegister(tokens[3]);
-            return new StoreWordInstruction(instructionPointer, rs, offset, ra);
-        }
 
-        private static GekkoInstruction ParseInstructionSTWU(string[] tokens, int instructionPointer)
-        {
-            var rs = ParseRegister(tokens[1]);
-            var offset = ParseIntegerLiteral(tokens[2]);
-            var ra = ParseRegister(tokens[3]);
-            return new StoreWordWithUpdateInstruction(instructionPointer, rs, offset, ra);
-        }
+            var byteReverse = tokens[0].Contains("b");
+            var updating    = tokens[0].Contains("u");
+            var indexed     = tokens[0].Contains("x");
 
-        private static GekkoInstruction ParseInstructionSUB(string[] tokens, int instructionPointer)
-        {
-            var rd = ParseRegister(tokens[1]);
-            var ra = ParseRegister(tokens[2]);
-            var rb = ParseRegister(tokens[3]);
-            return new SubtractFromInstruction(instructionPointer, rd, rb, ra, false, false);
+            // Ensures that rA isn't zero for updating variants
+            Action<int> validateUpdatingVariantOperands = (src) => {
+                if (src == 0)
+                    throw new FormatException($"{tokens[0]} cannot have rA specified as r0");
+            };
+
+            if (indexed)
+            {
+                var ra = ParseRegister(tokens[2]);
+                var rb = ParseRegister(tokens[3]);
+
+                if (updating)
+                    validateUpdatingVariantOperands(ra);
+
+                // Halfword
+                if (tokens[0].Contains("h"))
+                {
+                    var opcode = StoreHalfWordIndexedInstruction.Opcode.STHX;
+
+                    if (updating)
+                        opcode = StoreHalfWordIndexedInstruction.Opcode.STHUX;
+                    else if (byteReverse)
+                        opcode = StoreHalfWordIndexedInstruction.Opcode.STHBRX;
+
+                    return new StoreHalfWordIndexedInstruction(instructionPointer, rs, ra, rb, opcode);
+                }
+                // Word
+                else if (tokens[0].Contains("w"))
+                {
+                    var conditional = tokens[0].Contains("c");
+                    var opcode = StoreWordIndexedInstruction.Opcode.STWX;
+
+                    if (conditional)
+                        opcode = StoreWordIndexedInstruction.Opcode.STWCX;
+                    else if (updating)
+                        opcode = StoreWordIndexedInstruction.Opcode.STWUX;
+                    else if (byteReverse)
+                        opcode = StoreWordIndexedInstruction.Opcode.STWBRX;
+
+                    return new StoreWordIndexedInstruction(instructionPointer, rs, ra, rb, opcode);
+                }
+                else // Byte
+                {
+                    var opcode = updating ? StoreByteIndexedInstruction.Opcode.STBUX
+                                          : StoreByteIndexedInstruction.Opcode.STBX;
+
+                    return new StoreByteIndexedInstruction(instructionPointer, rs, ra, rb, opcode);
+                }
+            }
+            else
+            {
+                var offset = ParseIntegerLiteral(tokens[2]);
+                var ra     = ParseRegister(tokens[3]);
+
+                if (updating)
+                    validateUpdatingVariantOperands(ra);
+
+                // Halfword
+                if (tokens[0].Contains("h"))
+                {
+                    var opcode = updating ? StoreHalfWordInstruction.Opcode.STHU
+                                          : StoreHalfWordInstruction.Opcode.STH;
+
+                    return new StoreHalfWordInstruction(instructionPointer, rs, offset, ra, opcode);
+                }
+                // Word
+                else if (tokens[0].Contains("w"))
+                {
+                    var opcode = updating ? StoreWordInstruction.Opcode.STWU
+                                          : StoreWordInstruction.Opcode.STW;
+
+                    return new StoreWordInstruction(instructionPointer, rs, offset, ra, opcode);
+                }
+                else // Byte
+                {
+                    var opcode = updating ? StoreByteInstruction.Opcode.STBU
+                                          : StoreByteInstruction.Opcode.STB;
+
+                    return new StoreByteInstruction(instructionPointer, rs, offset, ra, opcode);
+                }
+            }
         }
 
         private static GekkoInstruction ParseInstructionSUBF(string[] tokens, int instructionPointer)
         {
+            var oe = tokens[0].Contains("o");
+            var rc = tokens[0].Contains(".");
+
             var rd = ParseRegister(tokens[1]);
             var ra = ParseRegister(tokens[2]);
             var rb = ParseRegister(tokens[3]);
-            return new SubtractFromInstruction(instructionPointer, rd, ra, rb, false, false);
+
+            // sub mnemonic
+            if (!tokens[0].Contains("f"))
+                return new SubtractFromInstruction(instructionPointer, rd, rb, ra, oe, rc);
+
+            return new SubtractFromInstruction(instructionPointer, rd, ra, rb, oe, rc);
         }
 
         #endregion
