@@ -110,8 +110,12 @@
     <Compile Include="GekkoInstructions\NoOperationInstruction.cs" />
     <Compile Include="GekkoInstructions\OrImmediateInstruction.cs" />
     <Compile Include="GekkoInstructions\SignExtensionInstruction.cs" />
+    <Compile Include="GekkoInstructions\StoreByteIndexedInstruction.cs" />
+    <Compile Include="GekkoInstructions\StoreByteInstruction.cs" />
+    <Compile Include="GekkoInstructions\StoreHalfWordIndexedInstruction.cs" />
+    <Compile Include="GekkoInstructions\StoreHalfWordInstruction.cs" />
+    <Compile Include="GekkoInstructions\StoreWordIndexedInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreWordInstruction.cs" />
-    <Compile Include="GekkoInstructions\StoreWordWithUpdateInstruction.cs" />
     <Compile Include="GekkoInstructions\SubtractFromInstruction.cs" />
     <Compile Include="IntermediateRepresentation\IIRUnit.cs" />
     <Compile Include="IntermediateRepresentation\IIRUnitVisitor.cs" />
