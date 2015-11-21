@@ -1368,7 +1368,7 @@ namespace GekkoAssembler
         private static GekkoInstruction ParseInstructionMFSPR(string[] tokens, int instructionPointer)
         {
             var rd = ParseRegister(tokens[1]);
-            var spr = ParseIntegerLiteral(tokens[2]);
+            var spr = ParseSpecialPurposeRegister(tokens[2]);
             return new MoveFromSpecialPurposeRegisterInstruction(instructionPointer, rd, spr);
         }
 
@@ -1396,7 +1396,7 @@ namespace GekkoAssembler
 
         private static GekkoInstruction ParseInstructionMTSPR(string[] tokens, int instructionPointer)
         {
-            var spr = ParseIntegerLiteral(tokens[1]);
+            var spr = ParseSpecialPurposeRegister(tokens[1]);
             var rs = ParseRegister(tokens[2]);
             return new MoveToSpecialPurposeRegisterInstruction(instructionPointer, spr, rs);
         }
@@ -1596,6 +1596,153 @@ namespace GekkoAssembler
                 throw new ArgumentException("Segment registers must be within the range 0-15");
 
             return registerNumber;
+        }
+
+        private static int ParseSpecialPurposeRegister(string register)
+        {
+            switch (register.ToLower())
+            {
+                case "1":    // XER
+                case "8":    // LR
+                case "9":    // CTR
+                case "18":   // DSISR
+                case "19":   // DAR
+                case "22":   // DEC
+                case "25":   // SDR1
+                case "26":   // SRR0
+                case "27":   // SRR1
+                case "272":  // SPRG0
+                case "273":  // SPRG1
+                case "274":  // SPRG2
+                case "275":  // SPRG3
+                case "282":  // EAR
+                case "287":  // PVR
+                case "528":  // IBAT0U
+                case "529":  // IBAT0L
+                case "530":  // IBAT1U
+                case "531":  // IBAT1L
+                case "532":  // IBAT2U
+                case "533":  // IBAT2L
+                case "534":  // IBAT3U
+                case "535":  // IBAT3L
+                case "536":  // DBAT0U
+                case "537":  // DBAT0L
+                case "538":  // DBAT1U
+                case "539":  // DBAT1L
+                case "540":  // DBAT2U
+                case "541":  // DBAT2L
+                case "542":  // DBAT3U
+                case "543":  // DBAT3L
+                case "912":  // GQR0
+                case "913":  // GQR1
+                case "914":  // GQR2
+                case "915":  // GQR3
+                case "916":  // GQR4
+                case "917":  // GQR5
+                case "918":  // GQR6
+                case "919":  // GQR7
+                case "920":  // HID2
+                case "921":  // WPAR
+                case "922":  // DMA_U
+                case "923":  // DMA_L
+                case "936":  // UMMCR0
+                case "937":  // UPMC1
+                case "938":  // UPMC2
+                case "939":  // USIA
+                case "940":  // UMMCR1
+                case "941":  // UPMC3
+                case "942":  // UPMC4
+                case "943":  // USDA
+                case "952":  // MMCR0
+                case "953":  // PMC1
+                case "954":  // PMC2
+                case "955":  // SIA
+                case "956":  // MMCR1
+                case "957":  // PMC3
+                case "958":  // PMC4
+                case "959":  // SDA
+                case "1008": // HID0
+                case "1009": // HID1
+                case "1010": // IABR
+                case "1013": // DABR
+                case "1017": // L2CR
+                case "1019": // ICTC
+                case "1020": // THRM1
+                case "1021": // THRM2
+                case "1022": // THRM3
+                    return int.Parse(register);
+
+                case "xer":    return 1;
+                case "lr":     return 8;
+                case "ctr":    return 9;
+                case "dsisr":  return 18;
+                case "dar":    return 19;
+                case "dec":    return 22;
+                case "sdr1":   return 25;
+                case "srr0":   return 26;
+                case "srr1":   return 27;
+                case "sprg0":  return 272;
+                case "sprg1":  return 273;
+                case "sprg2":  return 274;
+                case "sprg3":  return 275;
+                case "ear":    return 282;
+                case "pvr":    return 287;
+                case "ibat0u": return 528;
+                case "ibat0l": return 529;
+                case "ibat1u": return 530;
+                case "ibat1l": return 531;
+                case "ibat2u": return 532;
+                case "ibat2l": return 533;
+                case "ibat3u": return 534;
+                case "ibat3l": return 535;
+                case "dbat0u": return 536;
+                case "dbat0l": return 537;
+                case "dbat1u": return 538;
+                case "dbat1l": return 539;
+                case "dbat2u": return 540;
+                case "dbat2l": return 541;
+                case "dbat3u": return 542;
+                case "dbat3l": return 543;
+                case "gqr0":   return 912;
+                case "gqr1":   return 913;
+                case "gqr2":   return 914;
+                case "gqr3":   return 915;
+                case "gqr4":   return 916;
+                case "gqr5":   return 917;
+                case "gqr6":   return 918;
+                case "gqr7":   return 919;
+                case "hid2":   return 920;
+                case "wpar":   return 921;
+                case "dma_u":  return 922;
+                case "dma_l":  return 923;
+                case "ummcr0": return 936;
+                case "upmc1":  return 937;
+                case "upmc2":  return 938;
+                case "usia":   return 939;
+                case "ummcr1": return 940;
+                case "upmc3":  return 941;
+                case "upmc4":  return 942;
+                case "usda":   return 943;
+                case "mmcr0":  return 952;
+                case "pmc1":   return 953;
+                case "pmc2":   return 954;
+                case "sia":    return 955;
+                case "mmcr1":  return 956;
+                case "pmc3":   return 957;
+                case "pmc4":   return 958;
+                case "sda":    return 959;
+                case "hid0":   return 1008;
+                case "hid1":   return 1009;
+                case "iabr":   return 1010;
+                case "dabr":   return 1013;
+                case "l2cr":   return 1017;
+                case "ictc":   return 1019;
+                case "thrm1":  return 1020;
+                case "thrm2":  return 1021;
+                case "thrm3":  return 1022;
+            }
+
+            throw new ArgumentException($"Invalid special-purpose register {register} specified.");
         }
 
         private static int ParseTimeBaseRegister(string register)
