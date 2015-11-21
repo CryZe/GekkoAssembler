@@ -182,6 +182,8 @@
     <Compile Include="IntermediateRepresentation\IRUnsigned16BitUnset.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned32BitUnset.cs" />
     <Compile Include="IntermediateRepresentation\IRUnsigned8BitUnset.cs" />
+    <Compile Include="Writers\ByteCodeWriter.cs" />
+    <Compile Include="Writers\ByteCodeVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

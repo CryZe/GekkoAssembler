@@ -73,7 +73,8 @@
             this.cmbType.FormattingEnabled = true;
             this.cmbType.Items.AddRange(new object[] {
             "Gecko",
-            "Action Replay"});
+            "Action Replay",
+            "Byte Code"});
             this.cmbType.Location = new System.Drawing.Point(445, 4);
             this.cmbType.Name = "cmbType";
             this.cmbType.Size = new System.Drawing.Size(152, 21);

@@ -42,9 +42,13 @@ namespace GekkoAssembler.Forms
                 {
                     writer = new GeckoWriter();
                 }
-                else
+                else if (cmbType.SelectedItem.ToString() == "Action Replay")
                 {
                     writer = new ActionReplayWriter();
+                }
+                else
+                {
+                    writer = new ByteCodeWriter();
                 }
 
                 var code = writer.WriteCode(gekkoAssembly);
