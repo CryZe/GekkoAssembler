@@ -14,154 +14,216 @@ namespace GekkoAssembler
     {
         private static readonly Dictionary<string, Func<string[], int, GekkoInstruction>> instructionTable = new Dictionary<string, Func<string[], int, GekkoInstruction>>
         {
-            {"add"    , ParseInstructionADD            },
-            {"add."   , ParseInstructionADD            },
-            {"addo"   , ParseInstructionADD            },
-            {"addo."  , ParseInstructionADD            },
-            {"addc"   , ParseInstructionADDC           },
-            {"addc."  , ParseInstructionADDC           },
-            {"addco"  , ParseInstructionADDC           },
-            {"addco." , ParseInstructionADDC           },
-            {"adde"   , ParseInstructionADDE           },
-            {"adde."  , ParseInstructionADDE           },
-            {"addeo"  , ParseInstructionADDE           },
-            {"addeo." , ParseInstructionADDE           },
-            {"addi"   , ParseInstructionADDI           },
-            {"addic"  , ParseInstructionADDIC          },
-            {"addic." , ParseInstructionADDIC          },
-            {"addis"  , ParseInstructionADDIS          },
-            {"addme"  , ParseInstructionADDME          },
-            {"addme." , ParseInstructionADDME          },
-            {"addmeo" , ParseInstructionADDME          },
-            {"addmeo.", ParseInstructionADDME          },
-            {"addze"  , ParseInstructionADDZE          },
-            {"addze." , ParseInstructionADDZE          },
-            {"addzeo" , ParseInstructionADDZE          },
-            {"addzeo.", ParseInstructionADDZE          },
-            {"and"    , ParseInstructionAND            },
-            {"and."   , ParseInstructionAND            },
-            {"andc"   , ParseInstructionAND            },
-            {"andc."  , ParseInstructionAND            },
-            {"andi."  , ParseInstructionAND            },
-            {"andis." , ParseInstructionAND            },
-            {"b"      , ParseInstructionB              },
-            {"ba"     , ParseInstructionBA             },
-            {"bl"     , ParseInstructionBL             },
-            {"bla"    , ParseInstructionBLA            },
-            {"blr"    , ParseInstructionBLR            },
-            {"cmp"    , ParseInstructionCMP            },
-            {"cmpi"   , ParseInstructionCMP            },
-            {"cmpl"   , ParseInstructionCMP            },
-            {"cmpli"  , ParseInstructionCMP            },
-            {"cmplw"  , ParseInstructionCMP            },
-            {"cmplwi" , ParseInstructionCMP            },
-            {"cmpw"   , ParseInstructionCMP            },
-            {"cmpwi"  , ParseInstructionCMP            },
-            {"cntlzw" , ParseInstructionCNTLZW         },
-            {"cntlzw.", ParseInstructionCNTLZW         },
-            {"crand"  , ParseInstructionCRAND          },
-            {"crandc" , ParseInstructionCRANDC         },
-            {"crclr"  , ParseInstructionCRCLR          },
-            {"creqv"  , ParseInstructionCREQV          },
-            {"crmove" , ParseInstructionCRMOVE         },
-            {"crnand" , ParseInstructionCRNAND         },
-            {"crnor"  , ParseInstructionCRNOR          },
-            {"crnot"  , ParseInstructionCRNOT          },
-            {"cror"   , ParseInstructionCROR           },
-            {"crorc"  , ParseInstructionCRORC          },
-            {"crset"  , ParseInstructionCRSET          },
-            {"crxor"  , ParseInstructionCRXOR          },
-            {"dcbf"   , ParseInstructionDataCache      },
-            {"dcbi"   , ParseInstructionDataCache      },
-            {"dcbst"  , ParseInstructionDataCache      },
-            {"dcbt"   , ParseInstructionDataCache      },
-            {"dcbtst" , ParseInstructionDataCache      },
-            {"dcbz"   , ParseInstructionDataCache      },
-            {"dcbz_l" , ParseInstructionDataCache      },
-            {"divw"   , ParseInstructionDIVW           },
-            {"divw."  , ParseInstructionDIVW           },
-            {"divwo"  , ParseInstructionDIVW           },
-            {"divwo." , ParseInstructionDIVW           },
-            {"divwu"  , ParseInstructionDIVW           },
-            {"divwu." , ParseInstructionDIVW           },
-            {"divwuo" , ParseInstructionDIVW           },
-            {"divwuo.", ParseInstructionDIVW           },
-            {"eciwx"  , ParseInstructionExternalControl},
-            {"ecowx"  , ParseInstructionExternalControl},
-            {"eieio"  , ParseInstructionEIEIO          },
-            {"eqv"    , ParseInstructionEQV            },
-            {"eqv."   , ParseInstructionEQV            },
-            {"extsb"  , ParseInstructionSignExtension  },
-            {"extsb." , ParseInstructionSignExtension  },
-            {"extsh"  , ParseInstructionSignExtension  },
-            {"extsh." , ParseInstructionSignExtension  },
-            {"icbi"   , ParseInstructionICBI           },
-            {"isync"  , ParseInstructionISYNC          },
-            {"lbz"    , ParseInstructionLoadInteger    },
-            {"lbzu"   , ParseInstructionLoadInteger    },
-            {"lbzux"  , ParseInstructionLoadInteger    },
-            {"lbzx"   , ParseInstructionLoadInteger    },
-            {"lfs"    , ParseInstructionLFS            },
-            {"lha"    , ParseInstructionLoadInteger    },
-            {"lhau"   , ParseInstructionLoadInteger    },
-            {"lhaux"  , ParseInstructionLoadInteger    },
-            {"lhax"   , ParseInstructionLoadInteger    },
-            {"lhbrx"  , ParseInstructionLoadInteger    },
-            {"lhz"    , ParseInstructionLoadInteger    },
-            {"lhzu"   , ParseInstructionLoadInteger    },
-            {"lhzux"  , ParseInstructionLoadInteger    },
-            {"lhzx"   , ParseInstructionLoadInteger    },
-            {"lis"    , ParseInstructionLIS            },
-            {"lwarx"  , ParseInstructionLoadInteger    },
-            {"lwbrx"  , ParseInstructionLoadInteger    },
-            {"lwz"    , ParseInstructionLoadInteger    },
-            {"lwzu"   , ParseInstructionLoadInteger    },
-            {"lwzux"  , ParseInstructionLoadInteger    },
-            {"lwzx"   , ParseInstructionLoadInteger    },
-            {"mcrf"   , ParseInstructionMoveToCR       },
-            {"mcrfs"  , ParseInstructionMoveToCR       },
-            {"mcrxr"  , ParseInstructionMoveToCR       },
-            {"mfcr"   , ParseInstructionMFCR           },
-            {"mffs"   , ParseInstructionMFFS           },
-            {"mffs."  , ParseInstructionMFFS           },
-            {"mflr"   , ParseInstructionMFLR           },
-            {"mfmsr"  , ParseInstructionMFMSR          },
-            {"mfsr"   , ParseInstructionMFSR           },
-            {"mfsrin" , ParseInstructionMFSRIN         },
-            {"mfspr"  , ParseInstructionMFSPR          },
-            {"mftb"   , ParseInstructionMFTB           },
-            {"mftbu"  , ParseInstructionMFTB           },
-            {"mtlr"   , ParseInstructionMTLR           },
-            {"mtspr"  , ParseInstructionMTSPR          },
-            {"mulli"  , ParseInstructionMULLI          },
-            {"mullw"  , ParseInstructionMULLW          },
-            {"mullw." , ParseInstructionMULLW          },
-            {"mullwo" , ParseInstructionMULLW          },
-            {"mullwo.", ParseInstructionMULLW          },
-            {"nop"    , ParseInstructionNOP            },
-            {"ori"    , ParseInstructionORI            },
-            {"stb"    , ParseInstructionStoreInteger   },
-            {"stbu"   , ParseInstructionStoreInteger   },
-            {"stbux"  , ParseInstructionStoreInteger   },
-            {"stbx"   , ParseInstructionStoreInteger   },
-            {"sth"    , ParseInstructionStoreInteger   },
-            {"sthbrx" , ParseInstructionStoreInteger   },
-            {"sthu"   , ParseInstructionStoreInteger   },
-            {"sthux"  , ParseInstructionStoreInteger   },
-            {"sthx"   , ParseInstructionStoreInteger   },
-            {"stw"    , ParseInstructionStoreInteger   },
-            {"stwbrx" , ParseInstructionStoreInteger   },
-            {"stwcx." , ParseInstructionStoreInteger   },
-            {"stwu"   , ParseInstructionStoreInteger   },
-            {"stwux"  , ParseInstructionStoreInteger   },
-            {"stwx"   , ParseInstructionStoreInteger   },
-            {"sub"    , ParseInstructionSUBF           }, // Simplified mnemonic for subf
-            {"subic"  , ParseInstructionADDIC          }, // Simplified mnemonic for addic
-            {"subic." , ParseInstructionADDIC          }, // Simplified mnemonic for addic.
-            {"subf"   , ParseInstructionSUBF           },
-            {"subf."  , ParseInstructionSUBF           },
-            {"subfo"  , ParseInstructionSUBF           },
-            {"subfo." , ParseInstructionSUBF           },
+            {"add"        , ParseInstructionADD              },
+            {"add."       , ParseInstructionADD              },
+            {"addo"       , ParseInstructionADD              },
+            {"addo."      , ParseInstructionADD              },
+            {"addc"       , ParseInstructionADDC             },
+            {"addc."      , ParseInstructionADDC             },
+            {"addco"      , ParseInstructionADDC             },
+            {"addco."     , ParseInstructionADDC             },
+            {"adde"       , ParseInstructionADDE             },
+            {"adde."      , ParseInstructionADDE             },
+            {"addeo"      , ParseInstructionADDE             },
+            {"addeo."     , ParseInstructionADDE             },
+            {"addi"       , ParseInstructionADDI             },
+            {"addic"      , ParseInstructionADDIC            },
+            {"addic."     , ParseInstructionADDIC            },
+            {"addis"      , ParseInstructionADDIS            },
+            {"addme"      , ParseInstructionADDME            },
+            {"addme."     , ParseInstructionADDME            },
+            {"addmeo"     , ParseInstructionADDME            },
+            {"addmeo."    , ParseInstructionADDME            },
+            {"addze"      , ParseInstructionADDZE            },
+            {"addze."     , ParseInstructionADDZE            },
+            {"addzeo"     , ParseInstructionADDZE            },
+            {"addzeo."    , ParseInstructionADDZE            },
+            {"and"        , ParseInstructionAND              },
+            {"and."       , ParseInstructionAND              },
+            {"andc"       , ParseInstructionAND              },
+            {"andc."      , ParseInstructionAND              },
+            {"andi."      , ParseInstructionAND              },
+            {"andis."     , ParseInstructionAND              },
+            {"b"          , ParseInstructionB                },
+            {"ba"         , ParseInstructionBA               },
+            {"bl"         , ParseInstructionBL               },
+            {"bla"        , ParseInstructionBLA              },
+            {"blr"        , ParseInstructionBLR              },
+            {"cmp"        , ParseInstructionCMP              },
+            {"cmpi"       , ParseInstructionCMP              },
+            {"cmpl"       , ParseInstructionCMP              },
+            {"cmpli"      , ParseInstructionCMP              },
+            {"cmplw"      , ParseInstructionCMP              },
+            {"cmplwi"     , ParseInstructionCMP              },
+            {"cmpw"       , ParseInstructionCMP              },
+            {"cmpwi"      , ParseInstructionCMP              },
+            {"cntlzw"     , ParseInstructionCNTLZW           },
+            {"cntlzw."    , ParseInstructionCNTLZW           },
+            {"crand"      , ParseInstructionCRAND            },
+            {"crandc"     , ParseInstructionCRANDC           },
+            {"crclr"      , ParseInstructionCRCLR            },
+            {"creqv"      , ParseInstructionCREQV            },
+            {"crmove"     , ParseInstructionCRMOVE           },
+            {"crnand"     , ParseInstructionCRNAND           },
+            {"crnor"      , ParseInstructionCRNOR            },
+            {"crnot"      , ParseInstructionCRNOT            },
+            {"cror"       , ParseInstructionCROR             },
+            {"crorc"      , ParseInstructionCRORC            },
+            {"crset"      , ParseInstructionCRSET            },
+            {"crxor"      , ParseInstructionCRXOR            },
+            {"dcbf"       , ParseInstructionDataCache        },
+            {"dcbi"       , ParseInstructionDataCache        },
+            {"dcbst"      , ParseInstructionDataCache        },
+            {"dcbt"       , ParseInstructionDataCache        },
+            {"dcbtst"     , ParseInstructionDataCache        },
+            {"dcbz"       , ParseInstructionDataCache        },
+            {"dcbz_l"     , ParseInstructionDataCache        },
+            {"divw"       , ParseInstructionDIVW             },
+            {"divw."      , ParseInstructionDIVW             },
+            {"divwo"      , ParseInstructionDIVW             },
+            {"divwo."     , ParseInstructionDIVW             },
+            {"divwu"      , ParseInstructionDIVW             },
+            {"divwu."     , ParseInstructionDIVW             },
+            {"divwuo"     , ParseInstructionDIVW             },
+            {"divwuo."    , ParseInstructionDIVW             },
+            {"eciwx"      , ParseInstructionExternalControl  },
+            {"ecowx"      , ParseInstructionExternalControl  },
+            {"eieio"      , ParseInstructionEIEIO            },
+            {"eqv"        , ParseInstructionEQV              },
+            {"eqv."       , ParseInstructionEQV              },
+            {"extsb"      , ParseInstructionSignExtension    },
+            {"extsb."     , ParseInstructionSignExtension    },
+            {"extsh"      , ParseInstructionSignExtension    },
+            {"extsh."     , ParseInstructionSignExtension    },
+            {"icbi"       , ParseInstructionICBI             },
+            {"isync"      , ParseInstructionISYNC            },
+            {"lbz"        , ParseInstructionLoadInteger      },
+            {"lbzu"       , ParseInstructionLoadInteger      },
+            {"lbzux"      , ParseInstructionLoadInteger      },
+            {"lbzx"       , ParseInstructionLoadInteger      },
+            {"lfs"        , ParseInstructionLFS              },
+            {"lha"        , ParseInstructionLoadInteger      },
+            {"lhau"       , ParseInstructionLoadInteger      },
+            {"lhaux"      , ParseInstructionLoadInteger      },
+            {"lhax"       , ParseInstructionLoadInteger      },
+            {"lhbrx"      , ParseInstructionLoadInteger      },
+            {"lhz"        , ParseInstructionLoadInteger      },
+            {"lhzu"       , ParseInstructionLoadInteger      },
+            {"lhzux"      , ParseInstructionLoadInteger      },
+            {"lhzx"       , ParseInstructionLoadInteger      },
+            {"lis"        , ParseInstructionLIS              },
+            {"lwarx"      , ParseInstructionLoadInteger      },
+            {"lwbrx"      , ParseInstructionLoadInteger      },
+            {"lwz"        , ParseInstructionLoadInteger      },
+            {"lwzu"       , ParseInstructionLoadInteger      },
+            {"lwzux"      , ParseInstructionLoadInteger      },
+            {"lwzx"       , ParseInstructionLoadInteger      },
+            {"mcrf"       , ParseInstructionMoveToCR         },
+            {"mcrfs"      , ParseInstructionMoveToCR         },
+            {"mcrxr"      , ParseInstructionMoveToCR         },
+            {"mfcr"       , ParseInstructionMFCR             },
+            {"mffs"       , ParseInstructionMFFS             },
+            {"mffs."      , ParseInstructionMFFS             },
+            {"mflr"       , ParseInstructionMFLR             },
+            {"mfmsr"      , ParseInstructionMFMSR            },
+            {"mfsr"       , ParseInstructionMFSR             },
+            {"mfsrin"     , ParseInstructionMFSRIN           },
+            {"mfspr"      , ParseInstructionMFSPR            },
+            {"mftb"       , ParseInstructionMFTB             },
+            {"mftbu"      , ParseInstructionMFTB             },
+            {"mtlr"       , ParseInstructionMTLR             },
+            {"mtspr"      , ParseInstructionMTSPR            },
+            {"mulli"      , ParseInstructionMULLI            },
+            {"mullw"      , ParseInstructionMULLW            },
+            {"mullw."     , ParseInstructionMULLW            },
+            {"mullwo"     , ParseInstructionMULLW            },
+            {"mullwo."    , ParseInstructionMULLW            },
+            {"nop"        , ParseInstructionNOP              },
+            {"ori"        , ParseInstructionORI              },
+            {"psq_l"      , ParsePairedSingleLoadStore       },
+            {"psq_lu"     , ParsePairedSingleLoadStore       },
+            {"psq_lux"    , ParsePairedSingleLoadStoreIndexed},
+            {"psq_lx"     , ParsePairedSingleLoadStoreIndexed},
+            {"psq_st"     , ParsePairedSingleLoadStore       },
+            {"psq_stu"    , ParsePairedSingleLoadStore       },
+            {"psq_stux"   , ParsePairedSingleLoadStoreIndexed},
+            {"psq_stx"    , ParsePairedSingleLoadStoreIndexed},
+            {"ps_abs"     , ParsePairedSingleOneOperand      },
+            {"ps_abs."    , ParsePairedSingleOneOperand      },
+            {"ps_add"     , ParsePairedSingleTwoOperand      },
+            {"ps_add."    , ParsePairedSingleTwoOperand      },
+            {"ps_cmpo0"   , ParsePairedSingleCompare         },
+            {"ps_cmpo1"   , ParsePairedSingleCompare         },
+            {"ps_cmpu0"   , ParsePairedSingleCompare         },
+            {"ps_cmpu1"   , ParsePairedSingleCompare         },
+            {"ps_div"     , ParsePairedSingleTwoOperand      },
+            {"ps_div."    , ParsePairedSingleTwoOperand      },
+            {"ps_madd"    , ParsePairedSingleThreeOperand    },
+            {"ps_madd."   , ParsePairedSingleThreeOperand    },
+            {"ps_madds0"  , ParsePairedSingleThreeOperand    },
+            {"ps_madds0." , ParsePairedSingleThreeOperand    },
+            {"ps_madds1"  , ParsePairedSingleThreeOperand    },
+            {"ps_madds1." , ParsePairedSingleThreeOperand    },
+            {"ps_merge00" , ParsePairedSingleTwoOperand      },
+            {"ps_merge00.", ParsePairedSingleTwoOperand      },
+            {"ps_merge01" , ParsePairedSingleTwoOperand      },
+            {"ps_merge01.", ParsePairedSingleTwoOperand      },
+            {"ps_merge10" , ParsePairedSingleTwoOperand      },
+            {"ps_merge10.", ParsePairedSingleTwoOperand      },
+            {"ps_merge11" , ParsePairedSingleTwoOperand      },
+            {"ps_merge11.", ParsePairedSingleTwoOperand      },
+            {"ps_mr"      , ParsePairedSingleOneOperand      },
+            {"ps_mr."     , ParsePairedSingleOneOperand      },
+            {"ps_msub"    , ParsePairedSingleThreeOperand    },
+            {"ps_msub."   , ParsePairedSingleThreeOperand    },
+            {"ps_mul"     , ParsePairedSingleMultiply        },
+            {"ps_mul."    , ParsePairedSingleMultiply        },
+            {"ps_muls0"   , ParsePairedSingleMultiply        },
+            {"ps_muls0."  , ParsePairedSingleMultiply        },
+            {"ps_muls1"   , ParsePairedSingleMultiply        },
+            {"ps_muls1."  , ParsePairedSingleMultiply        },
+            {"ps_nabs"    , ParsePairedSingleOneOperand      },
+            {"ps_nabs."   , ParsePairedSingleOneOperand      },
+            {"ps_neg"     , ParsePairedSingleOneOperand      },
+            {"ps_neg."    , ParsePairedSingleOneOperand      },
+            {"ps_nmadd"   , ParsePairedSingleThreeOperand    },
+            {"ps_nmadd."  , ParsePairedSingleThreeOperand    },
+            {"ps_nmsub"   , ParsePairedSingleThreeOperand    },
+            {"ps_nmsub."  , ParsePairedSingleThreeOperand    },
+            {"ps_res"     , ParsePairedSingleOneOperand      },
+            {"ps_res."    , ParsePairedSingleOneOperand      },
+            {"ps_rsqrte"  , ParsePairedSingleOneOperand      },
+            {"ps_rsqrte." , ParsePairedSingleOneOperand      },
+            {"ps_sel"     , ParsePairedSingleThreeOperand    },
+            {"ps_sel."    , ParsePairedSingleThreeOperand    },
+            {"ps_sub"     , ParsePairedSingleTwoOperand      },
+            {"ps_sub."    , ParsePairedSingleTwoOperand      },
+            {"ps_sum0"    , ParsePairedSingleThreeOperand    },
+            {"ps_sum0."   , ParsePairedSingleThreeOperand    },
+            {"ps_sum1"    , ParsePairedSingleThreeOperand    },
+            {"ps_sum1."   , ParsePairedSingleThreeOperand    },
+            {"stb"        , ParseInstructionStoreInteger     },
+            {"stbu"       , ParseInstructionStoreInteger     },
+            {"stbux"      , ParseInstructionStoreInteger     },
+            {"stbx"       , ParseInstructionStoreInteger     },
+            {"sth"        , ParseInstructionStoreInteger     },
+            {"sthbrx"     , ParseInstructionStoreInteger     },
+            {"sthu"       , ParseInstructionStoreInteger     },
+            {"sthux"      , ParseInstructionStoreInteger     },
+            {"sthx"       , ParseInstructionStoreInteger     },
+            {"stw"        , ParseInstructionStoreInteger     },
+            {"stwbrx"     , ParseInstructionStoreInteger     },
+            {"stwcx."     , ParseInstructionStoreInteger     },
+            {"stwu"       , ParseInstructionStoreInteger     },
+            {"stwux"      , ParseInstructionStoreInteger     },
+            {"stwx"       , ParseInstructionStoreInteger     },
+            {"sub"        , ParseInstructionSUBF             }, // Simplified mnemonic for subf
+            {"subic"      , ParseInstructionADDIC            }, // Simplified mnemonic for addic
+            {"subic."     , ParseInstructionADDIC            }, // Simplified mnemonic for addic.
+            {"subf"       , ParseInstructionSUBF             },
+            {"subf."      , ParseInstructionSUBF             },
+            {"subfo"      , ParseInstructionSUBF             },
+            {"subfo."     , ParseInstructionSUBF             },
         };
 
         public List<IOptimizer> Optimizers { get; }
@@ -1430,6 +1492,183 @@ namespace GekkoAssembler
             var rs = ParseRegister(tokens[2]);
             var uimm = ParseIntegerLiteral(tokens[3]);
             return new OrImmediateInstruction(instructionPointer, ra, rs, uimm);
+        }
+
+        private static GekkoInstruction ParsePairedSingleCompare(string[] tokens, int instructionPointer)
+        {
+            var unordered = tokens[0].Contains("u");
+            var high      = tokens[0].Contains("0");
+
+            var crfd   = ParseConditionRegister(tokens[1]);
+            var fra    = ParseRegister(tokens[2]);
+            var frb    = ParseRegister(tokens[3]);
+            var opcode = PairedSingleCompareInstruction.Opcode.PS_CMPO1;
+
+            if (unordered)
+            {
+                if (high)
+                    opcode = PairedSingleCompareInstruction.Opcode.PS_CMPU0;
+                else
+                    opcode = PairedSingleCompareInstruction.Opcode.PS_CMPU1;
+            }
+            else if (high)
+            {
+                opcode = PairedSingleCompareInstruction.Opcode.PS_CMPO0;
+            }
+
+            return new PairedSingleCompareInstruction(instructionPointer, crfd, fra, frb, opcode);
+        }
+
+        private static GekkoInstruction ParsePairedSingleLoadStore(string[] tokens, int instructionPointer)
+        {
+            var load     = tokens[0].Contains("l");
+            var updating = tokens[0].Contains("u");
+
+            var frd    = ParseRegister(tokens[1]);
+            var offset = ParseIntegerLiteral(tokens[2]);
+            var ra     = ParseRegister(tokens[3]);
+            var w      = ParseIntegerLiteral(tokens[4]) == 1;
+            var i      = ParseIntegerLiteral(tokens[5]);
+
+            var opcode = PairedSingleLoadStoreInstruction.Opcode.PSQ_L;
+
+            if (updating && ra == 0)
+                throw new ArgumentException($"{tokens[0]} cannot have register rA specified as 0.");
+
+            if (load && updating)
+            {
+                opcode = PairedSingleLoadStoreInstruction.Opcode.PSQ_LU;
+            }
+            else if (!load)
+            {
+                if (updating)
+                    opcode = PairedSingleLoadStoreInstruction.Opcode.PSQ_STU;
+                else
+                    opcode = PairedSingleLoadStoreInstruction.Opcode.PSQ_ST;
+            }
+
+            return new PairedSingleLoadStoreInstruction(instructionPointer, frd, offset, ra, w, i, opcode);
+        }
+
+        private static GekkoInstruction ParsePairedSingleLoadStoreIndexed(string[] tokens, int instructionPointer)
+        {
+            var load     = tokens[0].Contains("l");
+            var updating = tokens[0].Contains("u");
+
+            var frs = ParseRegister(tokens[1]);
+            var ra  = ParseRegister(tokens[2]);
+            var rb  = ParseRegister(tokens[3]);
+            var w   = ParseIntegerLiteral(tokens[4]) == 1;
+            var i   = ParseIntegerLiteral(tokens[5]);
+
+            var opcode = PairedSingleLoadStoreIndexedInstruction.Opcode.PSQ_LX;
+
+            if (updating && ra == 0)
+                throw new ArgumentException($"{tokens[0]} cannot have register rA specified as 0.");
+
+            if (load && updating)
+            {
+                opcode = PairedSingleLoadStoreIndexedInstruction.Opcode.PSQ_LUX;
+            }
+            else if (!load)
+            {
+                if (updating)
+                    opcode = PairedSingleLoadStoreIndexedInstruction.Opcode.PSQ_STUX;
+                else
+                    opcode = PairedSingleLoadStoreIndexedInstruction.Opcode.PSQ_STX;
+            }
+
+            return new PairedSingleLoadStoreIndexedInstruction(instructionPointer, frs, ra, rb, w, i, opcode);
+        }
+
+        private static GekkoInstruction ParsePairedSingleMultiply(string[] tokens, int instructionPointer)
+        {
+            var rc = tokens[0].EndsWith(".");
+            var frd = ParseRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frc = ParseRegister(tokens[3]);
+            var opcode = PairedSingleMultiplyInstruction.Opcode.PS_MUL;
+
+            if (tokens[0].Contains("0"))
+                opcode = PairedSingleMultiplyInstruction.Opcode.PS_MULS0;
+            else if (tokens[0].Contains("1"))
+                opcode = PairedSingleMultiplyInstruction.Opcode.PS_MULS1;
+
+            return new PairedSingleMultiplyInstruction(instructionPointer, frd, fra, frc, rc, opcode);
+        }
+
+        private static GekkoInstruction ParsePairedSingleTwoOperand(string[] tokens, int instructionPointer)
+        {
+            var rc  = tokens[0].EndsWith(".");
+            var frd = ParseRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frb = ParseRegister(tokens[3]);
+            var opcode = PairedSingleTwoOperandInstruction.Opcode.PS_ADD;
+
+            if (tokens[0].Contains("ps_div"))
+                opcode = PairedSingleTwoOperandInstruction.Opcode.PS_DIV;
+            else if (tokens[0].Contains("ps_merge00"))
+                opcode = PairedSingleTwoOperandInstruction.Opcode.PS_MERGE00;
+            else if (tokens[0].Contains("ps_merge01"))
+                opcode = PairedSingleTwoOperandInstruction.Opcode.PS_MERGE01;
+            else if (tokens[0].Contains("ps_merge10"))
+                opcode = PairedSingleTwoOperandInstruction.Opcode.PS_MERGE10;
+            else if (tokens[0].Contains("ps_merge11"))
+                opcode = PairedSingleTwoOperandInstruction.Opcode.PS_MERGE11;
+            else if (tokens[0].Contains("ps_sub"))
+                opcode = PairedSingleTwoOperandInstruction.Opcode.PS_SUB;
+
+            return new PairedSingleTwoOperandInstruction(instructionPointer, frd, fra, frb, rc, opcode);
+        }
+
+        private static GekkoInstruction ParsePairedSingleOneOperand(string[] tokens, int instructionPointer)
+        {
+            var rc  = tokens[0].EndsWith(".");
+            var frd = ParseRegister(tokens[1]);
+            var frb = ParseRegister(tokens[2]);
+            var opcode = PairedSingleOneOperandInstruction.Opcode.PS_ABS;
+
+            if (tokens[0].Contains("ps_mr"))
+                opcode = PairedSingleOneOperandInstruction.Opcode.PS_MR;
+            else if (tokens[0].Contains("ps_nabs"))
+                opcode = PairedSingleOneOperandInstruction.Opcode.PS_NABS;
+            else if (tokens[0].Contains("ps_neg"))
+                opcode = PairedSingleOneOperandInstruction.Opcode.PS_NEG;
+            else if (tokens[0].Contains("ps_res"))
+                opcode = PairedSingleOneOperandInstruction.Opcode.PS_RES;
+            else if (tokens[0].Contains("ps_rsqrte"))
+                opcode = PairedSingleOneOperandInstruction.Opcode.PS_RSQRTE;
+
+            return new PairedSingleOneOperandInstruction(instructionPointer, frd, frb, rc, opcode);
+        }
+
+        private static GekkoInstruction ParsePairedSingleThreeOperand(string[] tokens, int instructionPointer)
+        {
+            var rc = tokens[0].EndsWith(".");
+            var frd = ParseRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frc = ParseRegister(tokens[3]);
+            var frb = ParseRegister(tokens[4]);
+            var opcode = PairedSingleThreeOperandInstruction.Opcode.PS_MADD;
+
+            if (tokens[0].Contains("ps_madds0"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_MADDS0;
+            else if (tokens[0].Contains("ps_madds1"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_MADDS1;
+            else if (tokens[0].Contains("ps_msub"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_MSUB;
+            else if (tokens[0].Contains("ps_nmadd"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_NMADD;
+            else if (tokens[0].Contains("ps_nmsub"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_NMSUB;
+            else if (tokens[0].Contains("ps_sel"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_SEL;
+            else if (tokens[0].Contains("ps_sum0"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_SUM0;
+            else if (tokens[0].Contains("ps_sum1"))
+                opcode = PairedSingleThreeOperandInstruction.Opcode.PS_SUM1;
+
+            return new PairedSingleThreeOperandInstruction(instructionPointer, frd, fra, frc, frb, rc, opcode);
         }
 
         private static GekkoInstruction ParseInstructionSignExtension(string[] tokens, int instructionPointer)
