@@ -97,6 +97,8 @@ namespace GekkoAssembler
             {"extsh."     , ParseInstructionSignExtension    },
             {"fabs"       , ParseFloatingPointSingleOperand  },
             {"fabs."      , ParseFloatingPointSingleOperand  },
+            {"fcmpo"      , ParseFloatingPointCompare        },
+            {"fcmpu"      , ParseFloatingPointCompare        },
             {"fctiw"      , ParseFloatingPointSingleOperand  },
             {"fctiw."     , ParseFloatingPointSingleOperand  },
             {"fctiwz"     , ParseFloatingPointSingleOperand  },
@@ -1246,6 +1248,19 @@ namespace GekkoAssembler
                                                 : ExternalControlInstruction.Opcode.ECOWX;
 
             return new ExternalControlInstruction(instructionPointer, rd, ra, rb, opcode);
+        }
+
+        private static GekkoInstruction ParseFloatingPointCompare(string[] tokens, int instructionPointer)
+        {
+            var crfd = ParseConditionRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frb = ParseRegister(tokens[3]);
+            var opcode = FloatingPointCompareInstruction.Opcode.FCMPO;
+
+            if (tokens[0].Contains("u"))
+                opcode = FloatingPointCompareInstruction.Opcode.FCMPU;
+
+            return new FloatingPointCompareInstruction(instructionPointer, crfd, fra, frb, opcode);
         }
 
         private static GekkoInstruction ParseFloatingPointSingleOperand(string[] tokens, int instructionPointer)
