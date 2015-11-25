@@ -95,6 +95,26 @@ namespace GekkoAssembler
             {"extsb."     , ParseInstructionSignExtension    },
             {"extsh"      , ParseInstructionSignExtension    },
             {"extsh."     , ParseInstructionSignExtension    },
+            {"fabs"       , ParseFloatingPointSingleOperand  },
+            {"fabs."      , ParseFloatingPointSingleOperand  },
+            {"fcmpo"      , ParseFloatingPointCompare        },
+            {"fcmpu"      , ParseFloatingPointCompare        },
+            {"fctiw"      , ParseFloatingPointSingleOperand  },
+            {"fctiw."     , ParseFloatingPointSingleOperand  },
+            {"fctiwz"     , ParseFloatingPointSingleOperand  },
+            {"fctiwz."    , ParseFloatingPointSingleOperand  },
+            {"fmr"        , ParseFloatingPointSingleOperand  },
+            {"fmr."       , ParseFloatingPointSingleOperand  },
+            {"fnabs"      , ParseFloatingPointSingleOperand  },
+            {"fnabs."     , ParseFloatingPointSingleOperand  },
+            {"fneg"       , ParseFloatingPointSingleOperand  },
+            {"fneg."      , ParseFloatingPointSingleOperand  },
+            {"fres"       , ParseFloatingPointSingleOperand  },
+            {"fres."      , ParseFloatingPointSingleOperand  },
+            {"frsp"       , ParseFloatingPointSingleOperand  },
+            {"frsp."      , ParseFloatingPointSingleOperand  },
+            {"frsqrte"    , ParseFloatingPointSingleOperand  },
+            {"frsqrte."   , ParseFloatingPointSingleOperand  },
             {"icbi"       , ParseInstructionICBI             },
             {"isync"      , ParseInstructionISYNC            },
             {"lbz"        , ParseInstructionLoadInteger      },
@@ -1228,6 +1248,48 @@ namespace GekkoAssembler
                                                 : ExternalControlInstruction.Opcode.ECOWX;
 
             return new ExternalControlInstruction(instructionPointer, rd, ra, rb, opcode);
+        }
+
+        private static GekkoInstruction ParseFloatingPointCompare(string[] tokens, int instructionPointer)
+        {
+            var crfd = ParseConditionRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frb = ParseRegister(tokens[3]);
+            var opcode = FloatingPointCompareInstruction.Opcode.FCMPO;
+
+            if (tokens[0].Contains("u"))
+                opcode = FloatingPointCompareInstruction.Opcode.FCMPU;
+
+            return new FloatingPointCompareInstruction(instructionPointer, crfd, fra, frb, opcode);
+        }
+
+        private static GekkoInstruction ParseFloatingPointSingleOperand(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var frd = ParseRegister(tokens[1]);
+            var frb = ParseRegister(tokens[2]);
+            var rc  = opname.EndsWith(".");
+
+            var opcode = FloatingPointSingleOperandInstruction.Opcode.FABS;
+
+            if (opname.StartsWith("fctiwz"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FCTIWZ;
+            else if (opname.StartsWith("fctiw"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FCTIW;
+            else if (opname.StartsWith("fmr"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FMR;
+            else if (opname.StartsWith("fnabs"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FNABS;
+            else if (opname.StartsWith("fneg"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FNEG;
+            else if (opname.StartsWith("fres"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FRES;
+            else if (opname.StartsWith("frsp"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FRSP;
+            else if (opname.StartsWith("frsqrte"))
+                opcode = FloatingPointSingleOperandInstruction.Opcode.FRSQRTE;
+
+            return new FloatingPointSingleOperandInstruction(instructionPointer, frd, frb, rc, opcode);
         }
 
         private static GekkoInstruction ParseInstructionICBI(string[] tokens, int instructionPointer)
