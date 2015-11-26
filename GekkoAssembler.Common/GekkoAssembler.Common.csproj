@@ -125,6 +125,8 @@
     <Compile Include="GekkoInstructions\SignExtensionInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreByteIndexedInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreByteInstruction.cs" />
+    <Compile Include="GekkoInstructions\StoreFloatingPointIndexedInstruction.cs" />
+    <Compile Include="GekkoInstructions\StoreFloatingPointInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreHalfWordIndexedInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreHalfWordInstruction.cs" />
     <Compile Include="GekkoInstructions\StoreWordIndexedInstruction.cs" />
