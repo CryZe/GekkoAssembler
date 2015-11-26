@@ -111,18 +111,40 @@ namespace GekkoAssembler
             {"fdiv."      , ParseFloatingPointTwoOperand     },
             {"fdivs"      , ParseFloatingPointTwoOperand     },
             {"fdivs."     , ParseFloatingPointTwoOperand     },
+            {"fmadd"      , ParseFloatingPointThreeOperand   },
+            {"fmadd."     , ParseFloatingPointThreeOperand   },
+            {"fmadds"     , ParseFloatingPointThreeOperand   },
+            {"fmadds."    , ParseFloatingPointThreeOperand   },
             {"fmr"        , ParseFloatingPointSingleOperand  },
             {"fmr."       , ParseFloatingPointSingleOperand  },
+            {"fmsub"      , ParseFloatingPointThreeOperand   },
+            {"fmsub."     , ParseFloatingPointThreeOperand   },
+            {"fmsubs"     , ParseFloatingPointThreeOperand   },
+            {"fmsubs."    , ParseFloatingPointThreeOperand   },
+            {"fmul"       , ParseFloatingPointMultiply       },
+            {"fmul."      , ParseFloatingPointMultiply       },
+            {"fmuls"      , ParseFloatingPointMultiply       },
+            {"fmuls."     , ParseFloatingPointMultiply       },
             {"fnabs"      , ParseFloatingPointSingleOperand  },
             {"fnabs."     , ParseFloatingPointSingleOperand  },
             {"fneg"       , ParseFloatingPointSingleOperand  },
             {"fneg."      , ParseFloatingPointSingleOperand  },
+            {"fnmadd"     , ParseFloatingPointThreeOperand   },
+            {"fnmadd."    , ParseFloatingPointThreeOperand   },
+            {"fnmadds"    , ParseFloatingPointThreeOperand   },
+            {"fnmadds."   , ParseFloatingPointThreeOperand   },
+            {"fnmsub"     , ParseFloatingPointThreeOperand   },
+            {"fnmsub."    , ParseFloatingPointThreeOperand   },
+            {"fnmsubs"    , ParseFloatingPointThreeOperand   },
+            {"fnmsubs."   , ParseFloatingPointThreeOperand   },
             {"fres"       , ParseFloatingPointSingleOperand  },
             {"fres."      , ParseFloatingPointSingleOperand  },
             {"frsp"       , ParseFloatingPointSingleOperand  },
             {"frsp."      , ParseFloatingPointSingleOperand  },
             {"frsqrte"    , ParseFloatingPointSingleOperand  },
             {"frsqrte."   , ParseFloatingPointSingleOperand  },
+            {"fsel"       , ParseFloatingPointThreeOperand   },
+            {"fsel."      , ParseFloatingPointThreeOperand   },
             {"fsub"       , ParseFloatingPointTwoOperand     },
             {"fsub."      , ParseFloatingPointTwoOperand     },
             {"fsubs"      , ParseFloatingPointTwoOperand     },
@@ -1275,6 +1297,23 @@ namespace GekkoAssembler
             return new FloatingPointCompareInstruction(instructionPointer, crfd, fra, frb, opcode);
         }
 
+        private static GekkoInstruction ParseFloatingPointMultiply(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var frd = ParseRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frc = ParseRegister(tokens[3]);
+            var rc  = opname.EndsWith(".");
+
+            var singleIndex = opname.LastIndexOf('s');
+            var single = singleIndex == opname.Length - 1 || singleIndex == opname.Length - 2;
+
+            var variant = single ? FloatingPointMultiplyInstruction.Variant.Single
+                                 : FloatingPointMultiplyInstruction.Variant.Double;
+
+            return new FloatingPointMultiplyInstruction(instructionPointer, frd, fra, frc, rc, variant);
+        }
+
         private static GekkoInstruction ParseFloatingPointSingleOperand(string[] tokens, int instructionPointer)
         {
             var opname = tokens[0];
@@ -1302,6 +1341,35 @@ namespace GekkoAssembler
                 opcode = FloatingPointSingleOperandInstruction.Opcode.FRSQRTE;
 
             return new FloatingPointSingleOperandInstruction(instructionPointer, frd, frb, rc, opcode);
+        }
+
+        private static GekkoInstruction ParseFloatingPointThreeOperand(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var frd = ParseRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frc = ParseRegister(tokens[3]);
+            var frb = ParseRegister(tokens[4]);
+            var rc = opname.EndsWith(".");
+
+            var singleIndex = opname.LastIndexOf('s');
+            var single = singleIndex == opname.Length - 1 || singleIndex == opname.Length - 2;
+
+            var variant = single ? FloatingPointThreeOperandInstruction.Variant.Single
+                                 : FloatingPointThreeOperandInstruction.Variant.Double;
+
+            var opcode = FloatingPointThreeOperandInstruction.Opcode.FSEL;
+
+            if (opname.StartsWith("fmadd"))
+                opcode = FloatingPointThreeOperandInstruction.Opcode.FMADD;
+            else if (opname.StartsWith("fmsub"))
+                opcode = FloatingPointThreeOperandInstruction.Opcode.FMSUB;
+            else if (opname.StartsWith("fnmadd"))
+                opcode = FloatingPointThreeOperandInstruction.Opcode.FNMADD;
+            else if (opname.StartsWith("fnmsub"))
+                opcode = FloatingPointThreeOperandInstruction.Opcode.FNMSUB;
+
+            return new FloatingPointThreeOperandInstruction(instructionPointer, frd, fra, frc, frb, rc, variant, opcode);
         }
 
         private static GekkoInstruction ParseFloatingPointTwoOperand(string[] tokens, int instructionPointer)
