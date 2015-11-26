@@ -155,7 +155,14 @@ namespace GekkoAssembler
             {"lbzu"       , ParseInstructionLoadInteger      },
             {"lbzux"      , ParseInstructionLoadInteger      },
             {"lbzx"       , ParseInstructionLoadInteger      },
-            {"lfs"        , ParseInstructionLFS              },
+            {"lfd"        , ParseLoadFloatingPoint           },
+            {"lfdu"       , ParseLoadFloatingPoint           },
+            {"lfdux"      , ParseLoadFloatingPointIndexed    },
+            {"lfdx"       , ParseLoadFloatingPointIndexed    },
+            {"lfs"        , ParseLoadFloatingPoint           },
+            {"lfsu"       , ParseLoadFloatingPoint           },
+            {"lfsux"      , ParseLoadFloatingPointIndexed    },
+            {"lfsx"       , ParseLoadFloatingPointIndexed    },
             {"lha"        , ParseInstructionLoadInteger      },
             {"lhau"       , ParseInstructionLoadInteger      },
             {"lhaux"      , ParseInstructionLoadInteger      },
@@ -1408,6 +1415,66 @@ namespace GekkoAssembler
             return new InstructionSynchronizeInstruction(instructionPointer);
         }
 
+        private static GekkoInstruction ParseLoadFloatingPoint(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var single = opname.Contains("s");
+            var update = opname.Contains("u");
+
+            var frd    = ParseRegister(tokens[1]);
+            var offset = ParseIntegerLiteral(tokens[2]);
+            var ra     = ParseRegister(tokens[3]);
+
+            if (update && ra == 0)
+                throw new ArgumentException($"{opname} cannot have register rA specified as 0.");
+
+            var opcode = LoadFloatingPointInstruction.Opcode.LFS;
+
+            if (single && update)
+            {
+                opcode = LoadFloatingPointInstruction.Opcode.LFSU;
+            }
+            else if (!single)
+            {
+                if (update)
+                    opcode = LoadFloatingPointInstruction.Opcode.LFDU;
+                else
+                    opcode = LoadFloatingPointInstruction.Opcode.LFD;
+            }
+
+            return new LoadFloatingPointInstruction(instructionPointer, frd, offset, ra, opcode);
+        }
+
+        private static GekkoInstruction ParseLoadFloatingPointIndexed(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var single = opname.Contains("s");
+            var update = opname.Contains("u");
+
+            var frd = ParseRegister(tokens[1]);
+            var ra  = ParseRegister(tokens[2]);
+            var rb  = ParseRegister(tokens[3]);
+
+            if (update && ra == 0)
+                throw new ArgumentException($"{opname} cannot have register rA specified as 0.");
+
+            var opcode = LoadFloatingPointIndexedInstruction.Opcode.LFSX;
+
+            if (single && update)
+            {
+                opcode = LoadFloatingPointIndexedInstruction.Opcode.LFSUX;
+            }
+            else if (!single)
+            {
+                if (update)
+                    opcode = LoadFloatingPointIndexedInstruction.Opcode.LFDUX;
+                else
+                    opcode = LoadFloatingPointIndexedInstruction.Opcode.LFDX;
+            }
+
+            return new LoadFloatingPointIndexedInstruction(instructionPointer, frd, ra, rb, opcode);
+        }
+
         private static GekkoInstruction ParseInstructionLoadInteger(string[] tokens, int instructionPointer)
         {
             var rd = ParseRegister(tokens[1]);
@@ -1518,14 +1585,6 @@ namespace GekkoAssembler
                     return new LoadByteInstruction(instructionPointer, rd, offset, ra, opcode);
                 }
             }
-        }
-
-        private static GekkoInstruction ParseInstructionLFS(string[] tokens, int instructionPointer)
-        {
-            var rd = ParseRegister(tokens[1]);
-            var offset = ParseIntegerLiteral(tokens[2]);
-            var ra = ParseRegister(tokens[3]);
-            return new LoadFloatingPointSingleInstruction(instructionPointer, rd, ra, offset);
         }
 
         private static GekkoInstruction ParseInstructionLIS(string[] tokens, int instructionPointer)

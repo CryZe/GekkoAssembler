@@ -93,7 +93,8 @@
     <Compile Include="GekkoInstructions\InstructionSynchronizeInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadByteInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadByteIndexedInstruction.cs" />
-    <Compile Include="GekkoInstructions\LoadFloatingPointSingleInstruction.cs" />
+    <Compile Include="GekkoInstructions\LoadFloatingPointIndexedInstruction.cs" />
+    <Compile Include="GekkoInstructions\LoadFloatingPointInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadHalfWordInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadHalfWordIndexedInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadImmediateShiftedInstruction.cs" />
