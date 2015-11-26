@@ -267,6 +267,15 @@ namespace GekkoAssembler
             {"stbu"       , ParseInstructionStoreInteger     },
             {"stbux"      , ParseInstructionStoreInteger     },
             {"stbx"       , ParseInstructionStoreInteger     },
+            {"stfd"       , ParseFloatingPointStore          },
+            {"stfdu"      , ParseFloatingPointStore          },
+            {"stfdux"     , ParseFloatingPointStoreIndexed   },
+            {"stfdx"      , ParseFloatingPointStoreIndexed   },
+            {"stfiwx"     , ParseFloatingPointStoreIndexed   },
+            {"stfs"       , ParseFloatingPointStore          },
+            {"stfsu"      , ParseFloatingPointStore          },
+            {"stfsux"     , ParseFloatingPointStoreIndexed   },
+            {"stfsx"      , ParseFloatingPointStoreIndexed   },
             {"sth"        , ParseInstructionStoreInteger     },
             {"sthbrx"     , ParseInstructionStoreInteger     },
             {"sthu"       , ParseInstructionStoreInteger     },
@@ -1894,6 +1903,65 @@ namespace GekkoAssembler
                 opcode = PairedSingleThreeOperandInstruction.Opcode.PS_SUM1;
 
             return new PairedSingleThreeOperandInstruction(instructionPointer, frd, fra, frc, frb, rc, opcode);
+        }
+
+        private static GekkoInstruction ParseFloatingPointStore(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var frs    = ParseRegister(tokens[1]);
+            var offset = ParseIntegerLiteral(tokens[2]);
+            var ra     = ParseRegister(tokens[3]);
+
+            var single = !opname.Contains("d");
+            var update = opname.Contains("u");
+            var opcode = StoreFloatingPointInstruction.Opcode.STFS;
+
+            if (update && ra == 0)
+                throw new ArgumentException($"{opname} cannot have register rA specified as 0.");
+
+            if (single && update)
+            {
+                opcode = StoreFloatingPointInstruction.Opcode.STFSU;
+            }
+            else if (!single)
+            {
+                opcode = update ? StoreFloatingPointInstruction.Opcode.STFDU
+                                : StoreFloatingPointInstruction.Opcode.STFD;
+            }
+
+            return new StoreFloatingPointInstruction(instructionPointer, frs, offset, ra, opcode);
+        }
+
+        private static GekkoInstruction ParseFloatingPointStoreIndexed(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var frs    = ParseRegister(tokens[1]);
+            var ra     = ParseRegister(tokens[2]);
+            var rb     = ParseRegister(tokens[3]);
+
+            var single = !opname.Contains("d");
+            var update = opname.Contains("u");
+            var word   = opname.Contains("w");
+            var opcode = StoreFloatingPointIndexedInstruction.Opcode.STFIWX;
+
+            if (update && ra == 0)
+                throw new ArgumentException($"{opname} cannot have register rA specified as 0.");
+
+            if (!word)
+            {
+                if (single)
+                {
+                    opcode = update ? StoreFloatingPointIndexedInstruction.Opcode.STFSUX
+                                    : StoreFloatingPointIndexedInstruction.Opcode.STFSX;
+                }
+                else
+                {
+                    opcode = update ? StoreFloatingPointIndexedInstruction.Opcode.STFDUX
+                                    : StoreFloatingPointIndexedInstruction.Opcode.STFDX;
+                }
+            }
+
+            return new StoreFloatingPointIndexedInstruction(instructionPointer, frs, ra, rb, opcode);
         }
 
         private static GekkoInstruction ParseInstructionSignExtension(string[] tokens, int instructionPointer)
