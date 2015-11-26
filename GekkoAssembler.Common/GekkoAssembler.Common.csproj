@@ -85,6 +85,7 @@
     <Compile Include="GekkoInstructions\ExternalControlInstruction.cs" />
     <Compile Include="GekkoInstructions\FloatingPointCompareInstruction.cs" />
     <Compile Include="GekkoInstructions\FloatingPointSingleOperandInstruction.cs" />
+    <Compile Include="GekkoInstructions\FloatingPointTwoOperandInstruction.cs" />
     <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionCacheBlockInvalidateInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionSynchronizeInstruction.cs" />

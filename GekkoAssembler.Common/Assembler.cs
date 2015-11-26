@@ -97,12 +97,20 @@ namespace GekkoAssembler
             {"extsh."     , ParseInstructionSignExtension    },
             {"fabs"       , ParseFloatingPointSingleOperand  },
             {"fabs."      , ParseFloatingPointSingleOperand  },
+            {"fadd"       , ParseFloatingPointTwoOperand     },
+            {"fadd."      , ParseFloatingPointTwoOperand     },
+            {"fadds"      , ParseFloatingPointTwoOperand     },
+            {"fadds."     , ParseFloatingPointTwoOperand     },
             {"fcmpo"      , ParseFloatingPointCompare        },
             {"fcmpu"      , ParseFloatingPointCompare        },
             {"fctiw"      , ParseFloatingPointSingleOperand  },
             {"fctiw."     , ParseFloatingPointSingleOperand  },
             {"fctiwz"     , ParseFloatingPointSingleOperand  },
             {"fctiwz."    , ParseFloatingPointSingleOperand  },
+            {"fdiv"       , ParseFloatingPointTwoOperand     },
+            {"fdiv."      , ParseFloatingPointTwoOperand     },
+            {"fdivs"      , ParseFloatingPointTwoOperand     },
+            {"fdivs."     , ParseFloatingPointTwoOperand     },
             {"fmr"        , ParseFloatingPointSingleOperand  },
             {"fmr."       , ParseFloatingPointSingleOperand  },
             {"fnabs"      , ParseFloatingPointSingleOperand  },
@@ -115,6 +123,10 @@ namespace GekkoAssembler
             {"frsp."      , ParseFloatingPointSingleOperand  },
             {"frsqrte"    , ParseFloatingPointSingleOperand  },
             {"frsqrte."   , ParseFloatingPointSingleOperand  },
+            {"fsub"       , ParseFloatingPointTwoOperand     },
+            {"fsub."      , ParseFloatingPointTwoOperand     },
+            {"fsubs"      , ParseFloatingPointTwoOperand     },
+            {"fsubs."     , ParseFloatingPointTwoOperand     },
             {"icbi"       , ParseInstructionICBI             },
             {"isync"      , ParseInstructionISYNC            },
             {"lbz"        , ParseInstructionLoadInteger      },
@@ -1290,6 +1302,30 @@ namespace GekkoAssembler
                 opcode = FloatingPointSingleOperandInstruction.Opcode.FRSQRTE;
 
             return new FloatingPointSingleOperandInstruction(instructionPointer, frd, frb, rc, opcode);
+        }
+
+        private static GekkoInstruction ParseFloatingPointTwoOperand(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var frd = ParseRegister(tokens[1]);
+            var fra = ParseRegister(tokens[2]);
+            var frb = ParseRegister(tokens[3]);
+            var rc = opname.EndsWith(".");
+
+            var singleIndex = opname.LastIndexOf('s');
+            var single = singleIndex == opname.Length - 1 || singleIndex == opname.Length - 2;
+
+            var variant = single ? FloatingPointTwoOperandInstruction.Variant.Single
+                                 : FloatingPointTwoOperandInstruction.Variant.Double;
+
+            var opcode = FloatingPointTwoOperandInstruction.Opcode.FADD;
+
+            if (opname.StartsWith("fdiv"))
+                opcode = FloatingPointTwoOperandInstruction.Opcode.FDIV;
+            else if (opname.StartsWith("fsub"))
+                opcode = FloatingPointTwoOperandInstruction.Opcode.FSUB;
+
+            return new FloatingPointTwoOperandInstruction(instructionPointer, frd, fra, frb, rc, variant, opcode);
         }
 
         private static GekkoInstruction ParseInstructionICBI(string[] tokens, int instructionPointer)
