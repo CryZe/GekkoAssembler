@@ -42,8 +42,8 @@ namespace GekkoAssembler
             {"and."       , ParseInstructionAND              },
             {"andc"       , ParseInstructionAND              },
             {"andc."      , ParseInstructionAND              },
-            {"andi."      , ParseInstructionAND              },
-            {"andis."     , ParseInstructionAND              },
+            {"andi."      , ParseIntegerLogicalImmediate     },
+            {"andis."     , ParseIntegerLogicalImmediate     },
             {"b"          , ParseInstructionB                },
             {"ba"         , ParseInstructionBA               },
             {"bl"         , ParseInstructionBL               },
@@ -200,7 +200,8 @@ namespace GekkoAssembler
             {"mullwo"     , ParseInstructionMULLW            },
             {"mullwo."    , ParseInstructionMULLW            },
             {"nop"        , ParseInstructionNOP              },
-            {"ori"        , ParseInstructionORI              },
+            {"ori"        , ParseIntegerLogicalImmediate     },
+            {"oris"       , ParseIntegerLogicalImmediate     },
             {"psq_l"      , ParsePairedSingleLoadStore       },
             {"psq_lu"     , ParsePairedSingleLoadStore       },
             {"psq_lux"    , ParsePairedSingleLoadStoreIndexed},
@@ -294,6 +295,8 @@ namespace GekkoAssembler
             {"subf."      , ParseInstructionSUBF             },
             {"subfo"      , ParseInstructionSUBF             },
             {"subfo."     , ParseInstructionSUBF             },
+            {"xori"       , ParseIntegerLogicalImmediate     },
+            {"xoris"      , ParseIntegerLogicalImmediate     },
         };
 
         public List<IOptimizer> Optimizers { get; }
@@ -1412,6 +1415,37 @@ namespace GekkoAssembler
             return new FloatingPointTwoOperandInstruction(instructionPointer, frd, fra, frb, rc, variant, opcode);
         }
 
+        private static GekkoInstruction ParseIntegerLogicalImmediate(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var ra = ParseRegister(tokens[1]);
+            var rs = ParseRegister(tokens[2]);
+            var imm = ParseIntegerLiteral(tokens[3]);
+
+            var opcode = IntegerLogicalImmediateInstruction.Opcode.ANDI;
+
+            switch (opname)
+            {
+                case "andis.":
+                    opcode = IntegerLogicalImmediateInstruction.Opcode.ANDIS;
+                    break;
+                case "ori":
+                    opcode = IntegerLogicalImmediateInstruction.Opcode.ORI;
+                    break;
+                case "oris":
+                    opcode = IntegerLogicalImmediateInstruction.Opcode.ORIS;
+                    break;
+                case "xori":
+                    opcode = IntegerLogicalImmediateInstruction.Opcode.XORI;
+                    break;
+                case "xoris":
+                    opcode = IntegerLogicalImmediateInstruction.Opcode.XORIS;
+                    break;
+            }
+
+            return new IntegerLogicalImmediateInstruction(instructionPointer, ra, rs, imm, opcode);
+        }
+
         private static GekkoInstruction ParseInstructionICBI(string[] tokens, int instructionPointer)
         {
             var ra = ParseRegister(tokens[1]);
@@ -1717,7 +1751,7 @@ namespace GekkoAssembler
 
         private static GekkoInstruction ParseInstructionNOP(string[] tokens, int instructionPointer)
         {
-            return new NoOperationInstruction(instructionPointer);
+            return new IntegerLogicalImmediateInstruction(instructionPointer, 0, 0, 0, IntegerLogicalImmediateInstruction.Opcode.ORI);
         }
 
         private static GekkoInstruction ParseInstructionORI(string[] tokens, int instructionPointer)
