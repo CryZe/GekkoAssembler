@@ -61,8 +61,6 @@
     <Compile Include="GekkoInstructions\AddInstruction.cs" />
     <Compile Include="GekkoInstructions\AddToMinusOneExtendedInstruction.cs" />
     <Compile Include="GekkoInstructions\AddToZeroExtendedInstruction.cs" />
-    <Compile Include="GekkoInstructions\AndImmediateInstruction.cs" />
-    <Compile Include="GekkoInstructions\AndInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchInstruction.cs" />
     <Compile Include="GekkoInstructions\BranchToLinkRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\CompareImmediateInstruction.cs" />
@@ -81,7 +79,6 @@
     <Compile Include="GekkoInstructions\DataCacheInstruction.cs" />
     <Compile Include="GekkoInstructions\DivideWordInstruction.cs" />
     <Compile Include="GekkoInstructions\EnforceInOrderExecutionInstruction.cs" />
-    <Compile Include="GekkoInstructions\EquivalentInstruction.cs" />
     <Compile Include="GekkoInstructions\ExternalControlInstruction.cs" />
     <Compile Include="GekkoInstructions\FloatingPointCompareInstruction.cs" />
     <Compile Include="GekkoInstructions\FloatingPointMultiplyInstruction.cs" />
@@ -89,6 +86,8 @@
     <Compile Include="GekkoInstructions\FloatingPointThreeOperandInstruction.cs" />
     <Compile Include="GekkoInstructions\FloatingPointTwoOperandInstruction.cs" />
     <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
+    <Compile Include="GekkoInstructions\IntegerLogicalImmediateInstruction.cs" />
+    <Compile Include="GekkoInstructions\IntegerLogicalInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionCacheBlockInvalidateInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionSynchronizeInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadByteInstruction.cs" />
@@ -113,8 +112,6 @@
     <Compile Include="GekkoInstructions\MoveToSpecialPurposeRegisterInstruction.cs" />
     <Compile Include="GekkoInstructions\MultiplyLowImmediateInstruction.cs" />
     <Compile Include="GekkoInstructions\MultiplyLowWordInstruction.cs" />
-    <Compile Include="GekkoInstructions\NoOperationInstruction.cs" />
-    <Compile Include="GekkoInstructions\OrImmediateInstruction.cs" />
     <Compile Include="GekkoInstructions\PairedSingleCompareInstruction.cs" />
     <Compile Include="GekkoInstructions\PairedSingleLoadStoreInstruction.cs" />
     <Compile Include="GekkoInstructions\PairedSingleLoadStoreIndexedInstruction.cs" />
