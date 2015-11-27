@@ -90,6 +90,7 @@
     <Compile Include="GekkoInstructions\FloatingPointTwoOperandInstruction.cs" />
     <Compile Include="GekkoInstructions\GekkoInstruction.cs" />
     <Compile Include="GekkoInstructions\IntegerLogicalImmediateInstruction.cs" />
+    <Compile Include="GekkoInstructions\IntegerLogicalInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionCacheBlockInvalidateInstruction.cs" />
     <Compile Include="GekkoInstructions\InstructionSynchronizeInstruction.cs" />
     <Compile Include="GekkoInstructions\LoadByteInstruction.cs" />

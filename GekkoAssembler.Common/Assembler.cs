@@ -38,10 +38,10 @@ namespace GekkoAssembler
             {"addze."     , ParseInstructionADDZE            },
             {"addzeo"     , ParseInstructionADDZE            },
             {"addzeo."    , ParseInstructionADDZE            },
-            {"and"        , ParseInstructionAND              },
-            {"and."       , ParseInstructionAND              },
-            {"andc"       , ParseInstructionAND              },
-            {"andc."      , ParseInstructionAND              },
+            {"and"        , ParseIntegerLogical              },
+            {"and."       , ParseIntegerLogical              },
+            {"andc"       , ParseIntegerLogical              },
+            {"andc."      , ParseIntegerLogical              },
             {"andi."      , ParseIntegerLogicalImmediate     },
             {"andis."     , ParseIntegerLogicalImmediate     },
             {"b"          , ParseInstructionB                },
@@ -89,8 +89,8 @@ namespace GekkoAssembler
             {"eciwx"      , ParseInstructionExternalControl  },
             {"ecowx"      , ParseInstructionExternalControl  },
             {"eieio"      , ParseInstructionEIEIO            },
-            {"eqv"        , ParseInstructionEQV              },
-            {"eqv."       , ParseInstructionEQV              },
+            {"eqv"        , ParseIntegerLogical              },
+            {"eqv."       , ParseIntegerLogical              },
             {"extsb"      , ParseInstructionSignExtension    },
             {"extsb."     , ParseInstructionSignExtension    },
             {"extsh"      , ParseInstructionSignExtension    },
@@ -192,6 +192,8 @@ namespace GekkoAssembler
             {"mfspr"      , ParseInstructionMFSPR            },
             {"mftb"       , ParseInstructionMFTB             },
             {"mftbu"      , ParseInstructionMFTB             },
+            {"mr"         , ParseIntegerLogical              },
+            {"mr."        , ParseIntegerLogical              },
             {"mtlr"       , ParseInstructionMTLR             },
             {"mtspr"      , ParseInstructionMTSPR            },
             {"mulli"      , ParseInstructionMULLI            },
@@ -199,7 +201,17 @@ namespace GekkoAssembler
             {"mullw."     , ParseInstructionMULLW            },
             {"mullwo"     , ParseInstructionMULLW            },
             {"mullwo."    , ParseInstructionMULLW            },
+            {"nand"       , ParseIntegerLogical              },
+            {"nand."      , ParseIntegerLogical              },
+            {"nor"        , ParseIntegerLogical              },
+            {"nor."       , ParseIntegerLogical              },
             {"nop"        , ParseInstructionNOP              },
+            {"not"        , ParseIntegerLogical              },
+            {"not."       , ParseIntegerLogical              },
+            {"or"         , ParseIntegerLogical              },
+            {"or."        , ParseIntegerLogical              },
+            {"orc"        , ParseIntegerLogical              },
+            {"orc."       , ParseIntegerLogical              },
             {"ori"        , ParseIntegerLogicalImmediate     },
             {"oris"       , ParseIntegerLogicalImmediate     },
             {"psq_l"      , ParsePairedSingleLoadStore       },
@@ -295,6 +307,8 @@ namespace GekkoAssembler
             {"subf."      , ParseInstructionSUBF             },
             {"subfo"      , ParseInstructionSUBF             },
             {"subfo."     , ParseInstructionSUBF             },
+            {"xor"        , ParseIntegerLogical              },
+            {"xor."       , ParseIntegerLogical              },
             {"xori"       , ParseIntegerLogicalImmediate     },
             {"xoris"      , ParseIntegerLogicalImmediate     },
         };
@@ -1413,6 +1427,42 @@ namespace GekkoAssembler
                 opcode = FloatingPointTwoOperandInstruction.Opcode.FSUB;
 
             return new FloatingPointTwoOperandInstruction(instructionPointer, frd, fra, frb, rc, variant, opcode);
+        }
+
+        private static GekkoInstruction ParseIntegerLogical(string[] tokens, int instructionPointer)
+        {
+            var opname = tokens[0];
+            var rc = opname.EndsWith(".");
+            var ra = ParseRegister(tokens[1]);
+            var rs = ParseRegister(tokens[2]);
+
+            // Simplified mnemonic of nor
+            if (opname.StartsWith("not"))
+                return new IntegerLogicalInstruction(instructionPointer, ra, rs, rs, rc, IntegerLogicalInstruction.Opcode.NOR);
+
+            // Simplified mnemonic of or
+            if (opname.StartsWith("mr"))
+                return new IntegerLogicalInstruction(instructionPointer, ra, rs, rs, rc, IntegerLogicalInstruction.Opcode.OR);
+
+            var rb = ParseRegister(tokens[3]);
+            var opcode = IntegerLogicalInstruction.Opcode.AND;
+
+            if (opname.StartsWith("andc"))
+                opcode = IntegerLogicalInstruction.Opcode.ANDC;
+            else if (opname.StartsWith("eqv"))
+                opcode = IntegerLogicalInstruction.Opcode.EQV;
+            else if (opname.StartsWith("nand"))
+                opcode = IntegerLogicalInstruction.Opcode.NAND;
+            else if (opname.StartsWith("nor"))
+                opcode = IntegerLogicalInstruction.Opcode.NOR;
+            else if (opname.StartsWith("orc"))
+                opcode = IntegerLogicalInstruction.Opcode.ORC;
+            else if (opname.StartsWith("or"))
+                opcode = IntegerLogicalInstruction.Opcode.OR;
+            else if (opname.StartsWith("xor"))
+                opcode = IntegerLogicalInstruction.Opcode.XOR;
+
+            return new IntegerLogicalInstruction(instructionPointer, ra, rs, rb, rc, opcode);
         }
 
         private static GekkoInstruction ParseIntegerLogicalImmediate(string[] tokens, int instructionPointer)
