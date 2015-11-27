@@ -1066,26 +1066,6 @@ namespace GekkoAssembler
             return new AddImmediateShiftedInstruction(instructionPointer, rd, ra, simm);
         }
 
-        private static GekkoInstruction ParseInstructionAND(string[] tokens, int instructionPointer)
-        {
-            var ra = ParseRegister(tokens[1]);
-            var rs = ParseRegister(tokens[2]);
-
-            if (tokens[0].Contains("i"))
-            {
-                var uimm = ParseIntegerLiteral(tokens[3]);
-                var shifted = tokens[0].Contains("s");
-
-                return new AndImmediateInstruction(instructionPointer, ra, rs, uimm, shifted);
-            }
-
-            var rb = ParseRegister(tokens[3]);
-            var rc = tokens[0].EndsWith(".");
-            var complement = tokens[0].Contains("c");
-
-            return new AndInstruction(instructionPointer, ra, rs, rb, rc, complement);
-        }
-
         private static GekkoInstruction ParseInstructionB(string[] tokens, int instructionPointer)
         {
             var targetAddress = ParseIntegerLiteral(tokens[1]);
@@ -1293,16 +1273,6 @@ namespace GekkoAssembler
         private static GekkoInstruction ParseInstructionEIEIO(string[] tokens, int instructionPointer)
         {
             return new EnforceInOrderExecutionInstruction(instructionPointer);
-        }
-
-        private static GekkoInstruction ParseInstructionEQV(string[] tokens, int instructionPointer)
-        {
-            var rc = tokens[0].EndsWith(".");
-            var ra = ParseRegister(tokens[1]);
-            var rs = ParseRegister(tokens[2]);
-            var rb = ParseRegister(tokens[3]);
-
-            return new EquivalentInstruction (instructionPointer, ra, rs, rb, rc);
         }
 
         private static GekkoInstruction ParseInstructionExternalControl(string[] tokens, int instructionPointer)
@@ -1802,14 +1772,6 @@ namespace GekkoAssembler
         private static GekkoInstruction ParseInstructionNOP(string[] tokens, int instructionPointer)
         {
             return new IntegerLogicalImmediateInstruction(instructionPointer, 0, 0, 0, IntegerLogicalImmediateInstruction.Opcode.ORI);
-        }
-
-        private static GekkoInstruction ParseInstructionORI(string[] tokens, int instructionPointer)
-        {
-            var ra = ParseRegister(tokens[1]);
-            var rs = ParseRegister(tokens[2]);
-            var uimm = ParseIntegerLiteral(tokens[3]);
-            return new OrImmediateInstruction(instructionPointer, ra, rs, uimm);
         }
 
         private static GekkoInstruction ParsePairedSingleCompare(string[] tokens, int instructionPointer)
